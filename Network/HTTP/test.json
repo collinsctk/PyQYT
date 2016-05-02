@@ -1,0 +1,22 @@
+{
+    "Teacher":[
+        {
+            "name":"chenjiadong",
+            "age":24
+        },
+        {
+            "name":"Jiaozhu",
+            "age":36
+        }
+    ],
+    "Deparment":[
+        {
+            "name":"Security",
+            "Leader":"Jiaozhu"
+        },
+        {
+            "name":"DataCenter",
+            "Leader":"Mahaibo"
+        }
+    ]
+}

@@ -1,0 +1,1387 @@
+<?xml version="1.0" encoding="UTF-8"?><Root>
+  <!--This section describes the policies configured in ISE-->
+  <Policies>
+    <Authentication>
+      <rules>
+        <rule name="CCNPSecurity" status="Enabled">
+          <Conditions relationship="AND">
+            <Condition type="ADHOC">DEVICE:Location EQUALS Location#All Locations#Beijing</Condition>
+            <Condition type="ADHOC">DEVICE:Device Type EQUALS Device Type#All Device Types#Router</Condition>
+            <Condition type="ADHOC">DEVICE:Department EQUALS Department#ALL Department#Security#CCNPSecurity</Condition>
+            <Condition type="ADHOC">Radius:NAS-Port-Type EQUALS Virtual</Condition>
+          </Conditions>
+          <Result name="PAP" type="AllowedProtocolServices"/>
+          <IdentitySourceRules>
+            <rule name="Default" status="Enabled">
+              <Conditions/>
+              <IdentitySourceResult name="QYTANG">
+                <IdentitySource name="QYTANG" type="IdentityStore"/>
+                <AuthenFailed>REJECT</AuthenFailed>
+                <UserNotFound>REJECT</UserNotFound>
+                <ProcessFailed>DROP</ProcessFailed>
+              </IdentitySourceResult>
+            </rule>
+          </IdentitySourceRules>
+        </rule>
+        <rule name="ASA" status="Enabled">
+          <Conditions relationship="AND">
+            <Condition type="ADHOC">DEVICE:Location EQUALS Location#All Locations#Beijing</Condition>
+            <Condition type="ADHOC">DEVICE:Device Type EQUALS Device Type#All Device Types#Firewall</Condition>
+            <Condition type="ADHOC">DEVICE:Department EQUALS Department#ALL Department#Production-Network</Condition>
+          </Conditions>
+          <Result name="Default Network Access" type="AllowedProtocolServices"/>
+          <IdentitySourceRules>
+            <rule name="Default" status="Enabled">
+              <Conditions/>
+              <IdentitySourceResult name="QYTANG">
+                <IdentitySource name="QYTANG" type="IdentityStore"/>
+                <AuthenFailed>REJECT</AuthenFailed>
+                <UserNotFound>REJECT</UserNotFound>
+                <ProcessFailed>DROP</ProcessFailed>
+              </IdentitySourceResult>
+            </rule>
+          </IdentitySourceRules>
+        </rule>
+        <rule name="Wireless-Dot1x" status="Enabled">
+          <Conditions relationship="AND">
+            <Condition type="ADHOC">DEVICE:Location EQUALS Location#All Locations#Beijing</Condition>
+            <Condition type="ADHOC">DEVICE:Device Type EQUALS Device Type#All Device Types#WLC</Condition>
+            <Condition type="ADHOC">DEVICE:Department EQUALS Department#ALL Department#Production-Network</Condition>
+            <Condition name="Wireless_802.1X" type="REUSABLE_COMPOUND"/>
+          </Conditions>
+          <Result name="Default Network Access" type="AllowedProtocolServices"/>
+          <IdentitySourceRules>
+            <rule name="TLS" status="Enabled">
+              <Conditions relationship="AND">
+                <Condition type="ADHOC">Network Access:EapAuthentication EQUALS EAP-TLS</Condition>
+              </Conditions>
+              <IdentitySourceResult name="QYTANG_Cert">
+                <IdentitySource name="QYTANG_Cert" type="CertAuthProfile"/>
+                <AuthenFailed>REJECT</AuthenFailed>
+                <UserNotFound>REJECT</UserNotFound>
+                <ProcessFailed>DROP</ProcessFailed>
+              </IdentitySourceResult>
+            </rule>
+            <rule name="PEAP" status="Enabled">
+              <Conditions relationship="AND">
+                <Condition type="ADHOC">Network Access:EapAuthentication EQUALS EAP-MSCHAPv2</Condition>
+              </Conditions>
+              <IdentitySourceResult name="QYTANG">
+                <IdentitySource name="QYTANG" type="IdentityStore"/>
+                <AuthenFailed>REJECT</AuthenFailed>
+                <UserNotFound>REJECT</UserNotFound>
+                <ProcessFailed>DROP</ProcessFailed>
+              </IdentitySourceResult>
+            </rule>
+            <rule name="Default" status="Enabled">
+              <Conditions/>
+              <IdentitySourceResult>
+                <IdentitySource type="IdentityStore"/>
+                <AuthenFailed>REJECT</AuthenFailed>
+                <UserNotFound>REJECT</UserNotFound>
+                <ProcessFailed>DROP</ProcessFailed>
+              </IdentitySourceResult>
+            </rule>
+          </IdentitySourceRules>
+        </rule>
+        <rule name="Wired-Dot1x" status="Enabled">
+          <Conditions relationship="AND">
+            <Condition name="Wired_802.1X" type="REUSABLE_COMPOUND"/>
+            <Condition type="ADHOC">DEVICE:Department EQUALS Department#ALL Department#Production-Network</Condition>
+            <Condition type="ADHOC">DEVICE:Device Type EQUALS Device Type#All Device Types#Switch</Condition>
+            <Condition type="ADHOC">DEVICE:Location EQUALS Location#All Locations#Beijing</Condition>
+          </Conditions>
+          <Result name="Default Network Access" type="AllowedProtocolServices"/>
+          <IdentitySourceRules>
+            <rule name="TLS" status="Enabled">
+              <Conditions relationship="AND">
+                <Condition type="ADHOC">Network Access:EapAuthentication EQUALS EAP-TLS</Condition>
+              </Conditions>
+              <IdentitySourceResult name="QYTANG_Cert">
+                <IdentitySource name="QYTANG_Cert" type="CertAuthProfile"/>
+                <AuthenFailed>REJECT</AuthenFailed>
+                <UserNotFound>REJECT</UserNotFound>
+                <ProcessFailed>DROP</ProcessFailed>
+              </IdentitySourceResult>
+            </rule>
+            <rule name="PEAP" status="Enabled">
+              <Conditions relationship="AND">
+                <Condition type="ADHOC">Network Access:EapAuthentication EQUALS EAP-MSCHAPv2</Condition>
+              </Conditions>
+              <IdentitySourceResult name="QYTANG">
+                <IdentitySource name="QYTANG" type="IdentityStore"/>
+                <AuthenFailed>REJECT</AuthenFailed>
+                <UserNotFound>REJECT</UserNotFound>
+                <ProcessFailed>DROP</ProcessFailed>
+              </IdentitySourceResult>
+            </rule>
+            <rule name="Default" status="Enabled">
+              <Conditions/>
+              <IdentitySourceResult>
+                <IdentitySource type="IdentityStore"/>
+                <AuthenFailed>REJECT</AuthenFailed>
+                <UserNotFound>REJECT</UserNotFound>
+                <ProcessFailed>DROP</ProcessFailed>
+              </IdentitySourceResult>
+            </rule>
+          </IdentitySourceRules>
+        </rule>
+        <rule name="Security-Rack-AAA" status="Enabled">
+          <Conditions relationship="AND">
+            <Condition type="ADHOC">DEVICE:Department EQUALS Department#ALL Department#Security</Condition>
+            <Condition type="ADHOC">DEVICE:Device Type EQUALS Device Type#All Device Types#Router</Condition>
+            <Condition type="ADHOC">Radius:NAS-Port-Type EQUALS Virtual</Condition>
+          </Conditions>
+          <Result name="PAP" type="AllowedProtocolServices"/>
+          <IdentitySourceRules>
+            <rule name="BJ-SEC" status="Enabled">
+              <Conditions relationship="AND">
+                <Condition type="ADHOC">DEVICE:Location EQUALS Location#All Locations#Beijing</Condition>
+              </Conditions>
+              <IdentitySourceResult name="QYTANG">
+                <IdentitySource name="QYTANG" type="IdentityStore"/>
+                <AuthenFailed>REJECT</AuthenFailed>
+                <UserNotFound>REJECT</UserNotFound>
+                <ProcessFailed>DROP</ProcessFailed>
+              </IdentitySourceResult>
+            </rule>
+            <rule name="Default" status="Enabled">
+              <Conditions/>
+              <IdentitySourceResult>
+                <IdentitySource type="IdentityStore"/>
+                <AuthenFailed>REJECT</AuthenFailed>
+                <UserNotFound>REJECT</UserNotFound>
+                <ProcessFailed>DROP</ProcessFailed>
+              </IdentitySourceResult>
+            </rule>
+          </IdentitySourceRules>
+        </rule>
+        <rule name="Production-Network-AAA" status="Enabled">
+          <Conditions relationship="AND">
+            <Condition type="ADHOC">DEVICE:Department EQUALS Department#ALL Department#Production-Network</Condition>
+            <Condition type="ADHOC">DEVICE:Location EQUALS Location#All Locations#Beijing</Condition>
+            <Condition type="ADHOC">Radius:NAS-Port-Type EQUALS Virtual</Condition>
+          </Conditions>
+          <Result name="PAP" type="AllowedProtocolServices"/>
+          <IdentitySourceRules>
+            <rule name="Default" status="Enabled">
+              <Conditions/>
+              <IdentitySourceResult name="QYTANG">
+                <IdentitySource name="QYTANG" type="IdentityStore"/>
+                <AuthenFailed>REJECT</AuthenFailed>
+                <UserNotFound>REJECT</UserNotFound>
+                <ProcessFailed>DROP</ProcessFailed>
+              </IdentitySourceResult>
+            </rule>
+          </IdentitySourceRules>
+        </rule>
+        <rule name="Default" status="Enabled">
+          <Conditions/>
+          <Result name="Default Network Access" type="AllowedProtocolServices"/>
+          <IdentitySourceRules>
+            <rule name="Default" status="Enabled">
+              <Conditions/>
+              <IdentitySourceResult>
+                <IdentitySource type="IdentityStore"/>
+                <AuthenFailed>REJECT</AuthenFailed>
+                <UserNotFound>REJECT</UserNotFound>
+                <ProcessFailed>DROP</ProcessFailed>
+              </IdentitySourceResult>
+            </rule>
+          </IdentitySourceRules>
+        </rule>
+      </rules>
+    </Authentication>
+    <Authorization>
+      <StandardRules>
+        <rule name="ASA-SSL-RS-Student" status="Enabled">
+          <Conditions relationship="AND">
+            <Condition name="BJ-ASA-SSLVPN" type="REUSABLE_COMPOUND"/>
+            <Condition type="ADHOC">QYTANG:ExternalGroups EQUALS qytang.com/QYT/RS/CCIERS/bjrs</Condition>
+          </Conditions>
+          <identityGroups>
+            <identityGroup name="Any"/>
+          </identityGroups>
+          <Results relationship="AND">
+            <Result name="rs-sslvpn" type="Standard">
+              <nadProfileName>Cisco</nadProfileName>
+            </Result>
+          </Results>
+        </rule>
+        <rule name="ASA-SSL-DC-Student" status="Enabled">
+          <Conditions relationship="AND">
+            <Condition name="BJ-ASA-SSLVPN" type="REUSABLE_COMPOUND"/>
+            <Condition type="ADHOC">QYTANG:ExternalGroups EQUALS qytang.com/QYT/DataCenter/HighLevel-DC-Remote-Access-Student/HighLevel-dc-remote-access-student</Condition>
+          </Conditions>
+          <identityGroups>
+            <identityGroup name="Any"/>
+          </identityGroups>
+          <Results relationship="AND">
+            <Result name="dc-sslvpn" type="Standard">
+              <nadProfileName>Cisco</nadProfileName>
+            </Result>
+          </Results>
+        </rule>
+        <rule name="ASA-SSL-NPSEC" status="Enabled">
+          <Conditions relationship="AND">
+            <Condition name="BJ-ASA-SSLVPN" type="REUSABLE_COMPOUND"/>
+            <Condition type="ADHOC">QYTANG:ExternalGroups EQUALS qytang.com/QYT/Security/CCNPSECURITY/npsecgroup</Condition>
+            <Condition type="ADHOC">Radius:Called-Station-ID EQUALS 192.168.189.254</Condition>
+          </Conditions>
+          <identityGroups>
+            <identityGroup name="Any"/>
+          </identityGroups>
+          <Results relationship="AND">
+            <Result name="npsec-sslvpn" type="Standard">
+              <nadProfileName>Cisco</nadProfileName>
+            </Result>
+          </Results>
+        </rule>
+        <rule name="ASA-SSL-Teachers" status="Enabled">
+          <Conditions relationship="AND">
+            <Condition name="BJ-ASA-SSLVPN" type="REUSABLE_COMPOUND"/>
+            <Condition name="SSLVPN_Teacher" type="REUSABLE_COMPOUND"/>
+          </Conditions>
+          <identityGroups>
+            <identityGroup name="Any"/>
+          </identityGroups>
+          <Results relationship="AND">
+            <Result name="admin-sslvpn" type="Standard">
+              <nadProfileName>Cisco</nadProfileName>
+            </Result>
+          </Results>
+        </rule>
+        <rule name="QYT-Wireless-Dot1x-Sales" status="Enabled">
+          <Conditions relationship="AND">
+            <Condition name="Wireless_802.1X" type="REUSABLE_COMPOUND"/>
+            <Condition name="Wireless_BJ" type="REUSABLE_COMPOUND"/>
+            <Condition name="SALES_PC" type="REUSABLE_COMPOUND"/>
+            <Condition type="ADHOC">Network Access:EapAuthentication EQUALS EAP-MSCHAPv2</Condition>
+            <Condition type="ADHOC">Radius:Called-Station-ID CONTAINS QYT.Sales</Condition>
+          </Conditions>
+          <identityGroups>
+            <identityGroup name="Any"/>
+          </identityGroups>
+          <Results relationship="AND">
+            <Result name="SALES-VLAN188" type="Standard">
+              <nadProfileName>Cisco</nadProfileName>
+            </Result>
+          </Results>
+        </rule>
+        <rule name="QYT-Wireless-Dot1x-CAIWU" status="Enabled">
+          <Conditions relationship="AND">
+            <Condition name="Wireless_802.1X" type="REUSABLE_COMPOUND"/>
+            <Condition name="Wireless_BJ" type="REUSABLE_COMPOUND"/>
+            <Condition type="ADHOC">QYTANG:sAMAccountName CONTAINS CAIWU01-X200</Condition>
+            <Condition type="ADHOC">Network Access:EapAuthentication EQUALS EAP-MSCHAPv2</Condition>
+            <Condition type="ADHOC">Radius:Called-Station-ID CONTAINS QYT.Teacher</Condition>
+          </Conditions>
+          <identityGroups>
+            <identityGroup name="Any"/>
+          </identityGroups>
+          <Results relationship="AND">
+            <Result name="Teacher-VLAN5" type="Standard">
+              <nadProfileName>Cisco</nadProfileName>
+            </Result>
+          </Results>
+        </rule>
+        <rule name="QYT-Wireless-Dot1x-Teacher_TLS" status="Enabled">
+          <Conditions relationship="AND">
+            <Condition name="Wireless_802.1X" type="REUSABLE_COMPOUND"/>
+            <Condition name="Wireless_BJ" type="REUSABLE_COMPOUND"/>
+            <Condition type="ADHOC">CERTIFICATE:Subject - Organization Unit EQUALS 乾颐堂老师</Condition>
+            <Condition type="ADHOC">Network Access:EapAuthentication EQUALS EAP-TLS</Condition>
+            <Condition type="ADHOC">Radius:Called-Station-ID CONTAINS QYT.Teacher</Condition>
+          </Conditions>
+          <identityGroups>
+            <identityGroup name="Any"/>
+          </identityGroups>
+          <Results relationship="AND">
+            <Result name="Teacher-VLAN5" type="Standard">
+              <nadProfileName>Cisco</nadProfileName>
+            </Result>
+          </Results>
+        </rule>
+        <rule name="QYT-Wireless-Dot1x-Teacher_PEAP" status="Enabled">
+          <Conditions relationship="AND">
+            <Condition name="Wireless_802.1X" type="REUSABLE_COMPOUND"/>
+            <Condition name="Wireless_BJ" type="REUSABLE_COMPOUND"/>
+            <Condition type="ADHOC">QYTANG:ExternalGroups EQUALS qytang.com/乾颐堂老师/qyt-teachers</Condition>
+            <Condition type="ADHOC">Network Access:EapAuthentication EQUALS EAP-MSCHAPv2</Condition>
+            <Condition type="ADHOC">Radius:Called-Station-ID CONTAINS QYT.Teacher</Condition>
+          </Conditions>
+          <identityGroups>
+            <identityGroup name="Any"/>
+          </identityGroups>
+          <Results relationship="AND">
+            <Result name="Teacher-VLAN5" type="Standard">
+              <nadProfileName>Cisco</nadProfileName>
+            </Result>
+          </Results>
+        </rule>
+        <rule name="QYT-Wired-Dot1x_Teacher" status="Enabled">
+          <Conditions relationship="AND">
+            <Condition name="Wired_802.1X" type="REUSABLE_COMPOUND"/>
+            <Condition type="ADHOC">DEVICE:Department EQUALS ALL Department#Production-Network</Condition>
+            <Condition type="ADHOC">DEVICE:Location EQUALS All Locations#Beijing</Condition>
+            <Condition type="ADHOC">DEVICE:Device Type EQUALS All Device Types#Switch</Condition>
+            <Condition type="ADHOC">CERTIFICATE:Subject - Organization Unit EQUALS 乾颐堂老师</Condition>
+          </Conditions>
+          <identityGroups>
+            <identityGroup name="Any"/>
+          </identityGroups>
+          <Results relationship="AND">
+            <Result name="Teacher-VLAN5" type="Standard">
+              <nadProfileName>Cisco</nadProfileName>
+            </Result>
+          </Results>
+        </rule>
+        <rule name="QYT-SECLAB-Wired-Dot1x" status="Enabled">
+          <Conditions relationship="AND">
+            <Condition name="Prelab-PC-Interfaces" type="REUSABLE_COMPOUND"/>
+            <Condition name="LAB-PCs" type="REUSABLE_COMPOUND"/>
+            <Condition name="Wired_802.1X" type="REUSABLE_COMPOUND"/>
+            <Condition type="ADHOC">DEVICE:Department EQUALS ALL Department#Production-Network</Condition>
+            <Condition type="ADHOC">DEVICE:Location EQUALS All Locations#Beijing</Condition>
+            <Condition type="ADHOC">DEVICE:Device Type EQUALS All Device Types#Switch</Condition>
+            <Condition type="ADHOC">Radius:NAS-IP-Address EQUALS 137.78.5.102</Condition>
+          </Conditions>
+          <identityGroups>
+            <identityGroup name="Any"/>
+          </identityGroups>
+          <Results relationship="AND">
+            <Result name="SECLAB-VLAN100" type="Standard">
+              <nadProfileName>Cisco</nadProfileName>
+            </Result>
+          </Results>
+        </rule>
+        <rule name="SEC-LAB-Rack-Student" status="Enabled">
+          <Conditions relationship="AND">
+            <Condition type="ADHOC">DEVICE:Department EQUALS ALL Department#Security</Condition>
+            <Condition type="ADHOC">DEVICE:Device Type EQUALS All Device Types#Router</Condition>
+            <Condition type="ADHOC">Radius:NAS-Port-Type EQUALS Virtual</Condition>
+            <Condition type="ADHOC">QYTANG:ExternalGroups EQUALS qytang.com/QYT/Security/CCIESECURITY/SecCCIE</Condition>
+          </Conditions>
+          <identityGroups>
+            <identityGroup name="Any"/>
+          </identityGroups>
+          <Results relationship="AND">
+            <Result name="PermitAccess" type="Standard"/>
+          </Results>
+        </rule>
+        <rule name="SEC-LAB-Rack-Teacher" status="Enabled">
+          <Conditions relationship="AND">
+            <Condition name="Security_Teachers" type="REUSABLE_COMPOUND"/>
+            <Condition type="ADHOC">DEVICE:Department EQUALS ALL Department#Security</Condition>
+            <Condition type="ADHOC">DEVICE:Device Type EQUALS All Device Types#Router</Condition>
+            <Condition type="ADHOC">Radius:NAS-Port-Type EQUALS Virtual</Condition>
+          </Conditions>
+          <identityGroups>
+            <identityGroup name="Any"/>
+          </identityGroups>
+          <Results relationship="AND">
+            <Result name="Priv-lvl15" type="Standard">
+              <nadProfileName>Cisco</nadProfileName>
+            </Result>
+          </Results>
+        </rule>
+        <rule name="CCNPSecurity_Student" status="Enabled">
+          <Conditions relationship="AND">
+            <Condition type="ADHOC">DEVICE:Department EQUALS ALL Department#Security#CCNPSecurity</Condition>
+            <Condition type="ADHOC">DEVICE:Location EQUALS All Locations#Beijing</Condition>
+            <Condition type="ADHOC">DEVICE:Device Type EQUALS All Device Types#Router</Condition>
+            <Condition type="ADHOC">Radius:NAS-Port-Type EQUALS Virtual</Condition>
+            <Condition type="ADHOC">QYTANG:ExternalGroups EQUALS qytang.com/QYT/Security/CCNPSECURITY/npsecgroup</Condition>
+          </Conditions>
+          <identityGroups>
+            <identityGroup name="Any"/>
+          </identityGroups>
+          <Results relationship="AND">
+            <Result name="PermitAccess" type="Standard"/>
+          </Results>
+        </rule>
+        <rule name="CCNPSecurity_Teacher" status="Enabled">
+          <Conditions relationship="AND">
+            <Condition type="ADHOC">DEVICE:Department EQUALS ALL Department#Security#CCNPSecurity</Condition>
+            <Condition type="ADHOC">DEVICE:Location EQUALS All Locations#Beijing</Condition>
+            <Condition type="ADHOC">DEVICE:Device Type EQUALS All Device Types#Router</Condition>
+            <Condition type="ADHOC">Radius:NAS-Port-Type EQUALS Virtual</Condition>
+            <Condition type="ADHOC">QYTANG:ExternalGroups EQUALS qytang.com/乾颐堂老师/qyt-teachers</Condition>
+          </Conditions>
+          <identityGroups>
+            <identityGroup name="Any"/>
+          </identityGroups>
+          <Results relationship="AND">
+            <Result name="PermitAccess" type="Standard"/>
+          </Results>
+        </rule>
+        <rule name="QYT-IT-MGMT-Production-Device_WLC" status="Enabled">
+          <Conditions relationship="AND">
+            <Condition name="QYT_BJ_IT" type="REUSABLE_COMPOUND"/>
+            <Condition type="ADHOC">DEVICE:Device Type EQUALS All Device Types#WLC</Condition>
+            <Condition type="ADHOC">Radius:NAS-Port-Type EQUALS Virtual</Condition>
+          </Conditions>
+          <identityGroups>
+            <identityGroup name="Any"/>
+          </identityGroups>
+          <Results relationship="AND">
+            <Result name="Priv-lvl15_XE" type="Standard">
+              <nadProfileName>Cisco</nadProfileName>
+            </Result>
+          </Results>
+        </rule>
+        <rule name="QYT-IT-MGMT-Production-Device" status="Enabled">
+          <Conditions relationship="AND">
+            <Condition name="QYT_BJ_IT" type="REUSABLE_COMPOUND"/>
+            <Condition type="ADHOC">DEVICE:Department EQUALS ALL Department#Production-Network</Condition>
+            <Condition type="ADHOC">Radius:NAS-Port-Type EQUALS Virtual</Condition>
+          </Conditions>
+          <identityGroups>
+            <identityGroup name="Any"/>
+          </identityGroups>
+          <Results relationship="AND">
+            <Result name="Priv-lvl15" type="Standard">
+              <nadProfileName>Cisco</nadProfileName>
+            </Result>
+          </Results>
+        </rule>
+        <rule name="Default" status="Enabled">
+          <Conditions/>
+          <identityGroups>
+            <identityGroup name="Any"/>
+          </identityGroups>
+          <Results relationship="AND">
+            <Result name="DenyAccess" type="Standard"/>
+          </Results>
+        </rule>
+      </StandardRules>
+      <LocalExceptionRules/>
+    </Authorization>
+  </Policies>
+  <!--This section describes the Policy-Sets configured in ISE-->
+  <PolicySets>
+    <PolicySet description="Default Policy Set" name="Default" status="Enabled">
+      <Conditions/>
+      <Authentication>
+        <rules>
+          <rule name="CCNPSecurity" status="Enabled">
+            <Conditions relationship="AND">
+              <Condition type="ADHOC">DEVICE:Location EQUALS Location#All Locations#Beijing</Condition>
+              <Condition type="ADHOC">DEVICE:Device Type EQUALS Device Type#All Device Types#Router</Condition>
+              <Condition type="ADHOC">DEVICE:Department EQUALS Department#ALL Department#Security#CCNPSecurity</Condition>
+              <Condition type="ADHOC">Radius:NAS-Port-Type EQUALS Virtual</Condition>
+            </Conditions>
+            <Result name="PAP" type="AllowedProtocolServices"/>
+            <IdentitySourceRules>
+              <rule name="Default" status="Enabled">
+                <Conditions/>
+                <IdentitySourceResult name="QYTANG">
+                  <IdentitySource name="QYTANG" type="IdentityStore"/>
+                  <AuthenFailed>REJECT</AuthenFailed>
+                  <UserNotFound>REJECT</UserNotFound>
+                  <ProcessFailed>DROP</ProcessFailed>
+                </IdentitySourceResult>
+              </rule>
+            </IdentitySourceRules>
+          </rule>
+          <rule name="ASA" status="Enabled">
+            <Conditions relationship="AND">
+              <Condition type="ADHOC">DEVICE:Location EQUALS Location#All Locations#Beijing</Condition>
+              <Condition type="ADHOC">DEVICE:Device Type EQUALS Device Type#All Device Types#Firewall</Condition>
+              <Condition type="ADHOC">DEVICE:Department EQUALS Department#ALL Department#Production-Network</Condition>
+            </Conditions>
+            <Result name="Default Network Access" type="AllowedProtocolServices"/>
+            <IdentitySourceRules>
+              <rule name="Default" status="Enabled">
+                <Conditions/>
+                <IdentitySourceResult name="QYTANG">
+                  <IdentitySource name="QYTANG" type="IdentityStore"/>
+                  <AuthenFailed>REJECT</AuthenFailed>
+                  <UserNotFound>REJECT</UserNotFound>
+                  <ProcessFailed>DROP</ProcessFailed>
+                </IdentitySourceResult>
+              </rule>
+            </IdentitySourceRules>
+          </rule>
+          <rule name="Wireless-Dot1x" status="Enabled">
+            <Conditions relationship="AND">
+              <Condition type="ADHOC">DEVICE:Location EQUALS Location#All Locations#Beijing</Condition>
+              <Condition type="ADHOC">DEVICE:Device Type EQUALS Device Type#All Device Types#WLC</Condition>
+              <Condition type="ADHOC">DEVICE:Department EQUALS Department#ALL Department#Production-Network</Condition>
+              <Condition name="Wireless_802.1X" type="REUSABLE_COMPOUND"/>
+            </Conditions>
+            <Result name="Default Network Access" type="AllowedProtocolServices"/>
+            <IdentitySourceRules>
+              <rule name="TLS" status="Enabled">
+                <Conditions relationship="AND">
+                  <Condition type="ADHOC">Network Access:EapAuthentication EQUALS EAP-TLS</Condition>
+                </Conditions>
+                <IdentitySourceResult name="QYTANG_Cert">
+                  <IdentitySource name="QYTANG_Cert" type="CertAuthProfile"/>
+                  <AuthenFailed>REJECT</AuthenFailed>
+                  <UserNotFound>REJECT</UserNotFound>
+                  <ProcessFailed>DROP</ProcessFailed>
+                </IdentitySourceResult>
+              </rule>
+              <rule name="PEAP" status="Enabled">
+                <Conditions relationship="AND">
+                  <Condition type="ADHOC">Network Access:EapAuthentication EQUALS EAP-MSCHAPv2</Condition>
+                </Conditions>
+                <IdentitySourceResult name="QYTANG">
+                  <IdentitySource name="QYTANG" type="IdentityStore"/>
+                  <AuthenFailed>REJECT</AuthenFailed>
+                  <UserNotFound>REJECT</UserNotFound>
+                  <ProcessFailed>DROP</ProcessFailed>
+                </IdentitySourceResult>
+              </rule>
+              <rule name="Default" status="Enabled">
+                <Conditions/>
+                <IdentitySourceResult>
+                  <IdentitySource type="IdentityStore"/>
+                  <AuthenFailed>REJECT</AuthenFailed>
+                  <UserNotFound>REJECT</UserNotFound>
+                  <ProcessFailed>DROP</ProcessFailed>
+                </IdentitySourceResult>
+              </rule>
+            </IdentitySourceRules>
+          </rule>
+          <rule name="Wired-Dot1x" status="Enabled">
+            <Conditions relationship="AND">
+              <Condition name="Wired_802.1X" type="REUSABLE_COMPOUND"/>
+              <Condition type="ADHOC">DEVICE:Department EQUALS Department#ALL Department#Production-Network</Condition>
+              <Condition type="ADHOC">DEVICE:Device Type EQUALS Device Type#All Device Types#Switch</Condition>
+              <Condition type="ADHOC">DEVICE:Location EQUALS Location#All Locations#Beijing</Condition>
+            </Conditions>
+            <Result name="Default Network Access" type="AllowedProtocolServices"/>
+            <IdentitySourceRules>
+              <rule name="TLS" status="Enabled">
+                <Conditions relationship="AND">
+                  <Condition type="ADHOC">Network Access:EapAuthentication EQUALS EAP-TLS</Condition>
+                </Conditions>
+                <IdentitySourceResult name="QYTANG_Cert">
+                  <IdentitySource name="QYTANG_Cert" type="CertAuthProfile"/>
+                  <AuthenFailed>REJECT</AuthenFailed>
+                  <UserNotFound>REJECT</UserNotFound>
+                  <ProcessFailed>DROP</ProcessFailed>
+                </IdentitySourceResult>
+              </rule>
+              <rule name="PEAP" status="Enabled">
+                <Conditions relationship="AND">
+                  <Condition type="ADHOC">Network Access:EapAuthentication EQUALS EAP-MSCHAPv2</Condition>
+                </Conditions>
+                <IdentitySourceResult name="QYTANG">
+                  <IdentitySource name="QYTANG" type="IdentityStore"/>
+                  <AuthenFailed>REJECT</AuthenFailed>
+                  <UserNotFound>REJECT</UserNotFound>
+                  <ProcessFailed>DROP</ProcessFailed>
+                </IdentitySourceResult>
+              </rule>
+              <rule name="Default" status="Enabled">
+                <Conditions/>
+                <IdentitySourceResult>
+                  <IdentitySource type="IdentityStore"/>
+                  <AuthenFailed>REJECT</AuthenFailed>
+                  <UserNotFound>REJECT</UserNotFound>
+                  <ProcessFailed>DROP</ProcessFailed>
+                </IdentitySourceResult>
+              </rule>
+            </IdentitySourceRules>
+          </rule>
+          <rule name="Security-Rack-AAA" status="Enabled">
+            <Conditions relationship="AND">
+              <Condition type="ADHOC">DEVICE:Department EQUALS Department#ALL Department#Security</Condition>
+              <Condition type="ADHOC">DEVICE:Device Type EQUALS Device Type#All Device Types#Router</Condition>
+              <Condition type="ADHOC">Radius:NAS-Port-Type EQUALS Virtual</Condition>
+            </Conditions>
+            <Result name="PAP" type="AllowedProtocolServices"/>
+            <IdentitySourceRules>
+              <rule name="BJ-SEC" status="Enabled">
+                <Conditions relationship="AND">
+                  <Condition type="ADHOC">DEVICE:Location EQUALS Location#All Locations#Beijing</Condition>
+                </Conditions>
+                <IdentitySourceResult name="QYTANG">
+                  <IdentitySource name="QYTANG" type="IdentityStore"/>
+                  <AuthenFailed>REJECT</AuthenFailed>
+                  <UserNotFound>REJECT</UserNotFound>
+                  <ProcessFailed>DROP</ProcessFailed>
+                </IdentitySourceResult>
+              </rule>
+              <rule name="Default" status="Enabled">
+                <Conditions/>
+                <IdentitySourceResult>
+                  <IdentitySource type="IdentityStore"/>
+                  <AuthenFailed>REJECT</AuthenFailed>
+                  <UserNotFound>REJECT</UserNotFound>
+                  <ProcessFailed>DROP</ProcessFailed>
+                </IdentitySourceResult>
+              </rule>
+            </IdentitySourceRules>
+          </rule>
+          <rule name="Production-Network-AAA" status="Enabled">
+            <Conditions relationship="AND">
+              <Condition type="ADHOC">DEVICE:Department EQUALS Department#ALL Department#Production-Network</Condition>
+              <Condition type="ADHOC">DEVICE:Location EQUALS Location#All Locations#Beijing</Condition>
+              <Condition type="ADHOC">Radius:NAS-Port-Type EQUALS Virtual</Condition>
+            </Conditions>
+            <Result name="PAP" type="AllowedProtocolServices"/>
+            <IdentitySourceRules>
+              <rule name="Default" status="Enabled">
+                <Conditions/>
+                <IdentitySourceResult name="QYTANG">
+                  <IdentitySource name="QYTANG" type="IdentityStore"/>
+                  <AuthenFailed>REJECT</AuthenFailed>
+                  <UserNotFound>REJECT</UserNotFound>
+                  <ProcessFailed>DROP</ProcessFailed>
+                </IdentitySourceResult>
+              </rule>
+            </IdentitySourceRules>
+          </rule>
+          <rule name="Default" status="Enabled">
+            <Conditions/>
+            <Result name="Default Network Access" type="AllowedProtocolServices"/>
+            <IdentitySourceRules>
+              <rule name="Default" status="Enabled">
+                <Conditions/>
+                <IdentitySourceResult>
+                  <IdentitySource type="IdentityStore"/>
+                  <AuthenFailed>REJECT</AuthenFailed>
+                  <UserNotFound>REJECT</UserNotFound>
+                  <ProcessFailed>DROP</ProcessFailed>
+                </IdentitySourceResult>
+              </rule>
+            </IdentitySourceRules>
+          </rule>
+        </rules>
+      </Authentication>
+      <Authorization>
+        <StandardRules>
+          <rule name="ASA-SSL-RS-Student" status="Enabled">
+            <Conditions relationship="AND">
+              <Condition name="BJ-ASA-SSLVPN" type="REUSABLE_COMPOUND"/>
+              <Condition type="ADHOC">QYTANG:ExternalGroups EQUALS qytang.com/QYT/RS/CCIERS/bjrs</Condition>
+            </Conditions>
+            <identityGroups>
+              <identityGroup name="Any"/>
+            </identityGroups>
+            <Results relationship="AND">
+              <Result name="rs-sslvpn" type="Standard">
+                <nadProfileName>Cisco</nadProfileName>
+              </Result>
+            </Results>
+          </rule>
+          <rule name="ASA-SSL-DC-Student" status="Enabled">
+            <Conditions relationship="AND">
+              <Condition name="BJ-ASA-SSLVPN" type="REUSABLE_COMPOUND"/>
+              <Condition type="ADHOC">QYTANG:ExternalGroups EQUALS qytang.com/QYT/DataCenter/HighLevel-DC-Remote-Access-Student/HighLevel-dc-remote-access-student</Condition>
+            </Conditions>
+            <identityGroups>
+              <identityGroup name="Any"/>
+            </identityGroups>
+            <Results relationship="AND">
+              <Result name="dc-sslvpn" type="Standard">
+                <nadProfileName>Cisco</nadProfileName>
+              </Result>
+            </Results>
+          </rule>
+          <rule name="ASA-SSL-NPSEC" status="Enabled">
+            <Conditions relationship="AND">
+              <Condition name="BJ-ASA-SSLVPN" type="REUSABLE_COMPOUND"/>
+              <Condition type="ADHOC">QYTANG:ExternalGroups EQUALS qytang.com/QYT/Security/CCNPSECURITY/npsecgroup</Condition>
+              <Condition type="ADHOC">Radius:Called-Station-ID EQUALS 192.168.189.254</Condition>
+            </Conditions>
+            <identityGroups>
+              <identityGroup name="Any"/>
+            </identityGroups>
+            <Results relationship="AND">
+              <Result name="npsec-sslvpn" type="Standard">
+                <nadProfileName>Cisco</nadProfileName>
+              </Result>
+            </Results>
+          </rule>
+          <rule name="ASA-SSL-Teachers" status="Enabled">
+            <Conditions relationship="AND">
+              <Condition name="BJ-ASA-SSLVPN" type="REUSABLE_COMPOUND"/>
+              <Condition name="SSLVPN_Teacher" type="REUSABLE_COMPOUND"/>
+            </Conditions>
+            <identityGroups>
+              <identityGroup name="Any"/>
+            </identityGroups>
+            <Results relationship="AND">
+              <Result name="admin-sslvpn" type="Standard">
+                <nadProfileName>Cisco</nadProfileName>
+              </Result>
+            </Results>
+          </rule>
+          <rule name="QYT-Wireless-Dot1x-Sales" status="Enabled">
+            <Conditions relationship="AND">
+              <Condition name="Wireless_802.1X" type="REUSABLE_COMPOUND"/>
+              <Condition name="Wireless_BJ" type="REUSABLE_COMPOUND"/>
+              <Condition name="SALES_PC" type="REUSABLE_COMPOUND"/>
+              <Condition type="ADHOC">Network Access:EapAuthentication EQUALS EAP-MSCHAPv2</Condition>
+              <Condition type="ADHOC">Radius:Called-Station-ID CONTAINS QYT.Sales</Condition>
+            </Conditions>
+            <identityGroups>
+              <identityGroup name="Any"/>
+            </identityGroups>
+            <Results relationship="AND">
+              <Result name="SALES-VLAN188" type="Standard">
+                <nadProfileName>Cisco</nadProfileName>
+              </Result>
+            </Results>
+          </rule>
+          <rule name="QYT-Wireless-Dot1x-CAIWU" status="Enabled">
+            <Conditions relationship="AND">
+              <Condition name="Wireless_802.1X" type="REUSABLE_COMPOUND"/>
+              <Condition name="Wireless_BJ" type="REUSABLE_COMPOUND"/>
+              <Condition type="ADHOC">QYTANG:sAMAccountName CONTAINS CAIWU01-X200</Condition>
+              <Condition type="ADHOC">Network Access:EapAuthentication EQUALS EAP-MSCHAPv2</Condition>
+              <Condition type="ADHOC">Radius:Called-Station-ID CONTAINS QYT.Teacher</Condition>
+            </Conditions>
+            <identityGroups>
+              <identityGroup name="Any"/>
+            </identityGroups>
+            <Results relationship="AND">
+              <Result name="Teacher-VLAN5" type="Standard">
+                <nadProfileName>Cisco</nadProfileName>
+              </Result>
+            </Results>
+          </rule>
+          <rule name="QYT-Wireless-Dot1x-Teacher_TLS" status="Enabled">
+            <Conditions relationship="AND">
+              <Condition name="Wireless_802.1X" type="REUSABLE_COMPOUND"/>
+              <Condition name="Wireless_BJ" type="REUSABLE_COMPOUND"/>
+              <Condition type="ADHOC">CERTIFICATE:Subject - Organization Unit EQUALS 乾颐堂老师</Condition>
+              <Condition type="ADHOC">Network Access:EapAuthentication EQUALS EAP-TLS</Condition>
+              <Condition type="ADHOC">Radius:Called-Station-ID CONTAINS QYT.Teacher</Condition>
+            </Conditions>
+            <identityGroups>
+              <identityGroup name="Any"/>
+            </identityGroups>
+            <Results relationship="AND">
+              <Result name="Teacher-VLAN5" type="Standard">
+                <nadProfileName>Cisco</nadProfileName>
+              </Result>
+            </Results>
+          </rule>
+          <rule name="QYT-Wireless-Dot1x-Teacher_PEAP" status="Enabled">
+            <Conditions relationship="AND">
+              <Condition name="Wireless_802.1X" type="REUSABLE_COMPOUND"/>
+              <Condition name="Wireless_BJ" type="REUSABLE_COMPOUND"/>
+              <Condition type="ADHOC">QYTANG:ExternalGroups EQUALS qytang.com/乾颐堂老师/qyt-teachers</Condition>
+              <Condition type="ADHOC">Network Access:EapAuthentication EQUALS EAP-MSCHAPv2</Condition>
+              <Condition type="ADHOC">Radius:Called-Station-ID CONTAINS QYT.Teacher</Condition>
+            </Conditions>
+            <identityGroups>
+              <identityGroup name="Any"/>
+            </identityGroups>
+            <Results relationship="AND">
+              <Result name="Teacher-VLAN5" type="Standard">
+                <nadProfileName>Cisco</nadProfileName>
+              </Result>
+            </Results>
+          </rule>
+          <rule name="QYT-Wired-Dot1x_Teacher" status="Enabled">
+            <Conditions relationship="AND">
+              <Condition name="Wired_802.1X" type="REUSABLE_COMPOUND"/>
+              <Condition type="ADHOC">DEVICE:Department EQUALS ALL Department#Production-Network</Condition>
+              <Condition type="ADHOC">DEVICE:Location EQUALS All Locations#Beijing</Condition>
+              <Condition type="ADHOC">DEVICE:Device Type EQUALS All Device Types#Switch</Condition>
+              <Condition type="ADHOC">CERTIFICATE:Subject - Organization Unit EQUALS 乾颐堂老师</Condition>
+            </Conditions>
+            <identityGroups>
+              <identityGroup name="Any"/>
+            </identityGroups>
+            <Results relationship="AND">
+              <Result name="Teacher-VLAN5" type="Standard">
+                <nadProfileName>Cisco</nadProfileName>
+              </Result>
+            </Results>
+          </rule>
+          <rule name="QYT-SECLAB-Wired-Dot1x" status="Enabled">
+            <Conditions relationship="AND">
+              <Condition name="Prelab-PC-Interfaces" type="REUSABLE_COMPOUND"/>
+              <Condition name="LAB-PCs" type="REUSABLE_COMPOUND"/>
+              <Condition name="Wired_802.1X" type="REUSABLE_COMPOUND"/>
+              <Condition type="ADHOC">DEVICE:Department EQUALS ALL Department#Production-Network</Condition>
+              <Condition type="ADHOC">DEVICE:Location EQUALS All Locations#Beijing</Condition>
+              <Condition type="ADHOC">DEVICE:Device Type EQUALS All Device Types#Switch</Condition>
+              <Condition type="ADHOC">Radius:NAS-IP-Address EQUALS 137.78.5.102</Condition>
+            </Conditions>
+            <identityGroups>
+              <identityGroup name="Any"/>
+            </identityGroups>
+            <Results relationship="AND">
+              <Result name="SECLAB-VLAN100" type="Standard">
+                <nadProfileName>Cisco</nadProfileName>
+              </Result>
+            </Results>
+          </rule>
+          <rule name="SEC-LAB-Rack-Student" status="Enabled">
+            <Conditions relationship="AND">
+              <Condition type="ADHOC">DEVICE:Department EQUALS ALL Department#Security</Condition>
+              <Condition type="ADHOC">DEVICE:Device Type EQUALS All Device Types#Router</Condition>
+              <Condition type="ADHOC">Radius:NAS-Port-Type EQUALS Virtual</Condition>
+              <Condition type="ADHOC">QYTANG:ExternalGroups EQUALS qytang.com/QYT/Security/CCIESECURITY/SecCCIE</Condition>
+            </Conditions>
+            <identityGroups>
+              <identityGroup name="Any"/>
+            </identityGroups>
+            <Results relationship="AND">
+              <Result name="PermitAccess" type="Standard"/>
+            </Results>
+          </rule>
+          <rule name="SEC-LAB-Rack-Teacher" status="Enabled">
+            <Conditions relationship="AND">
+              <Condition name="Security_Teachers" type="REUSABLE_COMPOUND"/>
+              <Condition type="ADHOC">DEVICE:Department EQUALS ALL Department#Security</Condition>
+              <Condition type="ADHOC">DEVICE:Device Type EQUALS All Device Types#Router</Condition>
+              <Condition type="ADHOC">Radius:NAS-Port-Type EQUALS Virtual</Condition>
+            </Conditions>
+            <identityGroups>
+              <identityGroup name="Any"/>
+            </identityGroups>
+            <Results relationship="AND">
+              <Result name="Priv-lvl15" type="Standard">
+                <nadProfileName>Cisco</nadProfileName>
+              </Result>
+            </Results>
+          </rule>
+          <rule name="CCNPSecurity_Student" status="Enabled">
+            <Conditions relationship="AND">
+              <Condition type="ADHOC">DEVICE:Department EQUALS ALL Department#Security#CCNPSecurity</Condition>
+              <Condition type="ADHOC">DEVICE:Location EQUALS All Locations#Beijing</Condition>
+              <Condition type="ADHOC">DEVICE:Device Type EQUALS All Device Types#Router</Condition>
+              <Condition type="ADHOC">Radius:NAS-Port-Type EQUALS Virtual</Condition>
+              <Condition type="ADHOC">QYTANG:ExternalGroups EQUALS qytang.com/QYT/Security/CCNPSECURITY/npsecgroup</Condition>
+            </Conditions>
+            <identityGroups>
+              <identityGroup name="Any"/>
+            </identityGroups>
+            <Results relationship="AND">
+              <Result name="PermitAccess" type="Standard"/>
+            </Results>
+          </rule>
+          <rule name="CCNPSecurity_Teacher" status="Enabled">
+            <Conditions relationship="AND">
+              <Condition type="ADHOC">DEVICE:Department EQUALS ALL Department#Security#CCNPSecurity</Condition>
+              <Condition type="ADHOC">DEVICE:Location EQUALS All Locations#Beijing</Condition>
+              <Condition type="ADHOC">DEVICE:Device Type EQUALS All Device Types#Router</Condition>
+              <Condition type="ADHOC">Radius:NAS-Port-Type EQUALS Virtual</Condition>
+              <Condition type="ADHOC">QYTANG:ExternalGroups EQUALS qytang.com/乾颐堂老师/qyt-teachers</Condition>
+            </Conditions>
+            <identityGroups>
+              <identityGroup name="Any"/>
+            </identityGroups>
+            <Results relationship="AND">
+              <Result name="PermitAccess" type="Standard"/>
+            </Results>
+          </rule>
+          <rule name="QYT-IT-MGMT-Production-Device_WLC" status="Enabled">
+            <Conditions relationship="AND">
+              <Condition name="QYT_BJ_IT" type="REUSABLE_COMPOUND"/>
+              <Condition type="ADHOC">DEVICE:Device Type EQUALS All Device Types#WLC</Condition>
+              <Condition type="ADHOC">Radius:NAS-Port-Type EQUALS Virtual</Condition>
+            </Conditions>
+            <identityGroups>
+              <identityGroup name="Any"/>
+            </identityGroups>
+            <Results relationship="AND">
+              <Result name="Priv-lvl15_XE" type="Standard">
+                <nadProfileName>Cisco</nadProfileName>
+              </Result>
+            </Results>
+          </rule>
+          <rule name="QYT-IT-MGMT-Production-Device" status="Enabled">
+            <Conditions relationship="AND">
+              <Condition name="QYT_BJ_IT" type="REUSABLE_COMPOUND"/>
+              <Condition type="ADHOC">DEVICE:Department EQUALS ALL Department#Production-Network</Condition>
+              <Condition type="ADHOC">Radius:NAS-Port-Type EQUALS Virtual</Condition>
+            </Conditions>
+            <identityGroups>
+              <identityGroup name="Any"/>
+            </identityGroups>
+            <Results relationship="AND">
+              <Result name="Priv-lvl15" type="Standard">
+                <nadProfileName>Cisco</nadProfileName>
+              </Result>
+            </Results>
+          </rule>
+          <rule name="Default" status="Enabled">
+            <Conditions/>
+            <identityGroups>
+              <identityGroup name="Any"/>
+            </identityGroups>
+            <Results relationship="AND">
+              <Result name="DenyAccess" type="Standard"/>
+            </Results>
+          </rule>
+        </StandardRules>
+        <LocalExceptionRules/>
+      </Authorization>
+    </PolicySet>
+    <PolicySet description="Tacacs_Default" name="Tacacs_Default" status="Enabled">
+      <Conditions relationship="AND">
+        <Condition type="ADHOC">Network Access:Protocol EQUALS TACACS+</Condition>
+      </Conditions>
+      <Authentication>
+        <rules>
+          <rule name="Default" status="Enabled">
+            <Conditions/>
+            <Result name="Default Device Admin" type="AllowedProtocolServices"/>
+            <IdentitySourceRules>
+              <rule name="Default" status="Enabled">
+                <Conditions/>
+                <IdentitySourceResult name="All_User_ID_Stores">
+                  <IdentitySource name="All_User_ID_Stores" type="IdentityStoreSequence"/>
+                  <AuthenFailed>REJECT</AuthenFailed>
+                  <UserNotFound>REJECT</UserNotFound>
+                  <ProcessFailed>DROP</ProcessFailed>
+                </IdentitySourceResult>
+              </rule>
+            </IdentitySourceRules>
+          </rule>
+        </rules>
+      </Authentication>
+      <Authorization>
+        <StandardRules>
+          <rule name="Tacacs_Default" status="Enabled">
+            <Conditions/>
+            <identityGroups>
+              <identityGroup name="Any"/>
+            </identityGroups>
+            <Results relationship="AND">
+              <Result name="CommandSet=DenyAllCommand" type="tacacs"/>
+            </Results>
+          </rule>
+        </StandardRules>
+        <LocalExceptionRules/>
+      </Authorization>
+    </PolicySet>
+    <GlobalExceptions>
+      <rules/>
+    </GlobalExceptions>
+    <GlobalExceptions>
+      <rules/>
+    </GlobalExceptions>
+  </PolicySets>
+  <!--This section describes the Reusable Conditions configured in ISE-->
+  <ReusableConditions>
+    <Authentication>
+      <Compound>
+        <condition description="A condition to match authentication requests for Local Web Authentication from Cisco Catalyst Switches" name="Switch_Local_Web_Authentication" relationship="AND" useDeviceProfileConditions="false">
+          <Condition type="ADHOC">Radius:Service-Type EQUALS Outbound</Condition>
+          <Condition type="ADHOC">Radius:NAS-Port-Type EQUALS Ethernet</Condition>
+        </condition>
+        <condition description="A condition to match 802.1X based authentication requests from wireless LAN controllers, according to the corresponding 802.1x attributes defined in the device profile." name="Wireless_802.1X" useDeviceProfileConditions="true"/>
+        <condition description="A condition to match requests for web authentication from switches, according to the corresponding Web Authentication attributes defined in the device profile." name="Switch_Web_Authentication" useDeviceProfileConditions="true"/>
+        <condition description="A condition to match MAC Authentication Bypass service based authentication requests from switches, according to the corresponding MAB attributes defined in the device profile." name="Wired_MAB" useDeviceProfileConditions="true"/>
+        <condition description="A condition to match 802.1X based authentication requests from switches, according to the corresponding 802.1x attributes defined in the device profile." name="Wired_802.1X" useDeviceProfileConditions="true"/>
+        <condition description="A condition to match MAC Authentication Bypass service based authentication requests from wireless LAN controllers, according to the corresponding MAB attributes defined in the device profile." name="Wireless_MAB" useDeviceProfileConditions="true"/>
+        <condition description="A condition to match requests for web authentication from wireless LAN controllers, according to the corresponding Web Authentication attributes defined in the device profile." name="WLC_Web_Authentication" useDeviceProfileConditions="true"/>
+        <condition description="" name="VTY--LOGIN" relationship="AND" useDeviceProfileConditions="false">
+          <Condition type="ADHOC">Radius:NAS-Port-Type EQUALS Virtual</Condition>
+          <Condition type="ADHOC">Network Access:AuthenticationMethod EQUALS PAP_ASCII</Condition>
+        </condition>
+      </Compound>
+    </Authentication>
+    <Authorization>
+      <Compound>
+        <condition description="Default condition used to match Non Cisco IP Phones" name="Non_Cisco_Profiled_Phones" relationship="AND" useDeviceProfileConditions="false">
+          <Condition type="ADHOC">EndPoints:LogicalProfile EQUALS IP-Phones</Condition>
+        </condition>
+        <condition description="Default condition used for basic Network Access requiring that authentication was successful." name="Network_Access_Authentication_Passed" relationship="AND" useDeviceProfileConditions="false">
+          <Condition type="ADHOC">Network Access:AuthenticationStatus EQUALS AuthenticationPassed</Condition>
+        </condition>
+        <condition description="Default condition used to match authentication requests for Local Web Authentication from Cisco Catalyst Switches" name="Catalyst_Switch_Local_Web_Authentication" relationship="AND" useDeviceProfileConditions="false">
+          <Condition type="ADHOC">Radius:Service-Type EQUALS Outbound</Condition>
+          <Condition type="ADHOC">Radius:NAS-Port-Type EQUALS Ethernet</Condition>
+        </condition>
+        <condition description="Default condition used to match any authentication request from Cisco Wireless LAN Controller." name="Wireless_Access" relationship="AND" useDeviceProfileConditions="false">
+          <Condition type="ADHOC">Radius:NAS-Port-Type EQUALS Wireless - IEEE 802.11</Condition>
+        </condition>
+        <condition description="Default condition for compliant devices" name="Compliant_Devices" relationship="AND" useDeviceProfileConditions="false">
+          <Condition type="ADHOC">Session:PostureStatus EQUALS Compliant</Condition>
+        </condition>
+        <condition description="Default condition for guest flow" name="Guest_Flow" relationship="AND" useDeviceProfileConditions="false">
+          <Condition type="ADHOC">Network Access:UseCase EQUALS Guest Flow</Condition>
+        </condition>
+        <condition description="Default condition for BYOD Onboarding flow" name="EAP-MSCHAPv2" relationship="AND" useDeviceProfileConditions="false">
+          <Condition type="ADHOC">Network Access:EapAuthentication EQUALS EAP-MSCHAPv2</Condition>
+        </condition>
+        <condition description="Default condition for BYOD flow for any device that has passed the NSP process" name="EAP-TLS" relationship="AND" useDeviceProfileConditions="false">
+          <Condition type="ADHOC">Network Access:EapAuthentication EQUALS EAP-TLS</Condition>
+        </condition>
+        <condition description="Default condition for BYOD flow for any device that has passed the NSP process" name="BYOD_is_Registered" relationship="AND" useDeviceProfileConditions="false">
+          <Condition type="ADHOC">EndPoints:BYODRegistration EQUALS Yes</Condition>
+        </condition>
+        <condition description="Default condition for BYOD flow for any device that has passed the NSP process" name="MAC_in_SAN" relationship="AND" useDeviceProfileConditions="false">
+          <Condition type="ADHOC">CERTIFICATE:Subject Alternative Name CONTAINS Radius:Calling-Station-ID</Condition>
+        </condition>
+        <condition description="A condition to match 802.1X based authentication requests from wireless LAN controllers, according to the corresponding 802.1x attributes defined in the device profile." name="Wireless_802.1X" useDeviceProfileConditions="true"/>
+        <condition description="A condition to match requests for web authentication from switches, according to the corresponding Web Authentication attributes defined in the device profile." name="Switch_Web_Authentication" useDeviceProfileConditions="true"/>
+        <condition description="A condition to match MAC Authentication Bypass service based authentication requests from switches, according to the corresponding MAB attributes defined in the device profile." name="Wired_MAB" useDeviceProfileConditions="true"/>
+        <condition description="A condition to match 802.1X based authentication requests from switches, according to the corresponding 802.1x attributes defined in the device profile." name="Wired_802.1X" useDeviceProfileConditions="true"/>
+        <condition description="A condition to match MAC Authentication Bypass service based authentication requests from wireless LAN controllers, according to the corresponding MAB attributes defined in the device profile." name="Wireless_MAB" useDeviceProfileConditions="true"/>
+        <condition description="A condition to match requests for web authentication from wireless LAN controllers, according to the corresponding Web Authentication attributes defined in the device profile." name="WLC_Web_Authentication" useDeviceProfileConditions="true"/>
+        <condition description="" name="BJ-ASA-SSLVPN" relationship="AND" useDeviceProfileConditions="false">
+          <Condition type="ADHOC">DEVICE:Department EQUALS ALL Department#Production-Network</Condition>
+          <Condition type="ADHOC">DEVICE:Location EQUALS All Locations#Beijing</Condition>
+          <Condition type="ADHOC">DEVICE:Device Type EQUALS All Device Types#Firewall</Condition>
+          <Condition type="ADHOC">Cisco-VPN3000:CVPN3000/ASA/PIX7x-Tunnel-Group-Name EQUALS DefaultWEBVPNGroup</Condition>
+        </condition>
+        <condition description="" name="Security_Teachers" relationship="AND" useDeviceProfileConditions="false">
+          <Condition type="ADHOC">QYTANG:sAMAccountName EQUALS cq_bomb</Condition>
+          <Condition type="ADHOC">QYTANG:sAMAccountName EQUALS lql</Condition>
+        </condition>
+        <condition description="" name="LAB-PCs" relationship="AND" useDeviceProfileConditions="false">
+          <Condition type="ADHOC">Radius:User-Name CONTAINS QYT-PRELAB-PC</Condition>
+          <Condition type="ADHOC">Radius:User-Name CONTAINS QYT-Prelab-PC</Condition>
+        </condition>
+        <condition description="" name="SSLVPN_Teacher" relationship="AND" useDeviceProfileConditions="false">
+          <Condition type="ADHOC">QYTANG:sAMAccountName CONTAINS cjd</Condition>
+          <Condition type="ADHOC">QYTANG:sAMAccountName CONTAINS lql</Condition>
+          <Condition type="ADHOC">QYTANG:sAMAccountName CONTAINS jingxin</Condition>
+          <Condition type="ADHOC">QYTANG:sAMAccountName CONTAINS tangjiandong</Condition>
+          <Condition type="ADHOC">QYTANG:sAMAccountName CONTAINS cq_bomb</Condition>
+          <Condition type="ADHOC">QYTANG:sAMAccountName CONTAINS heymo</Condition>
+          <Condition type="ADHOC">QYTANG:sAMAccountName CONTAINS lwd</Condition>
+        </condition>
+        <condition description="" name="QYT_BJ_IT" relationship="AND" useDeviceProfileConditions="false">
+          <Condition type="ADHOC">QYTANG:sAMAccountName EQUALS cq_bomb</Condition>
+          <Condition type="ADHOC">QYTANG:sAMAccountName EQUALS lql</Condition>
+          <Condition type="ADHOC">QYTANG:sAMAccountName EQUALS heymo</Condition>
+          <Condition type="ADHOC">QYTANG:sAMAccountName EQUALS jingxin</Condition>
+          <Condition type="ADHOC">QYTANG:sAMAccountName EQUALS cjd</Condition>
+        </condition>
+        <condition description="" name="SALES_PC" relationship="AND" useDeviceProfileConditions="false">
+          <Condition type="ADHOC">QYTANG:sAMAccountName CONTAINS SALES01-X200</Condition>
+          <Condition type="ADHOC">QYTANG:sAMAccountName CONTAINS SALES02-X200</Condition>
+          <Condition type="ADHOC">QYTANG:sAMAccountName CONTAINS SALESPCJING</Condition>
+          <Condition type="ADHOC">QYTANG:ExternalGroups EQUALS qytang.com/乾颐堂商务/sales</Condition>
+        </condition>
+        <condition description="" name="Prelab-PC-Interfaces" relationship="AND" useDeviceProfileConditions="false">
+          <Condition type="ADHOC">Radius:NAS-Port-Id EQUALS GigabitEthernet1/0/1</Condition>
+          <Condition type="ADHOC">Radius:NAS-Port-Id EQUALS GigabitEthernet1/0/2</Condition>
+          <Condition type="ADHOC">Radius:NAS-Port-Id EQUALS GigabitEthernet1/0/3</Condition>
+          <Condition type="ADHOC">Radius:NAS-Port-Id EQUALS GigabitEthernet1/0/4</Condition>
+          <Condition type="ADHOC">Radius:NAS-Port-Id EQUALS GigabitEthernet1/0/5</Condition>
+          <Condition type="ADHOC">Radius:NAS-Port-Id EQUALS GigabitEthernet1/0/6</Condition>
+          <Condition type="ADHOC">Radius:NAS-Port-Id EQUALS GigabitEthernet1/0/7</Condition>
+          <Condition type="ADHOC">Radius:NAS-Port-Id EQUALS GigabitEthernet1/0/8</Condition>
+          <Condition type="ADHOC">Radius:NAS-Port-Id EQUALS GigabitEthernet1/0/9</Condition>
+          <Condition type="ADHOC">Radius:NAS-Port-Id EQUALS GigabitEthernet1/0/10</Condition>
+        </condition>
+        <condition description="" name="Wireless_BJ" relationship="AND" useDeviceProfileConditions="false">
+          <Condition type="ADHOC">DEVICE:Department EQUALS ALL Department#Production-Network</Condition>
+          <Condition type="ADHOC">DEVICE:Location EQUALS All Locations#Beijing</Condition>
+          <Condition type="ADHOC">DEVICE:Device Type EQUALS All Device Types#WLC</Condition>
+        </condition>
+      </Compound>
+      <Simple>
+        <condition description="" name="CertRenewalRequired">CERTIFICATE:Days to Expiry LESS 15</condition>
+      </Simple>
+    </Authorization>
+  </ReusableConditions>
+  <!--This section describes the Allowed Protocols configured in ISE-->
+  <AllowedProtocols>
+    <AllowedProtocol description="Default Allowed Protocol Service" name="Default Network Access">
+      <Option name="Process Host Lookup" value="true"/>
+      <Option name="Allow PAP/ASCII" value="true"/>
+      <Option name="Allow CHAP" value="false"/>
+      <Option name="Allow MS-CHAPv1" value="false"/>
+      <Option name="Allow MS-CHAPv2" value="false"/>
+      <Option name="Allow EAP-MD5" value="true"/>
+      <Option name="Allow EAP-TLS" value="true"/>
+      <Option name="Allow LEAP" value="false"/>
+      <Option name="Allow PEAP" value="true">
+        <Option name="PEAP-Allow EAP-MS-CHAPv2" value="true">
+          <Option name="Allow Password Change" value="true"/>
+          <Option name="Retries" value="1"/>
+        </Option>
+        <Option name="PEAP-Allow EAP-GTC" value="true">
+          <Option name="Allow Password Change" value="true"/>
+          <Option name="Retries" value="1"/>
+        </Option>
+        <Option name="PEAP-Allow EAP-TLS" value="true"/>
+        <Option name="Allow PEAPv0 only for legacy clients" value="false"/>
+      </Option>
+      <Option name="Allow EAP-FAST" value="true">
+        <Option name="EAP-FAST-Allow EAP-MS-CHAPv2" value="true">
+          <Option name="Allow Password Change" value="true"/>
+          <Option name="Retries" value="3"/>
+        </Option>
+        <Option name="EAP-FAST-Allow EAP-GTC" value="true">
+          <Option name="Allow Password Change" value="true"/>
+          <Option name="Retries" value="3"/>
+        </Option>
+        <Option name="EAP-FAST-Allow EAP-TLS" value="true">
+          <Option name="Use PACs" value="true">
+            <Option name="Tunnel PAC Time To Live in Seconds" value="7776000"/>
+            <Option name="Proactive PAC update will occur after" value="90"/>
+            <Option name="Allow Anonymous In-Band PAC Provisioning" value="true"/>
+            <Option name="Allow Authenticated In-Band PAC Provisioning" value="true">
+              <Option name="Server Returns Access Accept After Authenticated Provisioning" value="true"/>
+              <Option name="Accept Client Certificate For Provisioning" value="false"/>
+            </Option>
+            <Option name="Use PACs-Allow Machine Authentication" value="true">
+              <Option name="Machine PAC Time To Live in Seconds" value="604800"/>
+            </Option>
+            <Option name="Enable Stateless Session Resume" value="true">
+              <Option name="Authorization PAC Time To Live in Seconds" value="3600"/>
+            </Option>
+          </Option>
+        </Option>
+        <Option name="Enable EAP Chaining" value="false"/>
+      </Option>
+    </AllowedProtocol>
+    <AllowedProtocol description="Default Allowed Protocol Service Device Admin" name="Default Device Admin">
+      <Option name="Process Host Lookup" value="false"/>
+      <Option name="Allow PAP/ASCII" value="true"/>
+      <Option name="Allow CHAP" value="true"/>
+      <Option name="Allow MS-CHAPv1" value="true"/>
+      <Option name="Allow MS-CHAPv2" value="false"/>
+      <Option name="Allow EAP-MD5" value="false"/>
+      <Option name="Allow EAP-TLS" value="false"/>
+      <Option name="Allow LEAP" value="false"/>
+      <Option name="Allow PEAP" value="false"/>
+      <Option name="Allow EAP-FAST" value="false"/>
+    </AllowedProtocol>
+    <AllowedProtocol description="" name="PAP">
+      <Option name="Process Host Lookup" value="true"/>
+      <Option name="Allow PAP/ASCII" value="true"/>
+      <Option name="Allow CHAP" value="false"/>
+      <Option name="Allow MS-CHAPv1" value="false"/>
+      <Option name="Allow MS-CHAPv2" value="false"/>
+      <Option name="Allow EAP-MD5" value="false"/>
+      <Option name="Allow EAP-TLS" value="false"/>
+      <Option name="Allow LEAP" value="false"/>
+      <Option name="Allow PEAP" value="false"/>
+      <Option name="Allow EAP-FAST" value="false"/>
+    </AllowedProtocol>
+    <AllowedProtocol description="" name="Wired-PEAP">
+      <Option name="Process Host Lookup" value="true"/>
+      <Option name="Allow PAP/ASCII" value="true"/>
+      <Option name="Allow CHAP" value="false"/>
+      <Option name="Allow MS-CHAPv1" value="false"/>
+      <Option name="Allow MS-CHAPv2" value="false"/>
+      <Option name="Allow EAP-MD5" value="false"/>
+      <Option name="Allow EAP-TLS" value="false"/>
+      <Option name="Allow LEAP" value="false"/>
+      <Option name="Allow PEAP" value="true">
+        <Option name="PEAP-Allow EAP-MS-CHAPv2" value="true">
+          <Option name="Allow Password Change" value="true"/>
+          <Option name="Retries" value="1"/>
+        </Option>
+        <Option name="PEAP-Allow EAP-GTC" value="false"/>
+        <Option name="PEAP-Allow EAP-TLS" value="true"/>
+        <Option name="Allow PEAPv0 only for legacy clients" value="false"/>
+      </Option>
+      <Option name="Allow EAP-FAST" value="false"/>
+    </AllowedProtocol>
+  </AllowedProtocols>
+  <!--This section describes the Identity Sequences configured in ISE-->
+  <IdentitySequences>
+    <Sequence description="A built-in Identity Sequence for the Guest Portal" name="Guest_Portal_Sequence">
+      <Sources>
+        <Source name="Internal Users"/>
+        <Source name="Guest Users"/>
+        <Source name="All_AD_Join_Points"/>
+      </Sources>
+      <option name="Select Certificate Authentication Profile" value="false"/>
+      <option name="Do not access other stores in the sequence and set the AuthenticationStatus attribute to ProcessError" value="false"/>
+      <option name="Treat as if the user was not found and proceed to the next store in the sequence" value="true"/>
+    </Sequence>
+    <Sequence description="A built-in Identity Sequence for the Sponsor Portal" name="Sponsor_Portal_Sequence">
+      <Sources>
+        <Source name="Internal Users"/>
+        <Source name="All_AD_Join_Points"/>
+      </Sources>
+      <option name="Select Certificate Authentication Profile" value="false"/>
+      <option name="Do not access other stores in the sequence and set the AuthenticationStatus attribute to ProcessError" value="false"/>
+      <option name="Treat as if the user was not found and proceed to the next store in the sequence" value="true"/>
+    </Sequence>
+    <Sequence description="A built-in Identity Sequence for the My Devices Portal" name="MyDevices_Portal_Sequence">
+      <Sources>
+        <Source name="Internal Users"/>
+        <Source name="All_AD_Join_Points"/>
+      </Sources>
+      <option name="Select Certificate Authentication Profile" value="false"/>
+      <option name="Do not access other stores in the sequence and set the AuthenticationStatus attribute to ProcessError" value="false"/>
+      <option name="Treat as if the user was not found and proceed to the next store in the sequence" value="true"/>
+    </Sequence>
+    <Sequence cert="Preloaded_Certificate_Profile" description="A built-in Identity Sequence to include all User Identity Stores" name="All_User_ID_Stores">
+      <Sources>
+        <Source name="Internal Users"/>
+        <Source name="All_AD_Join_Points"/>
+        <Source name="Guest Users"/>
+      </Sources>
+      <option name="Select Certificate Authentication Profile" value="true"/>
+      <option name="Certificate Authentication Profile" value="Preloaded_Certificate_Profile"/>
+      <option name="Do not access other stores in the sequence and set the AuthenticationStatus attribute to ProcessError" value="false"/>
+      <option name="Treat as if the user was not found and proceed to the next store in the sequence" value="true"/>
+    </Sequence>
+    <Sequence description="A built-in Identity Sequence for Certificate Request APIs" name="Certificate_Request_Sequence">
+      <Sources>
+        <Source name="Internal Users"/>
+        <Source name="All_AD_Join_Points"/>
+      </Sources>
+      <option name="Select Certificate Authentication Profile" value="false"/>
+      <option name="Do not access other stores in the sequence and set the AuthenticationStatus attribute to ProcessError" value="false"/>
+      <option name="Treat as if the user was not found and proceed to the next store in the sequence" value="true"/>
+    </Sequence>
+  </IdentitySequences>
+  <!--This section describes the RADIUS Server Sequences configured in ISE-->
+  <Proxies/>
+  <!--This section describes the Authorization Results configured in ISE-->
+  <AznResults>
+    <StandardResults>
+      <Profile description="Default profile used to blacklist wireless devices. Ensure that you configure a BLACKHOLE ACL on the Wireless LAN Controller." nadProfileName="Cisco" name="Blackhole_Wireless_Access">
+        <option name="Attributes Details">cisco-av-pair = url-redirect=https://ip:port/blacklistportal/gateway?portal=0eed9e80-6d90-11e5-978e-005056bf2f0a, 
+cisco-av-pair = url-redirect-acl=BLACKHOLE</option>
+        <option name="Access Type" value="ACCESS_ACCEPT"/>
+        <option name="Service Template" value="false"/>
+      </Profile>
+      <Profile description="Default profile used for Cisco Phones." nadProfileName="Cisco" name="Cisco_IP_Phones">
+        <option name="Attributes Details">DACL = PERMIT_ALL_TRAFFIC, 
+cisco-av-pair = device-traffic-class=voice</option>
+        <option name="Access Type" value="ACCESS_ACCEPT"/>
+        <option name="Service Template" value="false"/>
+      </Profile>
+      <Profile description="Default Profile used to redirect users to the CWA portal." nadProfileName="Cisco" name="Cisco_WebAuth">
+        <option name="Attributes Details">DACL = PERMIT_ALL_TRAFFIC, 
+cisco-av-pair = url-redirect-acl=ACL_WEBAUTH_REDIRECT, 
+cisco-av-pair = url-redirect=https://ip:port/portal/gateway?sessionId=SessionIdValue&amp;portal=0ce17ad0-6d90-11e5-978e-005056bf2f0a&amp;action=cwa</option>
+        <option name="Access Type" value="ACCESS_ACCEPT"/>
+        <option name="Service Template" value="false"/>
+      </Profile>
+      <Profile description="Default Profile with access type as Access-Reject" name="DenyAccess">
+        <option name="Access Type" value="ACCESS_REJECT"/>
+        <option name="Service Template" value="false"/>
+      </Profile>
+      <Profile description="Onboard the device with Native Supplicant Provisioning" nadProfileName="Cisco" name="NSP_Onboard">
+        <option name="Attributes Details">DACL = PERMIT_ALL_TRAFFIC, 
+cisco-av-pair = url-redirect-acl=ACL_WEBAUTH_REDIRECT, 
+cisco-av-pair = url-redirect=https://ip:port/portal/gateway?sessionId=SessionIdValue&amp;portal=0d56f8f0-6d90-11e5-978e-005056bf2f0a&amp;action=nsp</option>
+        <option name="Access Type" value="ACCESS_ACCEPT"/>
+        <option name="Service Template" value="false"/>
+      </Profile>
+      <Profile description="Default Profile used for Non Cisco Phones." nadProfileName="Cisco" name="Non_Cisco_IP_Phones">
+        <option name="Attributes Details">DACL = PERMIT_ALL_TRAFFIC, 
+cisco-av-pair = device-traffic-class=voice</option>
+        <option name="Access Type" value="ACCESS_ACCEPT"/>
+        <option name="Service Template" value="false"/>
+      </Profile>
+      <Profile description="Default Profile with access type as Access-Accept" name="PermitAccess">
+        <option name="Access Type" value="ACCESS_ACCEPT"/>
+        <option name="Service Template" value="false"/>
+      </Profile>
+      <Profile description="" nadProfileName="Cisco" name="Priv-lvl15">
+        <option name="Attributes Details">cisco-av-pair = priv-lvl=15</option>
+        <option name="Access Type" value="ACCESS_ACCEPT"/>
+        <option name="Service Template" value="false"/>
+      </Profile>
+      <Profile description="" nadProfileName="Cisco" name="Priv-lvl15_XE">
+        <option name="Attributes Details">cisco-av-pair = shell:priv-lvl=15, 
+cisco-av-pair = priv-lvl=15</option>
+        <option name="Access Type" value="ACCESS_ACCEPT"/>
+        <option name="Service Template" value="false"/>
+      </Profile>
+      <Profile description="" nadProfileName="Cisco" name="SALES-VLAN188">
+        <option name="Attributes Details">cisco-av-pair = set_nadprofile_vlan_by_id=true,vlan=188,tag=1</option>
+        <option name="Access Type" value="ACCESS_ACCEPT"/>
+        <option name="Service Template" value="false"/>
+      </Profile>
+      <Profile description="" nadProfileName="Cisco" name="SECLAB-VLAN100">
+        <option name="Attributes Details">cisco-av-pair = set_nadprofile_vlan_by_id=true,vlan=100,tag=1</option>
+        <option name="Access Type" value="ACCESS_ACCEPT"/>
+        <option name="Service Template" value="false"/>
+      </Profile>
+      <Profile description="" nadProfileName="Cisco" name="Teacher-VLAN5">
+        <option name="Attributes Details">cisco-av-pair = set_nadprofile_vlan_by_id=true,vlan=5,tag=1</option>
+        <option name="Access Type" value="ACCESS_ACCEPT"/>
+        <option name="Service Template" value="false"/>
+      </Profile>
+      <Profile description="" nadProfileName="Cisco" name="admin-sslvpn">
+        <option name="Attributes Details">Class = admin</option>
+        <option name="Access Type" value="ACCESS_ACCEPT"/>
+        <option name="Service Template" value="false"/>
+      </Profile>
+      <Profile description="" nadProfileName="Cisco" name="dc-sslvpn">
+        <option name="Attributes Details">Class = HighLevel-DC-Remote-Access</option>
+        <option name="Access Type" value="ACCESS_ACCEPT"/>
+        <option name="Service Template" value="false"/>
+      </Profile>
+      <Profile description="" nadProfileName="Cisco" name="npsec-sslvpn">
+        <option name="Attributes Details">Class = Student-LAB</option>
+        <option name="Access Type" value="ACCESS_ACCEPT"/>
+        <option name="Service Template" value="false"/>
+      </Profile>
+      <Profile description="" nadProfileName="Cisco" name="rs-sslvpn">
+        <option name="Attributes Details">Class = RS-Remote-Access</option>
+        <option name="Access Type" value="ACCESS_ACCEPT"/>
+        <option name="Service Template" value="false"/>
+      </Profile>
+    </StandardResults>
+    <SecurityGroups>
+      <SecurityGroup description="Unknown Security Group" name="Unknown">
+        <option name="Security Group Tag" value="0"/>
+      </SecurityGroup>
+      <SecurityGroup description="Auditor Security Group" name="Auditors">
+        <option name="Security Group Tag" value="9"/>
+      </SecurityGroup>
+      <SecurityGroup description="BYOD Security Group" name="BYOD">
+        <option name="Security Group Tag" value="15"/>
+      </SecurityGroup>
+      <SecurityGroup description="Contractor Security Group" name="Contractors">
+        <option name="Security Group Tag" value="5"/>
+      </SecurityGroup>
+      <SecurityGroup description="Developer Security Group" name="Developers">
+        <option name="Security Group Tag" value="8"/>
+      </SecurityGroup>
+      <SecurityGroup description="Development Servers Security Group" name="Development_Servers">
+        <option name="Security Group Tag" value="12"/>
+      </SecurityGroup>
+      <SecurityGroup description="Employee Security Group" name="Employees">
+        <option name="Security Group Tag" value="4"/>
+      </SecurityGroup>
+      <SecurityGroup description="Guest Security Group" name="Guests">
+        <option name="Security Group Tag" value="6"/>
+      </SecurityGroup>
+      <SecurityGroup description="Network Services Security Group" name="Network_Services">
+        <option name="Security Group Tag" value="3"/>
+      </SecurityGroup>
+      <SecurityGroup description="PCI Servers Security Group" name="PCI_Servers">
+        <option name="Security Group Tag" value="14"/>
+      </SecurityGroup>
+      <SecurityGroup description="Point of Sale Security Group" name="Point_of_Sale_Systems">
+        <option name="Security Group Tag" value="10"/>
+      </SecurityGroup>
+      <SecurityGroup description="Production Servers Security Group" name="Production_Servers">
+        <option name="Security Group Tag" value="11"/>
+      </SecurityGroup>
+      <SecurityGroup description="Production User Security Group" name="Production_Users">
+        <option name="Security Group Tag" value="7"/>
+      </SecurityGroup>
+      <SecurityGroup description="Quarantine Security Group" name="Quarantined_Systems">
+        <option name="Security Group Tag" value="255"/>
+      </SecurityGroup>
+      <SecurityGroup description="Test Servers Security Group" name="Test_Servers">
+        <option name="Security Group Tag" value="13"/>
+      </SecurityGroup>
+      <SecurityGroup description="TrustSec Devices Security Group" name="TrustSec_Devices">
+        <option name="Security Group Tag" value="2"/>
+      </SecurityGroup>
+    </SecurityGroups>
+    <TacacsProfile>
+      <TacacsProfile description="Default Shell Profile" name="Default Shell Profile">
+        <option name="session Attributes" value=""/>
+      </TacacsProfile>
+    </TacacsProfile>
+    <TacacsCommandset>
+      <TacacsCommandset description="Default Command Set" name="DenyAllCommands">
+        <option name="Commands" value=""/>
+        <option name="Permit Unmatched" value="false"/>
+      </TacacsCommandset>
+    </TacacsCommandset>
+  </AznResults>
+</Root>
