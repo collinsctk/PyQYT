@@ -16,6 +16,7 @@ localip = '202.100.1.138'
 destip = '202.100.1.168'
 ifname = 'eno33554944'
 #new new request change
+#final test change
 
 #######################源MAC为本地MAC####目的MAC为广播#########操作码为1（请求）#######################################################由于多个网卡所以需要指派iface###########
 result_raw = srp(Ether(src=localmac, dst='FF:FF:FF:FF:FF:FF')/ARP(op=1, hwsrc=localmac, hwdst='00:00:00:00:00:00', psrc=localip, pdst=destip), iface = ifname, verbose = False)
