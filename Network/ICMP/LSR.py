@@ -25,13 +25,17 @@ def try_lsr(dst,lsr_hop,option=1):
 	sec_4 = struct.pack('>B', int(ip_sec[3]))
 
 	ip_options = b'\x83\x07\x04' + sec_1 + sec_2 + sec_3 + sec_4 + b'\x00'
+	#\x83表示宽松源站路由，\x07表示长度，\x04表示指针，紧跟着四个字节的IP地址（正真的目的地址），然后补齐8字节边界
 
-	if option == 1:
+	if option == 1:#选项1表示ICMP源站路由
 		pkt = IP(dst=lsr_hop, options=IPOption(ip_options))/ICMP(type=8,code=0)
+		#目的地址为源站路由的地址，正真的目的地址放在IP选项内
 		result = sr1(pkt,timeout = 1, verbose=True)
 
-	elif option == 2:
+	elif option == 2:#选项2表示TCP源站路由
 		pkt = IP(dst=lsr_hop, options=IPOption(ip_options))/TCP(chksum=0xe977,sport=1024,dport=23)
+		#目的地址为源站路由的地址，正真的目的地址放在IP选项内
+		#由于TCP校验和计算包括IP地址，但是IP地址又被修改了，所以TCP校验和需要修改
 		result = sr1(pkt,timeout = 1, verbose=True)
 
 if __name__ == '__main__':
