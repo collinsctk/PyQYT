@@ -23,9 +23,9 @@ send(IP(flags=1,frag=4,id=1,proto=1,dst='202.100.1.3')/(b'second welcome to qyta
 send(IP(flags=0,frag=8,id=1,proto=1,dst='202.100.1.3')/(b'third welcome to qytang!!!!!!!!'))
 
 ##############################自动制造Fragment################################
-frags = fragment(IP(dst='202.100.1.3')/ICMP()/(b"qytang"*1000))
+#frags = fragment(IP(dst='202.100.1.3')/ICMP()/(b"qytang"*1000))
 #产生每一个分片，可以对分片就行修改！！！！
-send(frags)
+#send(frags)
 
 #正常发包，系统会自动进行分片处理！！！！
-send(IP(dst='202.100.1.3')/ICMP()/(b"qytang"*1000))
+#send(IP(dst='202.100.1.3')/ICMP()/(b"qytang"*1000))
