@@ -16,21 +16,23 @@ import sys
 import re
 
 
-def ping_rr(dst,src):
-	ip_sec = src.split('.')
-	sec_1 = struct.pack('>B', int(ip_sec[0]))
+def ping_rr(dst,src): #需要填写目的IP地址，出口源IP地址
+	#出口源IP地址需要二进制写入IP选项
+	ip_sec = src.split('.')#首先把IP地址通过'.'分为四段
+	sec_1 = struct.pack('>B', int(ip_sec[0]))#每一段写成一个字节的二进制数
 	sec_2 = struct.pack('>B', int(ip_sec[1]))
 	sec_3 = struct.pack('>B', int(ip_sec[2]))
 	sec_4 = struct.pack('>B', int(ip_sec[3]))
 
 	ip_options = b'\x07\x27\x08' + sec_1 + sec_2 + sec_3 + sec_4 + b'\x00' * 33
-
+	#'\x07'表示源站路由选项，\x27为长度（10进制的39），\x08表示指针，紧接着是4个字节IP地址，然后补齐IP选项的40个字节
 	pkt = IP(dst=dst, options=IPOption(ip_options))/ICMP(type=8,code=0)
 
 	result = sr1(pkt,timeout = 1, verbose=False)
 
 	for router in result.getlayer(IP).options[0].fields['routers']:
 		print(router)
+		#打印路径记录的IP地址
 
 if __name__ == '__main__':
 	conf.route.add(net='202.100.0.0/16',gw='202.100.1.3')

@@ -17,8 +17,9 @@ import re
 
 
 def try_lsr(dst,lsr_hop,option=1):
-	ip_sec = dst.split('.')
-	sec_1 = struct.pack('>B', int(ip_sec[0]))
+	#我们需要把正真目的地址写在IP选项，把宽松源站路由地址写成IP的目的地址
+	ip_sec = dst.split('.') #首先把IP地址通过'.'分为四段
+	sec_1 = struct.pack('>B', int(ip_sec[0]))#每一段写成一个字节的二进制数
 	sec_2 = struct.pack('>B', int(ip_sec[1]))
 	sec_3 = struct.pack('>B', int(ip_sec[2]))
 	sec_4 = struct.pack('>B', int(ip_sec[3]))
@@ -29,26 +30,9 @@ def try_lsr(dst,lsr_hop,option=1):
 		pkt = IP(dst=lsr_hop, options=IPOption(ip_options))/ICMP(type=8,code=0)
 		result = sr1(pkt,timeout = 1, verbose=True)
 
-#		try:
-#			if result.getlayer(ICMP).type == 0 and result.getlayer(ICMP).code == 0:
-#				print('源站路由Ping测试通过！')
-#		except Exception as e:
-#			if re.match('.*NoneType.*',str(e)):
-#				print('源站路由Ping测试,目标不可达！')
-
 	elif option == 2:
-		pkt = IP(dst=lsr_hop, options=IPOption(ip_options))/TCP(dport=23)
+		pkt = IP(dst=lsr_hop, options=IPOption(ip_options))/TCP(chksum=0xe977,sport=1024,dport=23)
 		result = sr1(pkt,timeout = 1, verbose=True)
-
-#		try:
-#			if result.getlayer(TCP).flags == 18:
-#				print('源站路由TCP SYN测试通过！')
-#		except Exception as e:
-#			if re.match('.*NoneType.*',str(e)):
-#				print('源站路由TCP SYN测试,目标不可达！')
-#
-#	else:
-#		print('选项设置错误,"1"为PING测试,"2"为TCP SYN测试')
 
 if __name__ == '__main__':
 	destination = sys.argv[1]
