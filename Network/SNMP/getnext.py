@@ -12,9 +12,9 @@ cmdGen = cmdgen.CommandGenerator()
 
 #varBindTable是个list，元素的个数可能有好多个。它的元素也是list，这个list里的元素是ObjectType，个数只有1个。
 errorIndication, errorStatus, errorindex, varBindTable = cmdGen.nextCmd(
-	cmdgen.CommunityData('public'),
-	cmdgen.UdpTransportTarget(('202.100.1.3',161)),
-	'1.3.6.1.2.1.2.2.1.2',
+	cmdgen.CommunityData('public'),#设置community
+	cmdgen.UdpTransportTarget(('202.100.1.3',161)),#设置IP地址和端口号
+	'1.3.6.1.2.1.2.2.1.2',#设置OID
 )
 
 if errorIndication:

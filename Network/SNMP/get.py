@@ -11,11 +11,11 @@ from pysnmp.hlapi import *
 #varBinds是列表，列表中的每个元素的类型是ObjectType（该类型的对象表示MIB variable）
 errorIndication, errorStatus, errorindex, varBinds = next(
 	getCmd(SnmpEngine(),
-		  CommunityData('public'),
-		  UdpTransportTarget(('202.100.1.3',161)),
+		  CommunityData('public'),#配置community
+		  UdpTransportTarget(('202.100.1.3',161)),#配置目的地址和端口号
 		  ContextData(),
-		  ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0')),
-		  ObjectType(ObjectIdentity('1.3.6.1.2.1.1.5.0'))
+		  ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0')),#读取的OID
+		  ObjectType(ObjectIdentity('1.3.6.1.2.1.1.5.0'))#读取的OID
 		  )
 	)
 
@@ -29,4 +29,4 @@ elif errorStatus:
 	)
 
 for varBind in varBinds:
-	print(varBind)
+	print(varBind)#打印返回的结果！

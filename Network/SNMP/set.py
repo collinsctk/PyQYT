@@ -12,9 +12,9 @@ from pysnmp.proto import rfc1902
 cmdGen = cmdgen.CommandGenerator()
 
 errorIndication, errorStatus, errorindex, varBinds = cmdGen.setCmd(
-	cmdgen.CommunityData('private'),
-	cmdgen.UdpTransportTarget(('202.100.1.3',161)),
-	('1.3.6.1.2.1.1.5.0',rfc1902.OctetString('SNMPv2R1'))
+	cmdgen.CommunityData('private'),#写入Community
+	cmdgen.UdpTransportTarget(('202.100.1.3',161)),#IP地址和端口号
+	('1.3.6.1.2.1.1.5.0',rfc1902.OctetString('SNMPv2R1'))#OID和写入的内容，需要进行编码！
 )
 
 if errorIndication:
