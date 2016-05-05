@@ -9,6 +9,7 @@
 from minimumTFTP.minimumTFTP import Client
 
 def qyt_ftpclient(server, filedir, file, operation=1):
+	#传递参数服务器地址，本地文件夹，文件名，操作码（1为下载，2为上传）
 	tftpClient = Client(server, filedir, file)
 	if operation == 1:
 		tftpClient.get()
@@ -17,5 +18,5 @@ def qyt_ftpclient(server, filedir, file, operation=1):
 	print()
 
 if __name__ == '__main__':
-	#qyt_ftpclient('202.100.1.138', '.', 'snmpv2r1-confg', operation=1)
-	qyt_ftpclient('202.100.1.138', '.', 'test-confg', operation=2)
+	qyt_ftpclient('202.100.1.138', '.', 'snmpv2r1-confg', operation=1)
+	#qyt_ftpclient('202.100.1.138', '.', 'test-confg', operation=2)

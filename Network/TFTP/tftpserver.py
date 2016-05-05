@@ -9,8 +9,8 @@
 from minimumTFTP.minimumTFTP import Server
 
 def qyt_tftpserver(dir):
-	tftpServer = Server(dir)
-	tftpServer.run()
+	tftpServer = Server(dir)#指定主目录
+	tftpServer.run()#运行TFTP服务器
 
 if __name__ == '__main__':
 	qyt_tftpserver('./tftpdir')
