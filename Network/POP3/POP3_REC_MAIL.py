@@ -34,4 +34,4 @@ def qyt_rec_mail(mailserver, mailuser, mailpasswd, mailprefix):
 	print('Bye.')
 
 if __name__ == '__main__':
-	qyt_rec_mail('pop.163.com', 'collinsctk@163.com', '1a.cisco', 'test1')
+	qyt_rec_mail('pop.163.com', 'collinsctk@163.com', 'password', 'test1')
