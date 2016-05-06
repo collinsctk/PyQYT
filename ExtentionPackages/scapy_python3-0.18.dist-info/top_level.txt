@@ -1,9 +1,0 @@
-scapy
-scapy/arch
-scapy/arch/windows
-scapy/asn1
-scapy/contrib
-scapy/crypto
-scapy/layers
-scapy/modules
-scapy/tools
