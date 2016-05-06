@@ -7,13 +7,15 @@
 #包括传统网络安全（防火墙，IPS...）与Python语言和黑客渗透课程！
 
 import sys
+import pickle
 from socket import *
 #连接的服务器地址
 serverHost = '202.100.1.138'
 #连接的服务器端口号
 serverPort = 6666
 #发送的回显信息
-message = [b'Welcome to QYTANG', b'Welcome to PyQYT']
+
+dict = {'key1':'welcome to qytang', 'key2':[1,2,3,4,5], 'key3':([3,4],'python')}
 
 sockobj = socket(AF_INET, SOCK_STREAM)#创建TCP Socket, AF_INET为IPv4，SOCK_STREAM为TCP
 sockobj.connect((serverHost, serverPort))#连接到套接字地址，地址为（host，port）的元组
