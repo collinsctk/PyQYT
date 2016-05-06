@@ -25,4 +25,4 @@ def qyt_smtp_sendmail(mailserver, username, password, From, To, Subj):
 	print('Bye.')
 
 if __name__ == '__main__':
-	qyt_smtp_sendmail('smtp.163.com', 'collinsctk@163.com', '1a.cisco', 'collinsctk@163.com', 'collinsctk@qytang.com;collinsctk@163.com', 'This is a test mail')
+	qyt_smtp_sendmail('smtp.163.com', 'collinsctk@163.com', 'password', 'collinsctk@163.com', 'collinsctk@qytang.com;collinsctk@163.com', 'This is a test mail')
