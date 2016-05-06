@@ -8,6 +8,10 @@
 
 #firewall-cmd --direct --add-rule ipv4 filter OUTPUT 1 -p tcp --tcp-flags RST RST -s 202.100.1.139 -j DROP
 #firewall-cmd --direct --add-rule ipv4 filter OUTPUT 1 -p icmp -s 202.100.1.139 -j DROP
+import sys
+sys.path.append('/usr/local/lib/python3.4/dist-packages/PyQYT/ExtentionPackages')
+sys.path.append('/usr/lib/python3.4/site-packages/PyQYT/ExtentionPackages')
+sys.path.append('../../ExtentionPackages')
 
 import logging
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)#清除报错

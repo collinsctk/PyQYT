@@ -4,6 +4,10 @@
 #QQ: 594284672
 #亁颐堂官网www.qytang.com
 #乾颐盾课程包括传统网络安全（防火墙，IPS...）与Python语言和黑客渗透课程！
+import sys
+sys.path.append('/usr/local/lib/python3.4/dist-packages/PyQYT/ExtentionPackages')
+sys.path.append('/usr/lib/python3.4/site-packages/PyQYT/ExtentionPackages')
+sys.path.append('../../ExtentionPackages')
 
 from pysnmp.entity import engine, config
 from pysnmp.entity.rfc3413 import cmdgen
