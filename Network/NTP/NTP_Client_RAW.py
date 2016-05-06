@@ -14,23 +14,24 @@ import time
 TIME_1970 = 2208988800
 
 def ntp_client(NTP_SERVER):
-	client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-	data = '\x1b' + 47 * '\0'
-	client.sendto(data.encode(), (NTP_SERVER, 123))
-	data, address = client.recvfrom(1024)
+	client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)#socket.AF_INET为IP，socket.SOCK_DGRAM为UDP
+	data = b'\x1b' + 47 * b'\0' #\x1b(00 011(版本3) 011(客户模式)) + 47个\0凑齐48个字节的头部
+	client.sendto(data, (NTP_SERVER, 123))#数据，IP地址和端口号
+	data, address = client.recvfrom(1024)#接收缓存为1024
 	if data:
-		print('Response received from:', address)
-	s = struct.unpack('!12I', data)
-	print (s)
-	t = struct.unpack('!12I', data)[10]
-	print(t)
-	t -= TIME_1970
+		print('Response received from:', address)#如果收到数据，打印地址信息
+	s = struct.unpack('!12I', data)#48个字节，12个四字节
+	#print (s)
+	t = struct.unpack('!12I', data)[10]#倒数第二个为时间
+	#print(t)
+	t -= TIME_1970#Linux 自己的系統時間，由 1970/01/01 開始記錄的時間參數
 	#print(t)
 	print('\tTime=%s' %time.ctime(t))
 
 if __name__ == '__main__':
-	ntp_client('0.uk.pool.ntp.org')
-
+	ntp_server = sys.argv[1]
+	ntp_client(ntp_server)
+	#'0.uk.pool.ntp.org'
 
 
 

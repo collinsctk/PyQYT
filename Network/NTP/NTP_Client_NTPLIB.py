@@ -7,15 +7,18 @@
 #包括传统网络安全（防火墙，IPS...）与Python语言和黑客渗透课程！
 
 import ntplib
-from time import ctime 
+from time import ctime
+import sys
 
 def ntp_client(NTP_SERVER):
 	c = ntplib.NTPClient()
 	response = c.request(NTP_SERVER, version=3)
+	print(response)
 	print('\t' + ctime(response.tx_time))
 if __name__ == '__main__':
-	ntp_client('0.uk.pool.ntp.org')
-
+	ntp_server = sys.argv[1]
+	ntp_client(ntp_server)
+	#'0.uk.pool.ntp.org'
 
 
 
