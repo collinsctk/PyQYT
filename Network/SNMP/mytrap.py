@@ -39,11 +39,12 @@ def cbFun(snmpEngine,
         Interface = ''
 #        print(name)
 #        print(val)
+        #============================Trap信息处理方法===================================
         #interface up and down！
-        if '1.3.6.1.2.1.2.2.1.2.2' in name:
+        if '1.3.6.1.2.1.2.2.1.2' in name:
             Interface = name
             print('路由器接口:' + val, end = '', flush = True)
-        if '1.3.6.1.4.1.9.2.2.1.1.20.2' in name:
+        if '1.3.6.1.4.1.9.2.2.1.1.20' in name:
             if re.match('.*down.*', val):
                 trapInfo = '接口 ' + Interface + '管理Down'
                 print(' 管理Down！') 

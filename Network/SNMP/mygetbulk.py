@@ -13,7 +13,7 @@ from io import StringIO
 oid_list = []
 maxRepetitions = 0
 # Create SNMP engine instance
-snmpEngine = engine.SnmpEngine()
+snmpEngine = engine.SnmpEngine()#添加SNMP引擎实例
 
 # Setup transport endpoint and bind it with security settings yielding
 # a target name (choose one entry depending of the transport needed).
@@ -41,21 +41,21 @@ def cbFun(sendRequesthandle, errorIndication, errorStatus, errorIndex,
         return  # stop on error
     #print(varBindTable)
     for varBindRow in varBindTable:
-        if maxRepetitions == 0:
-            return
+        if maxRepetitions == 0:#如果为0
+            return#停止，并且返回
         else:
             for oid, val in varBindTable[0]:
                 o = StringIO()
                 print(oid,file=o)
-                oid_get = o.getvalue().strip()
+                oid_get = o.getvalue().strip()#通过print到StringIO进行转码，然后读回
                 o.close()
                 v = StringIO()
                 print(val,file=v)
-                val_get = v.getvalue().strip()
+                val_get = v.getvalue().strip()#通过print到StringIO进行转码，然后读回
                 v.close()
-                oid_list.append((oid_get,val_get))
-        maxRepetitions -= 1
-    return True # signal dispatcher to continue walking
+                oid_list.append((oid_get,val_get))#把oid和val的对添加到全局清单oid_list
+        maxRepetitions -= 1#数量减一
+    return True # signal dispatcher to continue walking#返回一个型号，继续往下查询！
 
 def snmpv3_getbulk(ip='',user='',hash_meth=None,hash_key=None,cry_meth=None,cry_key=None,oid='',num=10):
     #usmHMACMD5AuthProtocol - MD5 hashing
@@ -73,11 +73,12 @@ def snmpv3_getbulk(ip='',user='',hash_meth=None,hash_key=None,cry_meth=None,cry_
     cryval = None
     model = None
 
-    config.addTargetAddr(
+    config.addTargetAddr(#添加目标，'yourDevice'(OID与处理方法），'my-creds'（用户，密码，安全模型），目的IP与端口号
         snmpEngine, 'yourDevice', 
         udp.domainName, (ip, 161),
         'my-creds'
     )
+    #========================下面的操作在判断安全模型==========================
     #NoAuthNoPriv
     if hash_meth == None and cry_meth == None:
         hashval = config.usmNoAuthProtocol
@@ -121,37 +122,38 @@ def snmpv3_getbulk(ip='',user='',hash_meth=None,hash_key=None,cry_meth=None,cry_
     else:
         print('三种USM: NoAuthNoPriv, AuthNoPriv, AuthPriv.。请选择其中一种。')
         return
+    #========================判断安全模型结束==========================
 
-    config.addV3User(
+    config.addV3User(#添加用户与他的密钥
         snmpEngine, user,
         hashval, hash_key,
         cryval, cry_key
     )
-    config.addTargetParams(snmpEngine, 'my-creds', user, model)
+    config.addTargetParams(snmpEngine, 'my-creds', user, model)#创建'my-creds',里边有用户和安全模型
 
     # Prepare initial request to be sent
 
-    cmdgen.BulkCommandGenerator().sendReq(snmpEngine,'yourDevice', 0, 1,((oid, None),),cbFun)
+    cmdgen.BulkCommandGenerator().sendReq(snmpEngine,'yourDevice', 0, 1,((oid, None),),cbFun)#创建'yourDevice'，有OID和处理方法cbFun
 
     # Run I/O dispatcher which would send pending queries and process responses
-    snmpEngine.transportDispatcher.runDispatcher()
+    snmpEngine.transportDispatcher.runDispatcher()#运行实例
     
-    return oid_list
+    return oid_list#返回oid_list
 
 if __name__ == '__main__':
     try:
-        ip = sys.argv[1]
-        user = sys.argv[2]
-        hm = sys.argv[3]
-        hk = sys.argv[4]
-        cm = sys.argv[5]
-        ck = sys.argv[6]
-        oid = sys.argv[7]
-        num = int(sys.argv[8])
+        ip = sys.argv[1]#读取客户输入参数
+        user = sys.argv[2]#读取客户输入参数
+        hm = sys.argv[3]#读取客户输入参数
+        hk = sys.argv[4]#读取客户输入参数
+        cm = sys.argv[5]#读取客户输入参数
+        ck = sys.argv[6]#读取客户输入参数
+        oid = sys.argv[7]#读取客户输入参数
+        num = int(sys.argv[8])#读取客户输入参数
         for item in snmpv3_getbulk(ip,user,hm,hk,cm,ck,oid,num):
-            print('OID: ', item[0], 'VALUE: ', item[1])
+            print('OID: ', item[0], 'VALUE: ', item[1])#从oid_list读取并且打印信息
 
-    except Exception as e:
+    except Exception as e:#错误提示
         print(e)
         print('参数设置应该如下:')
         print('python3 mygetbulk.py IP地址 用户名 认证算法 认证密钥 加密算法 加密密钥 OID 请求OID的数量')

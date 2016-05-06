@@ -113,7 +113,7 @@ def snmpv3_set(ip='',user='',hash_meth=None,hash_key=None,cry_meth=None,cry_key=
     cmdgen.SetCommandGenerator().sendReq(
         snmpEngine,
         'yourDevice',
-        ( (oid, rfc1902.OctetString(customerString)), ),
+        ( (oid, rfc1902.OctetString(customerString)), ),#oid与要设置的值
         cbFun
     )
 
