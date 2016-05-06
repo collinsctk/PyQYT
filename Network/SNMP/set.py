@@ -26,4 +26,4 @@ elif errorStatus:
 		)
 	)
 for name,val in varBinds:
-	print('%s = %s' % (name.prettyPrint(),val.prettyPrint()))
+	print('%s = %s' % (name.prettyPrint(),val.prettyPrint()))#打印修改的结果
