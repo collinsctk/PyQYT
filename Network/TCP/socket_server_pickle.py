@@ -27,13 +27,13 @@ def Server_PIC(ip,port):
 		connection, address = sockobj.accept()
 		#打印连接客户端的IP地址
 		print('Server Connected by', address)		
-		send_message = b''
-		send_message_fragment = connection.recv(1024)
-		while send_message_fragment:
-			send_message = send_message + send_message_fragment
-			send_message_fragment = connection.recv(1024)
-		obj = pickle.loads(send_message)
-		print(obj)
+		recieved_message = b''#预先定义接收信息变量
+		recieved_message_fragment = connection.recv(1024)#读取接收到的信息，写入到接收到信息分片
+		while recieved_message_fragment:
+			recieved_message = recieved_message + recieved_message_fragment#把所有接收到信息分片重组装
+			recieved_message_fragment = connection.recv(1024)
+		obj = pickle.loads(recieved_message)#把接收到信息pickle回正常的obj
+		print(obj)#打印obj，当然也可以选择写入文件或者数据库
 		connection.close()
 
 if __name__ == '__main__':

@@ -15,14 +15,14 @@ from io import BytesIO
 from socket import *
 
 def Client_PIC(ip,port,obj):
-	msg = pickle.dumps(obj)
+	msg = pickle.dumps(obj)#把obj pickle到一个二进制字串
 	sockobj = socket(AF_INET, SOCK_STREAM)
 	sockobj.connect((ip, port))
-	send_message = BytesIO(msg)
-	send_message_fragment = send_message.read(1024)
+	send_message = BytesIO(msg)#由于二进制字串无法按照长度读取，所以给他写到一个BytesIO
+	send_message_fragment = send_message.read(1024)#读取1024字节长度数据
 	while send_message_fragment:	
-		sockobj.send(send_message_fragment)
-		send_message_fragment = send_message.read(1024)
+		sockobj.send(send_message_fragment)#发送数据分片（如果分片的话）
+		send_message_fragment = send_message.read(1024)#继续读取数据
 	print('Pickle File Sended')
 	sockobj.close()
 
