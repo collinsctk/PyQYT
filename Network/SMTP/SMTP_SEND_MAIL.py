@@ -13,20 +13,23 @@ sys.path.append('../../ExtentionPackages')
 import smtplib, sys, email.utils
 
 def qyt_smtp_sendmail(mailserver, username, password, From, To, Subj):
-	Tos = To.split(';')
-	Date = email.utils.formatdate()
-
+	Tos = To.split(';')#把多个邮件接受者通过';'分开
+	Date = email.utils.formatdate()#格式化邮件时间
+	#print(Date)
 	text = ('From: %s\nTo: %s\nData: %s\nSubject: %s\n\n' % (From, To, Date, Subj))
-
-	server = smtplib.SMTP(mailserver)
-	server.login(username, password)
-	failed = server.sendmail(From, Tos, text)
-	server.quit()
+	#print(text)
+	server = smtplib.SMTP(mailserver)#连接邮件服务器
+	server.login(username, password)#通过用户名和密码登录邮件服务器
+	failed = server.sendmail(From, Tos, text)#发送邮件
+	server.quit()#退出会话
 	if failed:
-		print('Falied recipients:', failed)
+		print('Falied recipients:', failed)#如果出现故障，打印故障原因！
 	else:
-		print('No errors.')
+		print('No errors.')#如果没有故障发生，打印‘No errors.’！
 	print('Bye.')
 
 if __name__ == '__main__':
-	qyt_smtp_sendmail('smtp.163.com', 'collinsctk@163.com', 'password', 'collinsctk@163.com', 'collinsctk@qytang.com;collinsctk@163.com', 'This is a test mail')
+	import getpass 
+	username = input('请输入用户名: ')
+	password = getpass.getpass('请输入密码: ')#读取密码，但是不回显！
+	qyt_smtp_sendmail('smtp.163.com', username, password, 'collinsctk@163.com', 'collinsctk@qytang.com;collinsctk@163.com', 'This is a test mail')
