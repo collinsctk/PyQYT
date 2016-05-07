@@ -10,7 +10,7 @@ sys.path.append('/usr/local/lib/python3.4/dist-packages/PyQYT/ExtentionPackages'
 sys.path.append('/usr/lib/python3.4/site-packages/PyQYT/ExtentionPackages')
 sys.path.append('../../ExtentionPackages')
 
-from minimumTFTP.minimumTFTP import Client
+from minimumTFTP import Client
 
 def qyt_ftpclient(server, filedir, file, operation=1):
 	#传递参数服务器地址，本地文件夹，文件名，操作码（1为下载，2为上传）

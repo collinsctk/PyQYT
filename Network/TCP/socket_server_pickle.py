@@ -10,26 +10,33 @@ sys.path.append('/usr/local/lib/python3.4/dist-packages/PyQYT/ExtentionPackages'
 sys.path.append('/usr/lib/python3.4/site-packages/PyQYT/ExtentionPackages')
 sys.path.append('../../ExtentionPackages')
 
+import pickle
+from io import BytesIO
 from socket import *
-#配置本地服务器IP地址
-myHost = '202.100.1.138'
-#配置本地服务器端口号
-myPort = 6666
 
-#创建TCP Socket, AF_INET为IPv4，SOCK_STREAM为TCP
-sockobj = socket(AF_INET, SOCK_STREAM)
-#绑定套接字到地址，地址为（host，port）的元组
-sockobj.bind((myHost, myPort))
-#在拒绝连接前，操作系统可以挂起的最大连接数量，一般配置为5
-sockobj.listen(5)
+def Server_PIC(ip,port):
+	#创建TCP Socket, AF_INET为IPv4，SOCK_STREAM为TCP
+	sockobj = socket(AF_INET, SOCK_STREAM)
+	#绑定套接字到地址，地址为（host，port）的元组
+	sockobj.bind((ip, port))
+	#在拒绝连接前，操作系统可以挂起的最大连接数量，一般配置为5
+	sockobj.listen(5)
 
-while True:#一直接受请求，直到ctl+c终止程序
-	#接受TCP连接，并且返回（conn,address）的元组，conn为新的套接字对象，可以用来接收和发送数据，address是连接客户端的地址
-    connection, address = sockobj.accept()
-    #打印连接客户端的IP地址
-    print('Server Connected by', address)
-    while True:
-        data = connection.recv(1024)#接收数据，1024为bufsize，表示一次接收的最大数据量！
-        if not data: break#如果没有数据就退出循环
-        connection.send(b'Echo==>' + data)#发送回显数据给客户，注意Python3.x后，发送和接收的数据必须为二进制！
-    connection.close()#关闭连接
+	while True:#一直接受请求，直到ctl+c终止程序
+		#接受TCP连接，并且返回（conn,address）的元组，conn为新的套接字对象，可以用来接收和发送数据，address是连接客户端的地址
+		connection, address = sockobj.accept()
+		#打印连接客户端的IP地址
+		print('Server Connected by', address)		
+		send_message = b''
+		send_message_fragment = connection.recv(1024)
+		while send_message_fragment:
+			send_message = send_message + send_message_fragment
+			send_message_fragment = connection.recv(1024)
+		obj = pickle.loads(send_message)
+		print(obj)
+		connection.close()
+
+if __name__ == '__main__':
+	Server_IP = '0.0.0.0'
+	Server_Port = 6666
+	Server_PIC(Server_IP,Server_Port)

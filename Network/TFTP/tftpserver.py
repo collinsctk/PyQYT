@@ -10,7 +10,7 @@ sys.path.append('/usr/local/lib/python3.4/dist-packages/PyQYT/ExtentionPackages'
 sys.path.append('/usr/lib/python3.4/site-packages/PyQYT/ExtentionPackages')
 sys.path.append('../../ExtentionPackages')
 
-from minimumTFTP.minimumTFTP import Server
+from minimumTFTP import Server
 
 def qyt_tftpserver(dir):
 	tftpServer = Server(dir)#指定主目录

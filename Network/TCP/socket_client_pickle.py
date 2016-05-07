@@ -10,23 +10,22 @@ sys.path.append('/usr/local/lib/python3.4/dist-packages/PyQYT/ExtentionPackages'
 sys.path.append('/usr/lib/python3.4/site-packages/PyQYT/ExtentionPackages')
 sys.path.append('../../ExtentionPackages')
 
-import sys
 import pickle
+from io import BytesIO
 from socket import *
-#连接的服务器地址
-serverHost = '202.100.1.138'
-#连接的服务器端口号
-serverPort = 6666
-#发送的回显信息
 
-dict = {'key1':'welcome to qytang', 'key2':[1,2,3,4,5], 'key3':([3,4],'python')}
+def Client_PIC(ip,port,obj):
+	msg = pickle.dumps(obj)
+	sockobj = socket(AF_INET, SOCK_STREAM)
+	sockobj.connect((ip, port))
+	send_message = BytesIO(msg)
+	send_message_fragment = send_message.read(1024)
+	while send_message_fragment:	
+		sockobj.send(send_message_fragment)
+		send_message_fragment = send_message.read(1024)
+	print('Pickle File Sended')
+	sockobj.close()
 
-sockobj = socket(AF_INET, SOCK_STREAM)#创建TCP Socket, AF_INET为IPv4，SOCK_STREAM为TCP
-sockobj.connect((serverHost, serverPort))#连接到套接字地址，地址为（host，port）的元组
-
-for line in message:#读取message中的每一行（line）
-    sockobj.send(line)#发送读取的每一行信息，注意line已经被encode()为二进制了！
-    data = sockobj.recv(1024)#接收数据，1024为bufsize，表示一次接收的最大数据量！
-    print('Client Received:', data)#打印接收到的数据
-
-sockobj.close()#关闭连接
+if __name__ == '__main__':
+	dict = {'key1':'welcome to qytang', 'key2':[1,2,3,4,5], 'key3':([3,4],'python')}
+	Client_PIC('202.100.1.138',6666,dict)
