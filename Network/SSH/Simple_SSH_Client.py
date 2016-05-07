@@ -14,15 +14,16 @@ import paramiko
 
 def QYT_SSHClient_SingleCMD(ip, username, password, cmd):
 	try:
-		ssh = paramiko.SSHClient()
-		ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-		ssh.connect(ip,22,username,password,timeout=5)
-		stdin,stdout,stderr = ssh.exec_command(cmd)
-		x = stdout.read().decode()
-		print(x)
+		ssh = paramiko.SSHClient()#创建SSH Client
+		ssh.load_system_host_keys()#加载系统SSH密钥
+		ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())#添加新的SSH密钥
+		ssh.connect(ip,port=22,username=username,password=password,timeout=5,compress=True)#SSH连接
+		stdin,stdout,stderr = ssh.exec_command(cmd)#执行命令
+		x = stdout.read().decode()#读取回显
+		print(x)#打印回显
 		ssh.close()
 	except:
 		print('%stErrorn'%(ip))
 
 if __name__ == '__main__':
-	QYT_SSHClient_SingleCMD('202.100.1.3', 'admin', 'cisco', 'show ver')
+	QYT_SSHClient_SingleCMD('202.100.1.3', 'cisco', 'cisco', 'show ver')
