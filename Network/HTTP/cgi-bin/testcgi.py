@@ -12,14 +12,15 @@ sys.path.append('../../ExtentionPackages')
 
 import cgi
 
-form = cgi.FieldStorage()
-username = cgi.escape(form['user'].value)
-age = cgi.escape(form['age'].value)
+form = cgi.FieldStorage()#读取客户输入
+username = cgi.escape(form['user'].value)#读取客户输入的姓名
+age = cgi.escape(form['age'].value)#读取客户输入的年龄
+#打印HTML网页，注意格式！
 print('Content-type:text/html\n')
 print('<HTML>')
-print('<title>Reply Page</title>')
+print('<title>CGI响应测试页面</title>')
 print('<BODY>')
 print('<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />')
-print('<H1>Your name: ' + username + '</H1>')
-print('<H1>Your age: ' + age + '</H1>')
+print('<H1>你的姓名: ' + username + '</H1>')
+print('<H1>你的年龄: ' + age + '</H1>')
 print('</BODY></HTML>')

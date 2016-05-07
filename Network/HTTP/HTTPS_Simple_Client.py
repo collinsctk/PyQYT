@@ -13,10 +13,10 @@ sys.path.append('../../ExtentionPackages')
 import sys, http.client, ssl
 
 def qytang_https_client(server, port = 443, filename = '/', showlines = 6):
-	context = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
-	context.verify_mode = ssl.CERT_NONE#CERT_NONE, CERT_OPTIONAL or CERT_REQUIRED
-	context.load_verify_locations('/usr/share/kde4/apps/kssl/ca-bundle.crt')
-	server = http.client.HTTPSConnection(server, port=port, context=context)
+	context = ssl.SSLContext(ssl.PROTOCOL_TLSv1)#ssl支持的协议版本
+	context.verify_mode = ssl.CERT_NONE#CERT_NONE, CERT_OPTIONAL or CERT_REQUIRED（并不检查证书有效性）
+	context.load_verify_locations('/usr/share/kde4/apps/kssl/ca-bundle.crt')#根证书文件
+	server = http.client.HTTPSConnection(server, port=port, context=context)#连接服务器和端口号，并且ssl加密
 	#putrequest中可以指定请求的方式，不止GET，支持的方法有：
 	#GET, POST, PUT, HEAD, DELETE, OPTIONS, TRACE, CONNECT, LINK, UNLINK
 	#例如：
@@ -25,11 +25,11 @@ def qytang_https_client(server, port = 443, filename = '/', showlines = 6):
 	#server.putrequest('PUT', filename)
 	#server.putrequest('HEAD', filename)
 	#等等
-	server.putrequest('GET', filename)
+	server.putrequest('GET', filename)#method与读取的文件名，'/'为默认网页文件，例如index.html
 
 	#putheader可以向HTTP的头部添加任何自定义的变量及其对应的值
 	#如server.putheader('myVar', 'myVal')，这样就会像头部中添加myVar变量，它的值是myVal
-	server.putheader('Accept', 'text/html')
+	server.putheader('Accept', 'text/html')#可以接受的返回信息
 
 	#调用endheaders之后，就不能向头部继续添加字段了
 	server.endheaders()
@@ -37,13 +37,13 @@ def qytang_https_client(server, port = 443, filename = '/', showlines = 6):
 	#如果请求没有被发送出去，或者上一个response没有被处理，那么会产生异常
 	#获取到的信息是以bytes字符串
 	#所以，如果后面要用html.parser来解析html，那么就要将bytes字符串转换成str字符串
-	reply = server.getresponse()
-	if reply.status != 200:
+	reply = server.getresponse()#读取服务器的回应
+	if reply.status != 200:#如果不是200！200表示OK，非200表示出现问题，此处打印问题原因！
 		print('Error sending request!\n', 'status: ', reply.status, '\n reason: ', reply.reason)
-	else:
-		data = reply.readlines()
+	else:#如果为200，表示一切正常！
+		data = reply.readlines()#逐行读取服务器响应信息
 		reply.close()
-		for line in data[:showlines]: print(line)
+		for line in data[:showlines]: print(line)#打印‘showlines’数量行数的信息！
 
 if __name__ == '__main__':
-	qytang_https_client('www.baidu.com')
+	qytang_https_client('202.100.1.138', filename='default.html')

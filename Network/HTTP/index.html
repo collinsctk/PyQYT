@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>test cgi</title>
+	<title>CGI测试网页</title>
 </head>
 <body>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <form method="POST" action="cgi-bin/testcgi.py">
-	<p><b>Enter your name:</b></p>
+	<p><b>请输入你的姓名:</b></p>
 	<p><input type="text" name="user"></input></p>
+	<!--参数名user, cgi脚本通过'cgi.escape(form['user'].value)'读取输入-->
+	<p><b>请输入你的年龄:</b></p>
 	<p><input type="text" name="age"></input></p>
+	<!--参数名age, cgi脚本通过'cgi.escape(form['age'].value)'读取输入-->
 	<p><input type="submit"></input></p>
 </form>
 </body>
