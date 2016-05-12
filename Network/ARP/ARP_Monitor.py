@@ -26,4 +26,4 @@ def arp_monitor_callback(pkt):
         else:#如果ARP的psrc（IP地址）字段在合法的IP-ARP映射关系字典中不存在
         	print("IP地址: " + pkt[ARP].psrc + " MAC地址: " + pkt[ARP].hwsrc + " 未找到条码！！！")
 #捕获数据包###通过方法arp_monitor_callback进行处理，filer过滤arp数据包，store=0不保存数据，iface指派接口
-sniff(prn=arp_monitor_callback, filter="arp", store=0, iface='eno33554944')
+sniff(prn=arp_monitor_callback, filter="arp", store=1, iface='eth0')

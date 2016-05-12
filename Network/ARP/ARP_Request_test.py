@@ -15,10 +15,10 @@ logging.getLogger("scapy.runtime").setLevel(logging.ERROR)#清除报错
 from scapy.all import *
 
 #配置各种信息，以便调用
-localmac = '00:0c:29:8d:5c:b6'
-localip = '202.100.1.138'
-destip = '202.100.1.139'
-ifname = 'eno33554944'
+localmac = '00:0c:29:9d:26:5f'
+localip = '192.168.220.135'
+destip = '192.168.220.2'
+ifname = 'eth0'
 
 #######################源MAC为本地MAC####目的MAC为广播#########操作码为1（请求）#######################################################由于多个网卡所以需要指派iface###########
 result_raw = srp(Ether(src=localmac, dst='FF:FF:FF:FF:FF:FF')/ARP(op=1, hwsrc=localmac, hwdst='00:00:00:00:00:00', psrc=localip, pdst=destip), iface = ifname, verbose = False)

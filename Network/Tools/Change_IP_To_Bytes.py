@@ -7,6 +7,7 @@
 #包括传统网络安全（防火墙，IPS...）与Python语言和黑客渗透课程！
 
 import struct
+import optparse
   
 def Change_IP_To_Bytes(IP):
 	section1 = int(IP.split('.')[0])
@@ -15,5 +16,13 @@ def Change_IP_To_Bytes(IP):
 	section4 = int(IP.split('.')[3])
 	Bytes_IP = struct.pack('>4B', section1, section2, section3, section4)
 	return Bytes_IP
+
 if __name__ == "__main__":
-	print(Change_IP_To_Bytes('202.100.1.168'))
+	parser = optparse.OptionParser('用法：\n python3 Change_IP_To_Bytes.py --ip IP地址')
+	parser.add_option('--ip', dest = 'ip', type = 'string', help = 'IP地址')
+	(options, args) = parser.parse_args()
+	ip = options.ip
+	if ip == None:
+		print(parser.usage)
+	else:
+		print(Change_IP_To_Bytes(ip))
