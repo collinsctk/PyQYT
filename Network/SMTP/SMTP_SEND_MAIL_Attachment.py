@@ -11,18 +11,16 @@ sys.path.append('/usr/local/lib/python3.4/dist-packages/PyQYT/ExtentionPackages'
 sys.path.append('/usr/lib/python3.4/site-packages/PyQYT/ExtentionPackages')
 sys.path.append('../../ExtentionPackages')
 
+import re
 import smtplib, email.utils
 from email.mime.multipart import MIMEMultipart  
 from email.mime.text import MIMEText  
 from email.mime.application import MIMEApplication
 
 
-def qyt_smtp_attachment(mailserver, username, password, From, To, Subj, Main_Body, files):
+def qyt_smtp_attachment(mailserver, username, password, From, To, Subj, Main_Body, files=None):
 	Tos = To.split(';')#把多个邮件接受者通过';'分开
 	Date = email.utils.formatdate()#格式化邮件时间
-	#print(Date)
-	#text = ('From: %s\nTo: %s\nDate: %s\nSubject: %s\n\n' % (From, To, Date, Subj))
-	#print(text)
 	msg = MIMEMultipart() 
 	msg["Subject"] = Subj  
 	msg["From"]    = From  
@@ -55,7 +53,10 @@ if __name__ == '__main__':
 	subject = input('请输入邮件主题: ')
 	Main_Body = input('请输入邮件正文: ')
 	files_input = input("输入文件名用','分开: ")
-	files = files_input.split(',')
+	if re.match('\s*\w+', files_input):
+		files = files_input.split(',')
+	else:
+		files = None
 	qyt_smtp_attachment('smtp.163.com',
 					  	username,
 					  	password, 
