@@ -17,11 +17,8 @@ from scapy.all import *
 #配置各种信息，以便调用
 localmac = '00:0c:29:8d:5c:b6'
 localip = '202.100.1.138'
-destip = '202.100.1.14'
+destip = '202.100.1.3'
 ifname = 'eno33554944'
-#new new request change
-#final test change
-#test qytang PyQYT
 
 #######################源MAC为本地MAC####目的MAC为广播#########操作码为1（请求）#######################################################由于多个网卡所以需要指派iface###########
 result_raw = srp(Ether(src=localmac, dst='FF:FF:FF:FF:FF:FF')/ARP(op=1, hwsrc=localmac, hwdst='00:00:00:00:00:00', psrc=localip, pdst=destip), iface = ifname, timeout = 1, verbose = False)
@@ -33,7 +30,7 @@ srp() do the same for layer 2 packets (Ethernet, 802.3, etc.).
 send() function will send packets at layer 3. That is to say it will handle routing and layer 2 for you. 
 sendp() function will work at layer 2.
 '''
-print(result_raw)
+
 #print(result_raw[0].res[0][1].getlayer(ARP).fields)
 #print(result_raw[0].res[0][1].getlayer(ARP).fields['hwsrc'])
 #(<Results: TCP:0 UDP:0 ICMP:0 Other:1>, <Unanswered: TCP:0 UDP:0 ICMP:0 Other:0>)
@@ -104,7 +101,7 @@ print(result_raw)
 #print(type(result_raw[0]))
 #<class 'scapy.plist.SndRcvList'> #https://fossies.org/dox/scapy-2.3.1/classscapy_1_1plist_1_1SndRcvList.html
 
-#result_list = result_raw[0].res #res: the list of packets，产生由收发数据包所组成的清单（list）
+result_list = result_raw[0].res #res: the list of packets，产生由收发数据包所组成的清单（list）
 
 #print(result_list)
 #[(<Ether  dst=FF:FF:FF:FF:FF:FF src=00:0c:29:8d:5c:b6 type=ARP |<ARP  op=who-has hwsrc=00:0c:29:8d:5c:b6 psrc=202.100.1.138 hwdst=00:00:00:00:00:00 pdst=202.100.1.139 |>>, <Ether  dst=00:0c:29:8d:5c:b6 src=00:0c:29:43:52:cf type=ARP |<ARP  hwtype=0x1 ptype=IPv4 hwlen=6 plen=4 op=is-at hwsrc=00:0c:29:43:52:cf psrc=202.100.1.139 hwdst=00:0c:29:8d:5c:b6 pdst=202.100.1.138 |<Padding load=‘\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00’ |>>>)]
@@ -118,5 +115,5 @@ print(result_raw)
 #print(result_list[0][1][1].fields) ARP头部字段
 #{'pdst': '202.100.1.138', 'hwtype': 1, 'hwdst': '00:0c:29:8d:5c:b6', 'plen': 4, 'ptype': 2048, 'hwsrc': '00:0c:29:43:52:cf', 'op': 2, 'hwlen': 6, 'psrc': '202.100.1.139'}
 
-#print('IP地址: ' + result_list[0][1][1].fields['psrc'] + ' MAC地址: ' + result_list[0][1][1].fields['hwsrc'])
+print('IP地址: ' + result_list[0][1][1].fields['psrc'] + ' MAC地址: ' + result_list[0][1][1].fields['hwsrc'])
 #print('IP地址: ' + result_list[0][1].getlayer(ARP).fields['psrc'] + ' MAC地址: ' + result_list[0][1].getlayer(ARP).fields['hwsrc'])
