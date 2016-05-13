@@ -13,16 +13,24 @@ sys.path.append('../../ExtentionPackages')
 import ntplib
 from time import ctime
 import sys
+import optparse
 
 def ntp_client(NTP_SERVER):
 	c = ntplib.NTPClient()
 	response = c.request(NTP_SERVER, version=3)
 	print(response)
 	print('\t' + ctime(response.tx_time))
+
 if __name__ == '__main__':
-	ntp_server = sys.argv[1]
-	ntp_client(ntp_server)
-	#'0.uk.pool.ntp.org'
+	parser = optparse.OptionParser('用法：\n python3 NTP_Client_NTPLIB.py --server NTP服务器')
+	parser.add_option('--server', dest = 'server', type = 'string', help = 'NTP服务器')
+	(options, args) = parser.parse_args()
+	server = options.server
+	if server == None:
+		print(parser.usage)
+	else:
+		ntp_client(server)
+		#'0.uk.pool.ntp.org'
 
 
 

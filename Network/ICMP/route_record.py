@@ -18,7 +18,7 @@ import struct
 import random
 import sys
 import re
-
+import optparse
 
 def ping_rr(dst,src): #需要填写目的IP地址，出口源IP地址
 	#出口源IP地址需要二进制写入IP选项
@@ -40,6 +40,14 @@ def ping_rr(dst,src): #需要填写目的IP地址，出口源IP地址
 
 if __name__ == '__main__':
 	conf.route.add(net='202.100.0.0/16',gw='202.100.1.3')
-	destination = sys.argv[1]
-	source = sys.argv[2]
-	ping_rr(destination, source)
+	parser = optparse.OptionParser('用法：\n python3 route_record.py --destIP 目标IP --sourIP 源IP')
+	parser.add_option('--destIP', dest = 'destIP', type = 'string', help = '目标IP')
+	parser.add_option('--sourIP', dest = 'sourIP', type = 'string', help = '源IP')
+	(options, args) = parser.parse_args()
+	destIP = options.destIP
+	sourIP = options.sourIP
+
+	if sourIP == None or destIP == None:
+		print(parser.usage)
+	else:
+		ping_rr(destIP, sourIP)

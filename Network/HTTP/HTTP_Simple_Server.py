@@ -12,6 +12,7 @@ sys.path.append('../../ExtentionPackages')
 
 import os, sys
 from http.server import HTTPServer, CGIHTTPRequestHandler
+import optparse
 
 def http_simple_server(webdir = '.', webport = 80):
 	print('webdir "%s", port %s' % (webdir, webport))
@@ -21,18 +22,13 @@ def http_simple_server(webdir = '.', webport = 80):
 	srvobj.serve_forever()#打开服务器
 
 if __name__ == '__main__':
-	try:
-		if len(sys.argv) == 1:
-			http_simple_server()#如果没有参数，就直接用默认参数启动服务器
-		elif len(sys.argv) == 2:
-			webdir = sys.argv[1]#如果有一个参数，这个参数为网页的根目录
-			http_simple_server(webdir = webdir)
-		elif len(sys.argv) == 3:
-			webdir = sys.argv[1]#如果有两个参数，第一个参数为网页的根目录
-			webport = int(sys.argv[2])#第二个参数为web服务器的端口号
-			http_simple_server(webdir = webdir, webport = webport)
-		else:
-			print('参数过多！只需要两个参数，第一为HTTP服务器主目录，第二个为端口号！')#如果参数过多打印错误信息
-	except Exception as e:
-		print(e)
-		print('具体格式为:"./HTTP_Simple_Server [HTTP服务主目录] [HTTP服务器端口号]"')#如果其他故障，打印帮助信息
+	parser = optparse.OptionParser('用法：\n python3 HTTP_Simple_Server.py --dirpath 工作目录 --port 工作端口')
+	parser.add_option('--dirpath', dest = 'dirpath', type = 'string', help = '工作目录')
+	parser.add_option('--port', dest = 'port', type = 'string', help = '工作端口')
+	(options, args) = parser.parse_args()
+	dirpath = options.dirpath
+	port = options.port
+	if dirpath == None or port == None:
+		print(parser.usage)
+	else:
+		http_simple_server(dirpath, int(port))

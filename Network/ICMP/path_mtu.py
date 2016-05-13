@@ -18,14 +18,17 @@ import struct
 import random
 import sys
 import re
+import optparse
 
 def ping_df(dst,mtu):
 	pyload = b'v'*(int(mtu) - 28)
 
 	ping_one_reply = sr1(IP(dst=dst,flags='DF')/ICMP()/pyload, timeout = 1, verbose=False)
 	try:
+		#type 3 code 4：目标不可达，因为数据包太大需要分段，但是DF被设置
 		if ping_one_reply.getlayer(ICMP).type == 3 and ping_one_reply.getlayer(ICMP).code == 4:
 			return 1, mtu
+		#type 0 code 0：收到目标的回复
 		elif ping_one_reply.getlayer(ICMP).type == 0 and ping_one_reply.getlayer(ICMP).code == 0:
 			return 2, mtu
 	except Exception as e:
@@ -39,19 +42,20 @@ def discover_path_mtu(dst):
 			print('目标: ' + dst + '不可达！')
 			break
 		elif Result[0] == 2:
-			print('目标: ' + dst + '的Path MTU为: ' + str(Result[1]))
-			break
+			print('目标可达，增加MTU！')
+			mtu += 8
 		elif Result[0] == 1:
-			mtu = mtu - 10
-			print('MTU: ' + str(mtu) + '测试不通过')
+			mtu = mtu - 8
+			print('目标不可达，减小MTU！')
 		time.sleep(1)
-
-
-
-
-
+	print('MTU: ' + str(mtu-8))
 
 if __name__ == '__main__':
-	conf.route.add(net='202.100.0.0/16',gw='202.100.1.3')
-	destination = sys.argv[1]
-	discover_path_mtu(destination)
+	parser = optparse.OptionParser('用法：\n python3 path_mtu.py --ip 目标IP')
+	parser.add_option('--ip', dest = 'ip', type = 'string', help = '指定要查询的目标IP')
+	(options, args) = parser.parse_args()
+	ip = options.ip
+	if ip == None:
+		print(parser.usage)
+	else:
+		discover_path_mtu(ip)
