@@ -9,6 +9,7 @@
 import socket
 import fcntl
 import struct
+import optparse
   
 def get_ip_address(ifname):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -19,4 +20,11 @@ def get_ip_address(ifname):
     )[20:24])
 
 if __name__ == "__main__":
-	print(get_ip_address('eno33554944'))
+	parser = optparse.OptionParser('用法：\n python3 GET_IP.py --ifname 接口名')
+	parser.add_option('--ifname', dest = 'ifname', type = 'string', help = '要查询的接口的名字')
+	(options, args) = parser.parse_args()
+	ifname = options.ifname
+	if ifname == None:
+		print(parser.usage)
+	else:
+		print(get_ip_address(ifname))

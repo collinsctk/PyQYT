@@ -16,6 +16,7 @@ from scapy.all import *
 from PyQYT.Network.Tools.GET_MAC import GET_MAC
 from PyQYT.Network.Tools.Change_MAC_To_Bytes import Change_MAC_To_Bytes
 import time
+import optparse
 
 def DHCP_Discover_Sendonly(ifname, MAC, wait_time = 1):
 	if wait_time != 0:
@@ -31,5 +32,12 @@ def DHCP_Discover_Sendonly(ifname, MAC, wait_time = 1):
 		sendp(discover, iface = ifname, verbose=False)	
 
 if __name__ == '__main__':
-	Local_MAC = GET_MAC('eno33554944')
-	DHCP_Discover_Sendonly('eno33554944', Local_MAC)
+	parser = optparse.OptionParser('用法：\n python3 DHCP_Discover.py --ifname 本地接口名')
+	parser.add_option('--ifname', dest = 'ifname', type = 'string', help = '指定发送DHCP请求的本地接口名')
+	(options, args) = parser.parse_args()
+	ifname = options.ifname
+	if ifname == None:
+		print(parser.usage)
+	else:
+		Local_MAC = GET_MAC(ifname)
+		DHCP_Discover_Sendonly(ifname, Local_MAC)

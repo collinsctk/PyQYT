@@ -18,6 +18,7 @@ import struct
 import random
 import sys
 import re
+import optparse
 
 def ping_one(dst,id_no,seq_no,ttl_no):
 	send_time = time.time() #计算时间1462346467.457762
@@ -63,5 +64,11 @@ def qyt_ping(dst):
 
 if __name__ == '__main__':
 	conf.route.add(net='202.100.0.0/16',gw='202.100.1.3')#为scapy添加路由
-	destination = sys.argv[1] #第一个变量为目的IP地址
-	qyt_ping(destination)
+	parser = optparse.OptionParser('用法：\n python3 PING.py --ip 目标IP')
+	parser.add_option('--ip', dest = 'ip', type = 'string', help = '目标IP')
+	(options, args) = parser.parse_args()
+	ip = options.ip
+	if ip == None:
+		print(parser.usage)
+	else:
+		qyt_ping(ip)

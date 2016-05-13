@@ -14,6 +14,7 @@ import struct
 import socket
 import time
 import os
+import optparse
 from PyQYT.Network.Tools.Checksum import do_checksum
 
 def ping_one_raw(dst,seq_no):
@@ -43,4 +44,11 @@ def ping_one_raw(dst,seq_no):
 		print('.', flush=True)#其他情况打印'.'
 
 if __name__ == '__main__':
-	ping_one_raw('202.100.1.3',10)
+	parser = optparse.OptionParser('用法：\n python3 PING_RAW.py --ip 目标IP')
+	parser.add_option('--ip', dest = 'ip', type = 'string', help = '指定要查询的目标IP')
+	(options, args) = parser.parse_args()
+	ip = options.ip
+	if ip == None:
+		print(parser.usage)
+	else:
+		ping_one_raw(ip, 10)

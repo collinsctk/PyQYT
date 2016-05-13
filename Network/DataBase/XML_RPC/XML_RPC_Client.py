@@ -12,7 +12,7 @@
 import datetime
 import xmlrpc.client
 
-proxy = xmlrpc.client.ServerProxy("http://202.100.1.138:8000/")
+proxy = xmlrpc.client.ServerProxy("http://127.0.0.1:8000/")
 print("3 is even: %s" % str(proxy.is_even(3)))#远程执行proxy上的is_even函数
 print("100 is even: %s" % str(proxy.is_even(100)))#远程执行proxy上的is_even函数
 
@@ -21,7 +21,3 @@ today = proxy.today()#远程执行proxy上的today函数
 converted = datetime.datetime.strptime(today.value, "%Y%m%dT%H:%M:%S")
 print("Today: %s" % converted.strftime("%d.%m.%Y, %H:%M"))
 
-dst = '202.100.1.139'
-ping_result = proxy.ping(dst,1,1,64)
-if ping_result:
-	print(dst + ' Ping测试通过！')

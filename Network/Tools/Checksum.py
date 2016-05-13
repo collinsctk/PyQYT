@@ -12,6 +12,7 @@ import socket
 import struct
 import select
 import time
+import optparse
 
 ICMP_ECHO_REQUEST = 8
 DEFAULT_TIMEOUT = 2
@@ -77,4 +78,12 @@ def do_checksum(source_bin): #计算校验和的方法，传入一个二进制�
 	return answer
 
 if __name__ == '__main__':
-	print(bin(do_checksum(b'abc')))
+	parser = optparse.OptionParser('用法：\n python3 Checksum.py -s 字符串')
+	parser.add_option('-s', dest = 'data', type = 'string', help = '要计算校验和的字符串')
+	(options, args) = parser.parse_args()
+	data = options.data
+	if data == None:
+		print(parser.usage)
+	else:
+		print('Checksum of '+data+' is:')
+		print(bin(do_checksum(data.encode())))

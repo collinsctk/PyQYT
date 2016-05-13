@@ -11,6 +11,7 @@ sys.path.append('/usr/lib/python3.4/site-packages/PyQYT/ExtentionPackages')
 sys.path.append('../../ExtentionPackages')
 
 import paramiko
+import optparse
 
 def QYT_SSHClient_SingleCMD(ip, username, password, cmd):
 	try:
@@ -26,4 +27,18 @@ def QYT_SSHClient_SingleCMD(ip, username, password, cmd):
 		print('%stErrorn'%(ip))
 
 if __name__ == '__main__':
-	QYT_SSHClient_SingleCMD('202.100.1.3', 'cisco', 'cisco', 'show ver')
+	parser = optparse.OptionParser('用法：\n python3 Simple_SSH_Client.py --ip 被管理设备IP --username 用户名 --passwd 密码 --operation 操作')
+	parser.add_option('--ip', dest = 'ip', type = 'string', help = '被管理设备的IP')
+	parser.add_option('--username', dest = 'username', type = 'string', help = '用户名')
+	parser.add_option('--passwd', dest = 'passwd', type = 'string', help = '密码')
+	parser.add_option('--operation', dest = 'operation', type = 'string', help = '执行的操作')
+	(options, args) = parser.parse_args()
+	ip = options.ip
+	username = options.username
+	passwd = options.passwd
+	operation = options.operation
+
+	if ip == None or username == None or passwd == None or operation == None:
+		print(parser.usage)
+	else:
+		QYT_SSHClient_SingleCMD(ip, username, passwd, operation)
