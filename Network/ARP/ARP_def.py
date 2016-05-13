@@ -5,6 +5,7 @@
 #亁颐堂官网www.qytang.com
 #乾颐盾是由亁颐堂现任明教教主开发的综合性安全课程
 #包括传统网络安全（防火墙，IPS...）与Python语言和黑客渗透课程！
+
 import sys
 sys.path.append('/usr/local/lib/python3.4/dist-packages/PyQYT/ExtentionPackages')
 sys.path.append('/usr/lib/python3.4/site-packages/PyQYT/ExtentionPackages')
@@ -36,6 +37,7 @@ def get_arp(ip_address, ifname):
 	return result_list[0][1][1].fields['hwsrc']
 
 if __name__ == "__main__":
+<<<<<<< HEAD
 	parser = optparse.OptionParser('用法：\n python3 ARP_def.py --ip 目标IP --ifname 本地接口名')
 	parser.add_option('--ip', dest = 'ip', type = 'string', help = '指定要查询的目标IP')
 	parser.add_option('--ifname', dest = 'ifname', type = 'string', help = '指定发送ARP请求的本地接口名')
@@ -47,3 +49,14 @@ if __name__ == "__main__":
 	else:
 		print('IP地址: ' + ip + ' MAC地址: ' + get_arp(ip, ifname))
 
+=======
+	import sys
+	if len(sys.argv) > 1: #./ARP_def 202.100.1.1 xxxxxxx xxxxxxxx
+		ipaddress = sys.argv[1] #第一个参数为IP地址
+		if len(sys.argv) > 2: #./ARP_def 202.100.1.1 eno33554944 xxxxxxxx
+			interface = sys.argv[2] #第二个参数为接口
+	if len(sys.argv) > 2: #如果提供接口字段
+		print('IP地址: ' + ipaddress + ' MAC地址: ' + get_arp(ipaddress, interface))
+	else:#如果未提供接口字段，就使用默认的接口信息
+		print('IP地址: ' + ipaddress + ' MAC地址: ' + get_arp(ipaddress))
+>>>>>>> 99b84c414bdee2ed4fe6d448bababb7b7b8d720a
