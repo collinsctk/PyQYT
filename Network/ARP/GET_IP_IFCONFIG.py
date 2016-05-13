@@ -60,7 +60,6 @@ def get_ip_address_ifconfig(iface):#定义获取网络地址的模块，传入�
     return get_ip_address_result#返回包括IP，网络和广播地址的字典内容
 
 if __name__ == "__main__":
-    for x,y in get_ip_address_ifconfig('eno33554944').items():
-        print(x,y)
+    print(get_ip_address_ifconfig('eno33554944')['ip_address'])
 
 
