@@ -15,7 +15,7 @@ import socket
 import time
 import os
 import optparse
-from Checksum import do_checksum
+from PyQYT.Network.Tools.Checksum import do_checksum
 
 def ping_one_raw(dst,seq_no):
 	send_time = time.time() #计算时间1462346467.457762
