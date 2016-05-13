@@ -12,7 +12,6 @@
 import datetime
 from xmlrpc.server import SimpleXMLRPCServer
 import xmlrpc.client
-from PyQYT.Network.ICMP.PING import ping_one
 
 def is_even(n):#创建函数，判断奇数偶数
     return n%2 == 0
@@ -21,10 +20,9 @@ def today():#创建函数，返回时间
     today = datetime.datetime.today()
     return xmlrpc.client.DateTime(today)
 
-server = SimpleXMLRPCServer(("202.100.1.138", 8000))
+server = SimpleXMLRPCServer(("127.0.0.1", 8000))
 print("Listening on port 8000...")
 server.register_multicall_functions()#启动多函数注册功能！
 server.register_function(is_even, "is_even")#注册函数，名字为"is_even"
 server.register_function(today, "today")#注册函数，名字为"today"
-server.register_function(ping_one, "ping")#注册函数，名字为"today"
 server.serve_forever()#运行服务器

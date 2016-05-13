@@ -6,6 +6,11 @@
 #乾颐盾是由亁颐堂现任明教教主开发的综合性安全课程
 #包括传统网络安全（防火墙，IPS...）与Python语言和黑客渗透课程！
 
+import sys
+sys.path.append('/usr/local/lib/python3.4/dist-packages/PyQYT/ExtentionPackages')
+sys.path.append('/usr/lib/python3.4/site-packages/PyQYT/ExtentionPackages')
+sys.path.append('../../ExtentionPackages')
+
 import pg8000
 
 #Python字典对象，我们将把它写入PSQL外部数据库
@@ -14,7 +19,7 @@ teachers_dict = [{'姓名' : '秦柯', '年龄' : 37, '部门' : '安全', '职�
 		{'姓名' : '周亚军', '年龄' : 32, '部门' : '路由交换', '职位' : '讲师'}]
 
 #连接外部PSQL数据库
-conn = pg8000.connect(host='202.100.1.139', user='qytangdbuser', password='Cisc0123', database='qytangdb')
+conn = pg8000.connect(host='127.0.0.1', user='qytangdbuser', password='Cisc0123', database='qytangdb')
 cursor = conn.cursor()
 
 #执行创建表的任务
