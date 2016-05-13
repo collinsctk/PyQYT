@@ -7,6 +7,7 @@ sys.path.append('../../ExtentionPackages')
 
 import ftplib
 import os
+import optparse
 
 def putfile(hostname, file, username='anonymous', password='1@2.net', rdir='.', ldir='.', verbose = True):
 	if verbose:print('上传文件:', file)
@@ -22,4 +23,18 @@ def putfile(hostname, file, username='anonymous', password='1@2.net', rdir='.', 
 	if verbose: print('上传文件:' + file + ' 结束！')
 
 if __name__ == '__main__':
-	putfile('202.100.1.168', 'FTP_LIST.py', username='ftpuser', password='cisco')
+	parser = optparse.OptionParser('用法：\n python3 FTP_GET.py --server serverIP --username 用户名 --passwd 密码 --filename 文件名')
+	parser.add_option('--server', dest = 'server', type = 'string', help = 'FTP服务器IP')
+	parser.add_option('--username', dest = 'username', type = 'string', help = '用户名')
+	parser.add_option('--passwd', dest = 'passwd', type = 'string', help = '密码')
+	parser.add_option('--filename', dest = 'filename', type = 'string', help = '文件名')
+	(options, args) = parser.parse_args()
+	server = options.server
+	username = options.username
+	passwd = options.passwd
+	filename = options.filename
+
+	if server == None or username == None or passwd == None or filename == None:
+		print(parser.usage)
+	else:
+		putfile(server, filename, username, passwd)
