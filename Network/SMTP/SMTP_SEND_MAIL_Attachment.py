@@ -28,13 +28,13 @@ def qyt_smtp_attachment(mailserver, username, password, From, To, Subj, Main_Bod
 	msg["Date"]    = Date
 
 	part = MIMEText(Main_Body)  
-	msg.attach(part)
+	msg.attach(part)#把‘MIMEMultipart’添加到邮件
 
 	if files:
 		for file in files:
 			part = MIMEApplication(open(file,'rb').read())
 			part.add_header('Content-Disposition', 'attachment', filename=file)  
-			msg.attach(part) 
+			msg.attach(part) #读取附件，添加到邮件
 
 	server = smtplib.SMTP(mailserver)#连接邮件服务器
 	server.login(username, password)#通过用户名和密码登录邮件服务器

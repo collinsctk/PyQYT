@@ -30,35 +30,47 @@ def qyt_rec_mail(mailserver, mailuser, mailpasswd):
 
 		for i in range(msgCount):#逐个读取邮件
 			hdr, message, octets = server.retr(i + 1)#读取邮件
-			str_message = email.message_from_bytes(b'\n'.join(message))
-
-			for part in str_message.walk():
-				#print(part.get_content_type())
+			str_message = email.message_from_bytes(b'\n'.join(message))#把所有信息加在一起
+			for part in str_message.walk():#遍历所有内容
 				if part.get_content_maintype() == 'multipart':
-					part_dict = part.items()
-					for key in part_dict:
-						if key[0] == 'Subject':
-							if re.match('=\?(.*)\?\w\?(.*)=\?',key[1]).groups():
+					part_dict = part.items()#提取'multipart'内容产生字典
+					for key in part_dict:#遍历字典
+						if key[0] == 'Subject':#如果为主题
+							try:#尝试解码
 								re_result = re.match('=\?(.*)\?\w\?(.*)\?=',key[1]).groups()
-								prefix = '=?' + re_result[0]
-								suffix = '?='
 								middle = re_result[1]
 								decoded = base64.b64decode(middle)
 								mail_prefix = str(decoded.decode(re_result[0]))
-							else:
+							except Exception:#如果解码失败，就使用原文
 								mail_prefix = key[1]
 					continue
-				filename = part.get_filename()		
-				if filename == None:
+				filename = part.get_filename()#提取文件名		
+				if filename == None:#如果没有文件名
 					mail_file_name = mail_prefix + '_' + str(i) + '.txt'
-					fp = open(mail_file_name, 'wb')
+					#使用主题的名字产生文件名
 					for key in part_dict:
-						string = key[0] + '===>' + key[1] + '\n'
-						fp.write(string.encode())
+						if key[0] == 'Subject':#如果是主题需要解码
+							try:
+								re_result = re.match('=\?(.*)\?\w\?(.*)\?=',key[1]).groups()
+								middle = re_result[1]
+								decoded = base64.b64decode(middle)
+								Subject = str(decoded.decode(re_result[0]))
+							except Exception:
+								Subject = key[1]
+							fp = open(mail_file_name, 'a')
+							string = key[0] + '===>' + Subject + '\n'
+							fp.write(string)
+							fp.close
+						else:#不是主题正常写入
+							fp = open(mail_file_name, 'a')
+							string = key[0] + '===>' + key[1] + '\n'
+							fp.write(string)
+							fp.close
+					fp = open(mail_file_name, 'ab')
 					fp.write(b'Main Body ===>')
 					fp.write(part.get_payload(decode=1))
 					fp.close
-				else:
+				else:#提取附件，并且写入成为文件！
 					filename = filename.encode("utf-8").decode()
 					mail_file_name = mail_prefix + '_' + str(i) + '+' + filename
 					fp = open(mail_file_name, 'wb')

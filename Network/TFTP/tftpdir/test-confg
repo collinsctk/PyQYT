@@ -1,0 +1,127 @@
+
+!
+version 12.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname SNMPv2R1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no aaa new-model
+memory-size iomem 5
+!
+!
+ip cef
+no ip domain lookup
+!
+!
+ip auth-proxy max-nodata-conns 3
+ip admission max-nodata-conns 3
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+archive
+ log config
+  hidekeys
+! 
+!
+!
+!
+ip tcp synwait-time 5
+!
+!
+!
+!
+interface FastEthernet0/0
+ ip address 202.100.23.3 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+!
+interface FastEthernet1/0
+ ip address 202.100.1.3 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface FastEthernet2/0
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+!
+interface FastEthernet3/0
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+!
+router ospf 1
+ log-adjacency-changes
+!
+no ip http server
+no ip http secure-server
+ip forward-protocol nd
+ip route 0.0.0.0 0.0.0.0 202.100.23.2
+!
+!
+!
+snmp-server community public RO
+snmp-server community private RW
+snmp-server enable traps snmp linkdown linkup
+snmp-server enable traps config
+snmp-server host 202.100.1.138 version 2c R1 
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+alias exec c configure terminal
+alias exec i show ip inter brie
+alias exec e show crypto engine connections active
+alias exec s sh run
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+line aux 0
+ exec-timeout 0 0
+ logging synchronous
+line vty 0 4
+ password cisco
+ login
+line vty 5 15
+ password cisco
+ login
+!
+!
+end

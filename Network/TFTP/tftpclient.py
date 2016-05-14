@@ -22,5 +22,5 @@ def qyt_ftpclient(server, filedir, file, operation=1):
 	print()
 
 if __name__ == '__main__':
-	qyt_ftpclient('202.100.1.138', '.', 'snmpv2r1-confg', operation=1)
-	#qyt_ftpclient('202.100.1.138', '.', 'test-confg', operation=2)
+	#qyt_ftpclient('202.100.1.138', '.', 'snmpv2r1-confg', operation=1)
+	qyt_ftpclient('202.100.1.138', '.', 'test-confg', operation=2)
