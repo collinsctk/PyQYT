@@ -27,5 +27,5 @@ def Parser_HTTP_Items(url, type):
 			pass
 	return item_urls#返回特定文件的URL清单
 if __name__ == '__main__':
-	#print(Parser_HTTP_Items('http://www.qytang.com', 'img'))
-	print(Parser_HTTP_Items('http://www.qytang.com', 'script'))
+	print(Parser_HTTP_Items('http://www.qytang.com', 'img'))
+	#print(Parser_HTTP_Items('http://www.qytang.com', 'script'))

@@ -12,7 +12,7 @@ sys.path.append('../../ExtentionPackages')
 
 import sys, http.client
 
-def qytang_http_client(server, port = 80, filename = '/', showlines = 6):
+def qytang_http_client(server, port = 80, filename = '/', showlines = 16):
 	server = http.client.HTTPConnection(server, port)#连接到服务器与响应端口号
 	#putrequest中可以指定请求的方式，不止GET，支持的方法有：
 	#GET, POST, PUT, HEAD, DELETE, OPTIONS, TRACE, CONNECT, LINK, UNLINK
