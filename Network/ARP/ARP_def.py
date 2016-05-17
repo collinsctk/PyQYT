@@ -15,8 +15,8 @@ import logging
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)#清除报错
 from scapy.all import *
 #from GET_IP import get_ip_address #获取本机IP地址
-from GET_IP import get_ip_address #获取本机IP地址
-from GET_MAC import get_mac_address #获取本机MAC地址
+from PyQYT.Network.Tools.GET_IP import get_ip_address #获取本机IP地址
+from PyQYT.Network.Tools.GET_MAC import get_mac_address #获取本机MAC地址
 import optparse
 #test github
 #获取指定IP的MAC地址，要指定发送ARP请求的接口
