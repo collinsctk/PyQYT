@@ -14,8 +14,8 @@ import logging
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)#清除报错
 from scapy.all import *
 #from GET_IP import get_ip_address #导入获取本机IP地址方法
-from GET_IP_IFCONFIG import get_ip_address_ifconfig #导入获取本机IP地址方法
-from GET_MAC import get_mac_address #导入获取本机MAC地址方法
+from PyQYT.Network.Tools.GET_IP_IFCONFIG import get_ip_address_ifconfig #导入获取本机IP地址方法
+from PyQYT.Network.Tools.GET_MAC import get_mac_address #导入获取本机MAC地址方法
 import optparse
 
 def arp_scan(network_prefix, ifname):
