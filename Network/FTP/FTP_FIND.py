@@ -12,6 +12,8 @@ sys.path.append('../../ExtentionPackages')
 
 from ftplib import FTP
 import re
+import optparse
+
 def ftp_find(hostname, username, password, dirpath='/', file_type='.py', timeout=1, verbose = True):
 	if verbose:print('查找整个FTP中的特定文件(递归查询)，并且返回清单！')
 	try:
@@ -59,4 +61,20 @@ def ftp_find(hostname, username, password, dirpath='/', file_type='.py', timeout
 		print(e)
 
 if __name__ == '__main__':
-	print(ftp_find('202.100.1.168', 'ftpuser', 'cisco', '/', '.py'))
+	parser = optparse.OptionParser('用法：\n python3 FTP_FIND.py --server serverIP --username 用户名 --passwd 密码 --dirpath 查询目录 --filetype 文件类型')
+	parser.add_option('--server', dest = 'server', type = 'string', help = 'FTP服务器IP')
+	parser.add_option('--username', dest = 'username', type = 'string', help = '用户名')
+	parser.add_option('--passwd', dest = 'passwd', type = 'string', help = '密码')
+	parser.add_option('--dirpath', dest = 'dirpath', type = 'string', help = '查询目录')
+	parser.add_option('--filetype', dest = 'filetype', type = 'string', help = '文件类型')
+	(options, args) = parser.parse_args()
+	server = options.server
+	username = options.username
+	passwd = options.passwd
+	dirpath = options.dirpath
+	filetype = options.filetype
+
+	if server == None or username == None or passwd == None or dirpath == None or filetype == None:
+		print(parser.usage)
+	else:
+		print(ftp_find(server, username, passwd, dirpath, filetype))

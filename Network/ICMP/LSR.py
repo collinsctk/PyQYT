@@ -18,7 +18,7 @@ import struct
 import random
 import sys
 import re
-
+import optparse
 
 def try_lsr(dst,lsr_hop,option=1):
 	#我们需要把正真目的地址写在IP选项，把宽松源站路由地址写成IP的目的地址
@@ -43,7 +43,16 @@ def try_lsr(dst,lsr_hop,option=1):
 		result = sr1(pkt,timeout = 1, verbose=True)
 
 if __name__ == '__main__':
-	destination = sys.argv[1]
-	lsr_route = sys.argv[2]
-	option = int(sys.argv[3])
-	try_lsr(destination, lsr_route, option)
+	parser = optparse.OptionParser('用法：\n python3 LSR.py --dest 目标IP --lsr_route lsr_route --option 选项')
+	parser.add_option('--dest', dest = 'dest', type = 'string', help = '目标IP')
+	parser.add_option('--lsr_route', dest = 'lsr_route', type = 'string', help = 'lsr_route')
+	parser.add_option('--option', dest = 'option', type = 'string', help = '选项1表示ICMP源站路由，选项2表示TCP源站路由')
+	(options, args) = parser.parse_args()
+	dest = options.dest
+	lsr_route = options.lsr_route
+	option = options.option
+
+	if dest == None or lsr_route == None or option == None:
+		print(parser.usage)
+	else:
+		try_lsr(dest, lsr_route, option)

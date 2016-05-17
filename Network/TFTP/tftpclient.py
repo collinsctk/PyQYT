@@ -11,6 +11,7 @@ sys.path.append('/usr/lib/python3.4/site-packages/PyQYT/ExtentionPackages')
 sys.path.append('../../ExtentionPackages')
 
 from minimumTFTP import Client
+import optparse
 
 def qyt_ftpclient(server, filedir, file, operation=1):
 	#传递参数服务器地址，本地文件夹，文件名，操作码（1为下载，2为上传）
@@ -22,5 +23,19 @@ def qyt_ftpclient(server, filedir, file, operation=1):
 	print()
 
 if __name__ == '__main__':
-	#qyt_ftpclient('202.100.1.138', '.', 'snmpv2r1-confg', operation=1)
-	qyt_ftpclient('202.100.1.138', '.', 'test-confg', operation=2)
+	parser = optparse.OptionParser('用法：\n python3 tftpclient.py --ip server的IP --dirt 本地文件夹 --filename 文件名 --op 操作码')
+	parser.add_option('--ip', dest = 'ip', type = 'string', help = 'tftp服务器的IP')
+	parser.add_option('--dirt', dest = 'dirt', type = 'string', help = '本地文件夹')
+	parser.add_option('--filename', dest = 'filename', type = 'string', help = '文件名')
+	parser.add_option('--op', dest = 'op', type = 'string', help = '操作码，1是下载，2是上传')
+	(options, args) = parser.parse_args()
+	ip = options.ip
+	dirt = options.dirt
+	filename = options.filename
+	op = options.op
+
+	if ip == None or dirt == None or filename == None or filename == None:
+		print(parser.usage)
+	else:
+		qyt_ftpclient(ip, dirt, filename, int(op))
+	#qyt_ftpclient('202.100.1.138', '.', 'test-confg', operation=2)

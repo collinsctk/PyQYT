@@ -1,0 +1,40 @@
+Received===>from smtpbg334.qq.com (unknown [14.17.43.229])
+	by mx3 (Coremail) with SMTP id NcCowADHYuFAnjVX+kCZAA--.49913S3;
+	Fri, 13 May 2016 17:28:32 +0800 (CST)
+DKIM-Signature===>v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1463131712; bh=pMC/gSCMDArEw2Y6uBzk7f6m+279b9WqoXd9ddtnSfk=;
+	h=From:To:Subject:Mime-Version:Content-Type:Content-Transfer-Encoding:Date:Message-ID;
+	b=I7FfnvMGcmmcirqVmKG+PYMqvQssrFpgsj44S22EdBajT2HC1zbKdbah0eu1gjl2f
+	 G1os9avXC/hrJpqQYOiPr/umTmZTSoqcmYSgyChccxvhNhKG2yblCZTftGpa9+4Bh/
+	 9xJhMO76VuYxrzZSoECnoyAEr0Nr3TwoHD4hYQ3U=
+X-QQ-FEAT===>wto48VEmSUG8o+RfE2gDnDqscfZbrbTcItW8erwMUJO3f1riImBPzxbiga9PB
+	MhKqYLaJTIgj5Q3zX1CIKQUAvJCZeYhCS2AaX8GTeKXP8IUz84zQZ3R9iJiPq4bRRNGCv4r
+	fgRYLFnoF5BQatikMyLA72/cC18eHVQdVaCxEYHO6Mk642+l5L2kQrATM5xEtjnvSpX1B6J
+	59p52slP2Bb/jdWS95RBcm8gH2GxdIj5StVHMx1+GbQ==
+X-QQ-SSF===>00000000000000F000000000000000V
+X-HAS-ATTACH===>no
+X-QQ-BUSINESS-ORIGIN===>2
+X-Originating-IP===>106.3.99.46
+X-QQ-STYLE===>
+X-QQ-mid===>webmail765t1463131712t3287148
+From===>"=?gb18030?B?wfXHv8H6?=" <1017614993@qq.com>
+To===>"=?gb18030?B?Y29sbGluc2N0aw==?=" <collinsctk@163.com>
+Subject===>=?gb18030?B?suLK1DE=?=
+Mime-Version===>1.0
+Content-Type===>multipart/alternative;
+	boundary="----=_NextPart_57359E40_0948ED48_7419A96F"
+Content-Transfer-Encoding===>8Bit
+Date===>Fri, 13 May 2016 17:28:32 +0800
+X-Priority===>3
+Message-ID===><tencent_0B2D69510496EBD03BB8B72E@qq.com>
+X-QQ-MIME===>TCMime 1.0 by Tencent
+X-Mailer===>QQMail 2.x
+X-QQ-Mailer===>QQMail 2.x
+X-QQ-SENDSIZE===>520
+X-CM-TRANSID===>NcCowADHYuFAnjVX+kCZAA--.49913S3
+Authentication-Results===>mx3; spf=pass smtp.mail=1017614993@qq.com; dki
+	m=pass header.i=@qq.com
+X-Coremail-Antispam===>1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUfc_-UUUUU
+X-EsetId===>37303A29E20FD06F617363
+Main Body ===><div>乾颐盾是由亁颐堂现任明教教主开发的综合性安全课程</div>

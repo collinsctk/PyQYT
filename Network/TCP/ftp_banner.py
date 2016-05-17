@@ -36,4 +36,4 @@ def ftp_banner(ip, port):#定义三次TCP握手方法，传入目的IP和端口�
 		pass
 
 if __name__ == '__main__':
-	print(ftp_banner('192.168.214.136', 21))
+	print(ftp_banner('192.168.220.129', 21))

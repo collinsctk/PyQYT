@@ -14,6 +14,7 @@ import logging
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)#清除报错
 from scapy.all import *
 import re
+import optparse
 
 def dns_query(dns_name):
 	dns_result = sr1(IP(dst="114.114.114.114")/UDP()/DNS(id=168,qr=0,opcode=0,rd=1,qd=DNSQR(qname=dns_name)), verbose=False)
@@ -30,5 +31,12 @@ def dns_query(dns_name):
 			break
 
 if __name__ == "__main__":
-	dns_query(sys.argv[1])
+	parser = optparse.OptionParser('用法：\n python3 DNS_Query.py --domainName 域名')
+	parser.add_option('--domainName', dest = 'domainName', type = 'string', help = '要被解析的域名')
+	(options, args) = parser.parse_args()
+	domainName = options.domainName
+	if domainName == None:
+		print(parser.usage)
+	else:
+		dns_query(domainName)
 

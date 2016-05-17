@@ -8,9 +8,11 @@
 
 import os
 import re#导入正则表达式模块
+import optparse
+
 def GET_MAC(iface):#定义获取MAC地址的模块，传入接口名字
     #data = commands.getoutput("ifconfig " + iface)
-    data = os.popen("ifconfig " + iface).read()#运行linux系统命令‘ifconifg’，并且读取输出信息赋值到data
+    data = os.popen("ifconfig " + iface).read()#运行linux系统命令‘ifconfig’，并且读取输出信息赋值到data
     words = data.split()#把data中的数据通过空格分隔，并且产生清单
     found = 0#是否找到MAC地址
     location = 0#搜索清单的位置记录
@@ -29,5 +31,13 @@ def GET_MAC(iface):#定义获取MAC地址的模块，传入接口名字
     return mac#返回mac
 
 if __name__ == "__main__":
-    print(GET_MAC('eno33554944'))
+    parser = optparse.OptionParser('用法：\n python3 GET_MAC.py --ifname 接口名')
+    parser.add_option('--ifname', dest = 'ifname', type = 'string', help = '要查询的接口的名字')
+    (options, args) = parser.parse_args()
+    ifname = options.ifname
+    if ifname == None:
+        print(parser.usage)
+    else:
+        print(GET_MAC(ifname))
+
 
