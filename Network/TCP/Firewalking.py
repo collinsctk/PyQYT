@@ -28,9 +28,9 @@ def Firewalking(dstaddr, ttlno, lport, hport):#定义方法，传入目的地址
 		icmp_fields = result_list[i][1]['ICMP'].fields#提取响应数据包的ICMP字段，并产生字典！
 		ip_fields = result_list[i][1]['IP'].fields#提取响应数据包的IP字段，并产生字典！
 		scan_fields = result_list[i][0]['TCP'].fields#提取发送数据包的TCP字段，并产生字典！
-		if icmp_fields['type'] == 11:#如果ICMP类型为11，TTL超时！
+		if icmp_fields['type'] == 0:#如果ICMP类型为11，TTL超时！
 			#打印防火墙地址与开放端口号
 			print('Firewall is at ' + ip_fields['src'] + ' Port: ' + str(scan_fields['dport']) + ' is Open!!!')
 
 if __name__ == '__main__':
-	Firewalking('10.1.1.1', 0, 20, 40)
+	Firewalking('172.16.1.103', 0, 20, 40)

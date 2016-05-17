@@ -18,6 +18,7 @@ import struct
 import random
 import sys
 import re
+import optparse
 
 def Tracert_one(dst,dport,ttl_no):#发一个Traceroute包，参数需要目的地址，目的端口，TTL。
 	send_time = time.time()#记录发送时间
@@ -59,6 +60,13 @@ def QYT_Tracert(dst,hops):
 
 if __name__ == '__main__':
 	conf.route.add(net='202.100.0.0/16',gw='202.100.1.3')#为Scapy添加路由
-	destination = sys.argv[1]
-	hops = int(sys.argv[2])
-	QYT_Tracert(destination, hops)
+	parser = optparse.OptionParser('用法：\n python3 Traceroute.py --ip 目标IP --hops 跳数')
+	parser.add_option('--ip', dest = 'ip', type = 'string', help = '指定要查询的目标IP')
+	parser.add_option('--hops', dest = 'hops', type = 'string', help = '跳数')
+	(options, args) = parser.parse_args()
+	ip = options.ip
+	hops = options.hops
+	if ip == None or hops == None:
+		print(parser.usage)
+	else:
+		QYT_Tracert(ip, int(hops))

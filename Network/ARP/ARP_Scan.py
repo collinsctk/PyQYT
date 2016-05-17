@@ -16,8 +16,9 @@ from scapy.all import *
 #from GET_IP import get_ip_address #导入获取本机IP地址方法
 from GET_IP_IFCONFIG import get_ip_address_ifconfig #导入获取本机IP地址方法
 from GET_MAC import get_mac_address #导入获取本机MAC地址方法
+import optparse
 
-def arp_scan(network_prefix, ifname = 'eno33554944'):
+def arp_scan(network_prefix, ifname):
 	#localip = get_ip_address(ifname)
 	#获取本机IP地址
 	localip = get_ip_address_ifconfig(ifname)['ip_address']
@@ -45,15 +46,15 @@ def arp_scan(network_prefix, ifname = 'eno33554944'):
 	return IP_MAC_LIST #返回IP_MAC_LIST这个清单
 
 if __name__ == "__main__":
-	import sys
-	if len(sys.argv) > 1:#./ARP_scan.py 202.100.1.0 xxxxxxx xxxxxxxx
-		prefix = sys.argv[1] #第一个参数为网络地址
-		if len(sys.argv) > 2: #./ARP_scan.py 202.100.1.1 eno33554944 xxxxxxxx
-			interface = sys.argv[2] #第二个参数为接口
-	if len(sys.argv) > 2:#如果提供接口字段
-		for ip,mac in arp_scan(prefix, interface):
-			print('IP地址: ' + ip + ' MAC地址: ' + mac)
-	else:#如果未提供接口字段，就使用默认的接口信息
-		for ip,mac in arp_scan(prefix):
-			print('IP地址: ' + ip + ' MAC地址: ' + mac)
+	parser = optparse.OptionParser('用法：\n python3 ARP_Scan.py --network 扫描地址范围 --ifname 扫描接口名')
+	parser.add_option('--network', dest = 'network', type = 'string', help = '扫描地址范围')
+	parser.add_option('--ifname', dest = 'ifname', type = 'string', help = '扫描接口名')
 
+	(options, args) = parser.parse_args()
+	network = options.network
+	ifname = options.ifname
+	if network == None or ifname == None:
+		print(parser.usage)
+	else:
+		for ip,mac in arp_scan(network, ifname):
+			print('IP地址: ' + ip + ' MAC地址: ' + mac)

@@ -19,4 +19,4 @@ def get_ip_address(ifname):
     )[20:24])
 
 if __name__ == "__main__":
-	print(get_ip_address('eno33554944'))
+	print(get_ip_address('eth0'))
