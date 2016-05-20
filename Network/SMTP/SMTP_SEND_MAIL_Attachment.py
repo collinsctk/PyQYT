@@ -43,8 +43,8 @@ def qyt_smtp_attachment(mailserver, username, password, From, To, Subj, Main_Bod
 	if failed:
 		print('Falied recipients:', failed)#如果出现故障，打印故障原因！
 	else:
-		print('No errors.')#如果没有故障发生，打印‘No errors.’！
-	print('Bye.')
+		print('邮件已经成功发出！')#如果没有故障发生，打印‘No errors.’！
+	#print('Bye.')
 
 if __name__ == '__main__':
 	import getpass 

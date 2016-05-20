@@ -1,0 +1,71 @@
+<189>41: *May 20 09:20:49.959: %TRACKING-5-STATE: 1 ip sla 1 reachability Down->Up
+<189>42: *May 20 09:21:09.963: %TRACKING-5-STATE: 1 ip sla 1 reachability Up->Down
+<189>43: *May 20 09:21:19.967: %TRACKING-5-STATE: 1 ip sla 1 reachability Down->Up
+<189>45: *May 20 09:29:54.975: %TRACKING-5-STATE: 1 ip sla 1 reachability Down->Up
+<189>46: *May 20 09:29:59.979: %TRACKING-5-STATE: 1 ip sla 1 reachability Up->Down
+<189>47: *May 20 09:30:19.983: %TRACKING-5-STATE: 1 ip sla 1 reachability Down->Up
+<189>48: *May 20 09:30:24.987: %TRACKING-5-STATE: 1 ip sla 1 reachability Up->Down
+<189>49: *May 20 09:32:04.991: %TRACKING-5-STATE: 1 ip sla 1 reachability Down->Up
+<189>50: *May 20 09:32:14.995: %TRACKING-5-STATE: 1 ip sla 1 reachability Up->Down
+<189>51: *May 20 09:34:35.003: %TRACKING-5-STATE: 1 ip sla 1 reachability Down->Up
+<189>52: *May 20 09:34:40.007: %TRACKING-5-STATE: 1 ip sla 1 reachability Up->Down
+<189>53: *May 20 09:35:35.011: %TRACKING-5-STATE: 1 ip sla 1 reachability Down->Up
+<189>54: *May 20 09:35:40.015: %TRACKING-5-STATE: 1 ip sla 1 reachability Up->Down
+<187>55: *May 20 09:37:43.623: %NHRP-3-PAKREPLY: Receive Registration Reply packet with error - unique address registered already(14)
+<189>56: *May 20 09:38:08.875: %LINEPROTO-5-UPDOWN: Line protocol on Interface Tunnel0, changed state to down
+<189>57: *May 20 09:38:08.879: %LINK-5-CHANGED: Interface Tunnel0, changed state to administratively down
+<187>58: *May 20 09:38:11.795: %NHRP-3-PAKREPLY: Receive Registration Reply packet with error - unique address registered already(14)
+<189>59: *May 20 09:38:12.691: %LINEPROTO-5-UPDOWN: Line protocol on Interface Tunnel0, changed state to up
+<187>60: *May 20 09:38:12.711: %LINK-3-UPDOWN: Interface Tunnel0, changed state to up
+<189>61: *May 20 09:38:50.019: %TRACKING-5-STATE: 1 ip sla 1 reachability Down->Up
+<187>62: *May 20 09:39:46.019: %NHRP-3-PAKREPLY: Receive Registration Reply packet with error - unique address registered already(14)
+<189>63: *May 20 09:40:05.035: %TRACKING-5-STATE: 1 ip sla 1 reachability Up->Down
+<187>64: *May 20 09:40:15.203: %NHRP-3-PAKREPLY: Receive Registration Reply packet with error - unique address registered already(14)
+<189>65: *May 20 09:41:05.395: %LINEPROTO-5-UPDOWN: Line protocol on Interface Tunnel0, changed state to down
+<189>66: *May 20 09:41:05.399: %LINK-5-CHANGED: Interface Tunnel0, changed state to administratively down
+<187>67: *May 20 09:41:07.123: %NHRP-3-PAKREPLY: Receive Registration Reply packet with error - unique address registered already(14)
+<189>68: *May 20 09:41:08.015: %LINEPROTO-5-UPDOWN: Line protocol on Interface Tunnel0, changed state to up
+<187>69: *May 20 09:41:08.035: %LINK-3-UPDOWN: Interface Tunnel0, changed state to up
+<189>70: *May 20 09:44:10.375: %LINEPROTO-5-UPDOWN: Line protocol on Interface Tunnel0, changed state to down
+<189>71: *May 20 09:44:10.379: %LINK-5-CHANGED: Interface Tunnel0, changed state to administratively down
+<189>72: *May 20 09:44:13.095: %LINEPROTO-5-UPDOWN: Line protocol on Interface Tunnel0, changed state to up
+<187>73: *May 20 09:44:13.115: %LINK-3-UPDOWN: Interface Tunnel0, changed state to up
+<189>74: *May 20 09:44:30.039: %TRACKING-5-STATE: 1 ip sla 1 reachability Down->Up
+<189>75: *May 20 09:45:45.043: %TRACKING-5-STATE: 1 ip sla 1 reachability Up->Down
+<189>76: *May 20 09:46:35.047: %TRACKING-5-STATE: 1 ip sla 1 reachability Down->Up
+<189>77: *May 20 09:47:30.051: %TRACKING-5-STATE: 1 ip sla 1 reachability Up->Down
+<189>78: *May 20 09:47:55.055: %TRACKING-5-STATE: 1 ip sla 1 reachability Down->Up
+<189>79: *May 20 09:48:58.715: %SYS-5-CONFIG_I: Configured from console by console
+<189>80: *May 20 09:52:00.819: %SYS-5-CONFIG_I: Configured from console by console
+Connected (version 1.99, client Cisco-1.25)
+Authentication (password) successful!
+<189>81: *May 20 09:52:15.087: %TRACKING-5-STATE: 1 ip sla 1 reachability Up->Down
+<189>82: *May 20 09:52:26.775: %LINEPROTO-5-UPDOWN: Line protocol on Interface Tunnel0, changed state to down
+<189>83: *May 20 09:52:26.779: %LINEPROTO-5-UPDOWN: Line protocol on Interface Tunnel0, changed state to up
+<189>84: *May 20 09:52:28.643: %SYS-5-CONFIG_I: Configured from console by admin on vty0 (202.100.1.138)
+Connected (version 1.99, client Cisco-1.25)
+Authentication (password) successful!
+<189>85: *May 20 09:52:40.091: %TRACKING-5-STATE: 1 ip sla 1 reachability Down->Up
+<189>86: *May 20 09:52:50.715: %LINEPROTO-5-UPDOWN: Line protocol on Interface Tunnel0, changed state to down
+<189>87: *May 20 09:52:50.723: %LINEPROTO-5-UPDOWN: Line protocol on Interface Tunnel0, changed state to up
+<189>88: *May 20 09:52:52.659: %SYS-5-CONFIG_I: Configured from console by admin on vty0 (202.100.1.138)
+Connected (version 1.99, client Cisco-1.25)
+Authentication (password) successful!
+<189>89: *May 20 09:53:10.099: %TRACKING-5-STATE: 1 ip sla 1 reachability Up->Down
+Connected (version 1.99, client Cisco-1.25)
+Authentication (password) successful!
+<189>90: *May 20 09:53:15.103: %TRACKING-5-STATE: 1 ip sla 1 reachability Down->Up
+<189>91: *May 20 09:53:20.963: %LINEPROTO-5-UPDOWN: Line protocol on Interface Tunnel0, changed state to down
+<189>92: *May 20 09:53:20.971: %LINEPROTO-5-UPDOWN: Line protocol on Interface Tunnel0, changed state to up
+<189>93: *May 20 09:53:22.887: %SYS-5-CONFIG_I: Configured from console by admin on vty0 (202.100.1.138)
+<189>94: *May 20 09:53:32.483: %LINEPROTO-5-UPDOWN: Line protocol on Interface Tunnel0, changed state to down
+<189>95: *May 20 09:53:32.487: %LINEPROTO-5-UPDOWN: Line protocol on Interface Tunnel0, changed state to up
+<189>96: *May 20 09:53:34.407: %SYS-5-CONFIG_I: Configured from console by admin on vty1 (202.100.1.138)
+Connected (version 1.99, client Cisco-1.25)
+Authentication (password) successful!
+<189>97: *May 20 09:53:50.107: %TRACKING-5-STATE: 1 ip sla 1 reachability Up->Down
+<189>98: *May 20 09:53:59.015: %SYS-5-CONFIG_I: Configured from console by admin on vty0 (202.100.1.138)
+Connected (version 1.99, client Cisco-1.25)
+Authentication (password) successful!
+<189>99: *May 20 09:54:10.111: %TRACKING-5-STATE: 1 ip sla 1 reachability Down->Up
+<189>100: *May 20 09:54:18.687: %SYS-5-CONFIG_I: Configured from console by admin on vty0 (202.100.1.138)
