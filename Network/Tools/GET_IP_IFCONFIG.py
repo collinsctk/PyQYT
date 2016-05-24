@@ -8,6 +8,8 @@
 
 import os
 import re#导入正则表达式模块
+import optparse
+
 def get_ip_address_ifconfig(iface):#定义获取网络地址的模块，传入接口名字
     #data = commands.getoutput("ifconfig " + iface)
     data = os.popen("ifconfig " + iface).read()#运行linux系统命令‘ifconifg’，并且读取输出信息赋值到data
@@ -60,7 +62,14 @@ def get_ip_address_ifconfig(iface):#定义获取网络地址的模块，传入�
     return get_ip_address_result#返回包括IP，网络和广播地址的字典内容
 
 if __name__ == "__main__":
-    for x,y in get_ip_address_ifconfig('eno33554944').items():
-        print(x,y)
+    parser = optparse.OptionParser('用法：\n python3 GET_IP_IFCONFIG.py --ifname 接口名')
+    parser.add_option('--ifname', dest = 'ifname', type = 'string', help = '要查询的接口的名字')
+    (options, args) = parser.parse_args()
+    ifname = options.ifname
+    if ifname == None:
+        print(parser.usage)
+    else:
+        for x,y in get_ip_address_ifconfig(ifname).items():
+            print(x,y)
 
 

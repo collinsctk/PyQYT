@@ -9,6 +9,7 @@
 import struct
 from functools import reduce
 import sys
+import optparse
 
 def Str_to_Int(string):
 	if ord(string[0]) > 90:
@@ -32,5 +33,13 @@ def Change_MAC_To_Bytes(MAC):
 	section6 = Str_to_Int(MAC.split(':')[5])
 	Bytes_MAC = struct.pack('!6B', section1, section2, section3, section4, section5, section6)
 	return Bytes_MAC
+
 if __name__ == "__main__":
-	print(Change_MAC_To_Bytes(sys.argv[1]))
+	parser = optparse.OptionParser('用法：\n python3 Change_MAC_To_Bytes.py --mac MAC地址')
+	parser.add_option('--mac', dest = 'mac', type = 'string', help = 'MAC地址')
+	(options, args) = parser.parse_args()
+	macaddr = options.mac
+	if macaddr == None:
+		print(parser.usage)
+	else:
+		print(Change_MAC_To_Bytes(macaddr))

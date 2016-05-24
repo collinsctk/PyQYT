@@ -14,6 +14,7 @@ import socket
 import struct
 import sys
 import time
+import optparse
 
 TIME_1970 = 2208988800
 
@@ -33,11 +34,12 @@ def ntp_client(NTP_SERVER):
 	print('\tTime=%s' %time.ctime(t))
 
 if __name__ == '__main__':
-	ntp_server = sys.argv[1]
-	ntp_client(ntp_server)
-	#'0.uk.pool.ntp.org'
-
-
-
-
-
+	parser = optparse.OptionParser('用法：\n python3 NTP_Client_RAW.py --server NTP服务器')
+	parser.add_option('--server', dest = 'server', type = 'string', help = 'NTP服务器')
+	(options, args) = parser.parse_args()
+	server = options.server
+	if server == None:
+		print(parser.usage)
+	else:
+		ntp_client(server)
+		#'0.uk.pool.ntp.org'

@@ -35,10 +35,8 @@ def qyt_rec_mail(mailserver, mailuser, mailpasswd, id_no):
 				if part.get_content_maintype() == 'multipart':
 					part_dict = part.items()#提取'multipart'内容产生字典
 					for key in part_dict:#遍历字典
-						#print(key[0])
 						if key[0] == 'Subject' and  key[1][-4:] == id_no and key[1][:2] == 'Re':
 							#print('get reply！')
-							#print(key[1])
 							for part in str_message.walk():
 								filename = part.get_filename()
 								if filename == None:

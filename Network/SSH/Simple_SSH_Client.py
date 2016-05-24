@@ -11,6 +11,7 @@ sys.path.append('/usr/lib/python3.4/site-packages/PyQYT/ExtentionPackages')
 sys.path.append('../../ExtentionPackages')
 
 import paramiko
+import optparse
 
 def QYT_SSHClient_SingleCMD(ip, username, password, cmd):
 	try:
@@ -22,8 +23,8 @@ def QYT_SSHClient_SingleCMD(ip, username, password, cmd):
 		x = stdout.read().decode()#读取回显
 		print(x)#打印回显
 		ssh.close()
-	except:
-		print('%stErrorn'%(ip))
+	except Exception as e:
+		print('%stErrorn %s'%(ip, e))
 
 if __name__ == '__main__':
-	QYT_SSHClient_SingleCMD('202.100.1.3', 'cisco', 'cisco', 'show ver')
+		QYT_SSHClient_SingleCMD('202.100.1.1', 'admin', 'cisco', 'show ip flow top-talkers')

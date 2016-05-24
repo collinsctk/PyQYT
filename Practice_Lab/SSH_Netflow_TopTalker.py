@@ -90,6 +90,7 @@ def top_talkers_smtp_alert(ip, username, password):
 		time.sleep(30)
 		operation_code = qyt_rec_mail('pop.163.com', 'collinsctk', '1a.cisco', id_no)
 		#print(operation_code)
+
 		if operation_code == True:
 			cmds = ['configure terminal', 'ip access-list extended python_acl_'+id_no]
 			for ip in top_talkers_not_in_white_list:
@@ -101,7 +102,7 @@ def top_talkers_smtp_alert(ip, username, password):
 			cmds.append(cmd)
 			cmd = 'ip access-group python_acl_' + id_no + ' in'
 			cmds.append(cmd)
-			#print(cmds)
+
 			QYT_SSHClient_MultiCMD(local_ip, local_username, local_password, cmds)
 
 		time.sleep(20)

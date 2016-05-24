@@ -15,15 +15,16 @@ import logging
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)#清除报错
 from scapy.all import *
 #from GET_IP import get_ip_address #获取本机IP地址
-from GET_IP_IFCONFIG import get_ip_address_ifconfig #获取本机IP地址
-from GET_MAC import get_mac_address #获取本机MAC地址
+from PyQYT.Network.Tools.GET_IP import get_ip_address #获取本机IP地址
+from PyQYT.Network.Tools.GET_MAC import get_mac_address #获取本机MAC地址
+import optparse
 #test github
+#获取指定IP的MAC地址，要指定发送ARP请求的接口
 
-
-def get_arp(ip_address, ifname = 'eno33554944'):
+def get_arp(ip_address, ifname):
 	#localip = get_ip_address(ifname)
 	#获取本机IP地址
-	localip = get_ip_address_ifconfig(ifname)['ip_address']
+	localip = get_ip_address(ifname)
 	#获取本机MAC地址
 	localmac = get_mac_address(ifname)
 	#发送ARP请求并等待响应
@@ -36,12 +37,13 @@ def get_arp(ip_address, ifname = 'eno33554944'):
 	return result_list[0][1][1].fields['hwsrc']
 
 if __name__ == "__main__":
-	import sys
-	if len(sys.argv) > 1: #./ARP_def 202.100.1.1 xxxxxxx xxxxxxxx
-		ipaddress = sys.argv[1] #第一个参数为IP地址
-		if len(sys.argv) > 2: #./ARP_def 202.100.1.1 eno33554944 xxxxxxxx
-			interface = sys.argv[2] #第二个参数为接口
-	if len(sys.argv) > 2: #如果提供接口字段
-		print('IP地址: ' + ipaddress + ' MAC地址: ' + get_arp(ipaddress, interface))
-	else:#如果未提供接口字段，就使用默认的接口信息
-		print('IP地址: ' + ipaddress + ' MAC地址: ' + get_arp(ipaddress))
+	parser = optparse.OptionParser('用法：\n python3 ARP_def.py --ip 目标IP --ifname 本地接口名')
+	parser.add_option('--ip', dest = 'ip', type = 'string', help = '指定要查询的目标IP')
+	parser.add_option('--ifname', dest = 'ifname', type = 'string', help = '指定发送ARP请求的本地接口名')
+	(options, args) = parser.parse_args()
+	ip = options.ip
+	ifname = options.ifname
+	if ip == None or ifname == None:
+		print(parser.usage)
+	else:
+		print('IP地址: ' + ip + ' MAC地址: ' + get_arp(ip, ifname))
