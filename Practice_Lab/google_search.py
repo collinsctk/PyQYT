@@ -14,11 +14,11 @@ from apiclient.discovery import build
 def google_search(key_word):
 
     service = build("customsearch", "v1",
-                 developerKey="AIzaSyD2qOb-ugkp6kHW2eGsnZbYkyd1XjJl5ys")
+                 developerKey="你的KEY")
 
     res = service.cse().list(
          q=key_word,
-         cx='016497539025835913472:ejeuz8_ctic',
+         cx='搜索引擎ID',
          num=10, #Valid values are integers between 1 and 10, inclusive.
     ).execute() 
 
