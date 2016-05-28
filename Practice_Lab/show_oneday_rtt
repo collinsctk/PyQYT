@@ -1,0 +1,363 @@
+#!/usr/bin/python3.4
+# -*- coding=utf-8 -*-
+#本脚由亁颐堂现任明教教主编写，用于乾颐盾Python课程！
+#教主QQ:605658506
+#亁颐堂官网www.qytang.com
+#乾颐盾是由亁颐堂现任明教教主开发的综合性安全课程
+#包括传统网络安全（防火墙，IPS...）与Python语言和黑客渗透课程！
+
+import shelve
+from SMTP_AD import qyt_smtp_attachment
+
+def show_rtt(day):
+	Shelve_DB = shelve.open('/python/SLA_DB')
+	day_rtt_list = Shelve_DB[day]
+	dns_list = []
+	http_list = []
+	for rtt in day_rtt_list:
+		#print(rtt)
+		dns_list.append(rtt[1])
+		http_list.append(rtt[2])
+	max_dns_rtt = max(dns_list)
+	min_dns_rtt = min(dns_list)
+	avg_dns_rtt = sum(dns_list)/len(dns_list)
+	max_http_rtt = max(http_list)
+	min_http_rtt = min(http_list)
+	avg_http_rtt = sum(http_list)/len(http_list)
+	Main_Body = ''
+	dns_summary = 'DNS  RTT最大值为:%d 最小值为:%d 平均值为:%d' % (max_dns_rtt, min_dns_rtt, avg_dns_rtt)
+	Main_Body = Main_Body + dns_summary + '\n'
+	print(dns_summary)
+	http_summary = 'HTTP RTT最大值为:%d 最小值为:%d 平均值为:%d' % (max_http_rtt, min_http_rtt, avg_http_rtt)
+	Main_Body = Main_Body + http_summary + '\n'
+	print(http_summary)
+	max_time = []
+	for rtt in day_rtt_list:
+		if rtt[2] == max_http_rtt:
+			max_hour = rtt[0]/60
+			max_min = rtt[0]%60
+			max_time.append(str(int(max_hour)) + ':' + str(max_min))
+	Main_Body = Main_Body + '最大HTTP RTT出现在:'
+	print('最大HTTP RTT出现在:',end='')
+	for x in max_time:
+		print(x,end=' ')
+		Main_Body = Main_Body + x + ' '
+	Main_Body = Main_Body + '\n'
+	print()
+
+	hour1_dns_list, hour1_http_list = [], []
+	hour2_dns_list, hour2_http_list = [], []
+	hour3_dns_list, hour3_http_list = [], []
+	hour4_dns_list, hour4_http_list = [], []
+	hour5_dns_list, hour5_http_list = [], []
+	hour6_dns_list, hour6_http_list = [], []
+	hour7_dns_list, hour7_http_list = [], []
+	hour8_dns_list, hour8_http_list = [], []
+	hour9_dns_list, hour9_http_list = [], []
+	hour10_dns_list, hour10_http_list = [], []
+	hour11_dns_list, hour11_http_list = [], []
+	hour12_dns_list, hour12_http_list = [], []
+	hour13_dns_list, hour13_http_list = [], []
+	hour14_dns_list, hour14_http_list = [], []
+	hour15_dns_list, hour15_http_list = [], []
+	hour16_dns_list, hour16_http_list = [], []
+	hour17_dns_list, hour17_http_list = [], []
+	hour18_dns_list, hour18_http_list = [], []
+	hour19_dns_list, hour19_http_list = [], []
+	hour20_dns_list, hour20_http_list = [], []
+	hour21_dns_list, hour21_http_list = [], []
+	hour22_dns_list, hour22_http_list = [], []
+	hour23_dns_list, hour23_http_list = [], []
+	hour24_dns_list, hour24_http_list = [], []
+	
+	for rtt in day_rtt_list:
+		#print(rtt[0])
+		if 0 < rtt[0] < 60:
+			hour1_dns_list.append(rtt[1])
+			hour1_http_list.append(rtt[2])
+		elif 61 < rtt[0] < 120:
+			hour2_dns_list.append(rtt[1])
+			hour2_http_list.append(rtt[2])
+		elif 121 < rtt[0] < 180:
+			hour3_dns_list.append(rtt[1])
+			hour3_http_list.append(rtt[2])
+		elif 181 < rtt[0] < 240:
+			hour4_dns_list.append(rtt[1])
+			hour4_http_list.append(rtt[2])
+		elif 241 < rtt[0] < 300:
+			hour5_dns_list.append(rtt[1])
+			hour5_http_list.append(rtt[2])
+		elif 301 < rtt[0] < 360:
+			hour6_dns_list.append(rtt[1])
+			hour6_http_list.append(rtt[2])
+		elif 361 < rtt[0] < 420:
+			hour7_dns_list.append(rtt[1])
+			hour7_http_list.append(rtt[2])
+		elif 421 < rtt[0] < 480:
+			hour8_dns_list.append(rtt[1])
+			hour8_http_list.append(rtt[2])
+		elif 481 < rtt[0] < 540:
+			hour9_dns_list.append(rtt[1])
+			hour9_http_list.append(rtt[2])
+		elif 541 < rtt[0] < 600:
+			hour10_dns_list.append(rtt[1])
+			hour10_http_list.append(rtt[2])
+		elif 601 < rtt[0] < 660:
+			#print(rtt)
+			hour11_dns_list.append(rtt[1])
+			hour11_http_list.append(rtt[2])
+		elif 661 < rtt[0] < 720:
+			#print(rtt)
+			hour12_dns_list.append(rtt[1])
+			hour12_http_list.append(rtt[2])
+		elif 721 < rtt[0] < 780:
+			hour13_dns_list.append(rtt[1])
+			hour13_http_list.append(rtt[2])
+		elif 781 < rtt[0] < 840:
+			hour14_dns_list.append(rtt[1])
+			hour14_http_list.append(rtt[2])
+		elif 841 < rtt[0] < 900:
+			hour15_dns_list.append(rtt[1])
+			hour15_http_list.append(rtt[2])
+		elif 901 < rtt[0] < 960:
+			hour16_dns_list.append(rtt[1])
+			hour16_http_list.append(rtt[2])
+		elif 961 < rtt[0] < 1020:
+			#print(rtt[0])
+			hour17_dns_list.append(rtt[1])
+			hour17_http_list.append(rtt[2])
+		elif 1021 < rtt[0] < 1080:
+			hour18_dns_list.append(rtt[1])
+			hour18_http_list.append(rtt[2])
+		elif 1081 < rtt[0] < 1140:
+			hour19_dns_list.append(rtt[1])
+			hour19_http_list.append(rtt[2])
+		elif 1141 < rtt[0] < 1200:
+			hour20_dns_list.append(rtt[1])
+			hour20_http_list.append(rtt[2])
+		elif 1201 < rtt[0] < 1260:
+			hour21_dns_list.append(rtt[1])
+			hour21_http_list.append(rtt[2])
+		elif 1261 < rtt[0] < 1320:
+			hour22_dns_list.append(rtt[1])
+			hour22_http_list.append(rtt[2])
+		elif 1321 < rtt[0] < 1380:
+			hour23_dns_list.append(rtt[1])
+			hour23_http_list.append(rtt[2])
+		elif 1381 < rtt[0] < 1440:
+			hour24_dns_list.append(rtt[1])
+			hour24_http_list.append(rtt[2])
+	#print(hour11_dns_list)
+	title_name = '%-23s | %-80s' % ('=======DHS RTT========', '========HTTP RTT======== | 最大值 “+”表示5毫秒')
+	print(title_name)
+	Main_Body = Main_Body + title_name + '\n'
+	#print('=================一个“+”表示5毫秒=================')
+	if hour1_dns_list and hour1_http_list:
+		hour1_avg_dns_rtt = sum(hour1_dns_list)/len(hour1_dns_list)
+		hour1_avg_http_rtt = sum(hour1_http_list)/len(hour1_http_list)
+		print(hour1_avg_dns_rtt, hour1_avg_http_rtt)
+		dns_str = '+' * int(hour1_avg_dns_rtt/5)
+		http_str = '+' * int(hour1_avg_http_rtt/5)
+		print_str = '00:%-20s | %-80s | %s' % (dns_str, http_str, str(max(hour1_http_list)))
+		print(print_str)
+		Main_Body = Main_Body + print_str + '\n'
+	if hour2_dns_list and hour2_http_list:
+		hour2_avg_dns_rtt = sum(hour2_dns_list)/len(hour2_dns_list)
+		hour2_avg_http_rtt = sum(hour2_http_list)/len(hour2_http_list)
+		dns_str = '+' * int(hour2_avg_dns_rtt/5)
+		http_str = '+' * int(hour2_avg_http_rtt/5)
+		print_str = '01:%-20s | %-50s | %s' % (dns_str, http_str, str(max(hour2_http_list)))
+		print(print_str)
+		Main_Body = Main_Body + print_str + '\n'
+	if hour3_dns_list and hour3_http_list:
+		hour3_avg_dns_rtt = sum(hour3_dns_list)/len(hour3_dns_list)
+		hour3_avg_http_rtt = sum(hour3_http_list)/len(hour3_http_list)
+		dns_str = '+' * int(hour3_avg_dns_rtt/5)
+		http_str = '+' * int(hour3_avg_http_rtt/5)
+		print_str = '02:%-20s | %-50s | %s' % (dns_str, http_str, str(max(hour3_http_list)))
+		print(print_str)
+		Main_Body = Main_Body + print_str + '\n'
+	if hour4_dns_list and hour4_http_list:
+		hour4_avg_dns_rtt = sum(hour4_dns_list)/len(hour4_dns_list)
+		hour4_avg_http_rtt = sum(hour4_http_list)/len(hour4_http_list)
+		dns_str = '+' * int(hour4_avg_dns_rtt/5)
+		http_str = '+' * int(hour4_avg_http_rtt/5)
+		print_str = '03:%-20s | %-50s | %s' % (dns_str, http_str, str(max(hour4_http_list)))
+		print(print_str)
+		Main_Body = Main_Body + print_str + '\n'
+	if hour5_dns_list and hour5_http_list:
+		hour5_avg_dns_rtt = sum(hour5_dns_list)/len(hour5_dns_list)
+		hour5_avg_http_rtt = sum(hour5_http_list)/len(hour5_http_list)
+		dns_str = '+' * int(hour5_avg_dns_rtt/5)
+		http_str = '+' * int(hour5_avg_http_rtt/5)
+		print_str = '04:%-20s | %-50s | %s' % (dns_str, http_str, str(max(hour5_http_list)))
+		print(print_str)
+		Main_Body = Main_Body + print_str + '\n'
+	elif hour6_dns_list and hour6_http_list:
+		hour6_avg_dns_rtt = sum(hour6_dns_list)/len(hour6_dns_list)
+		hour6_avg_http_rtt = sum(hour6_http_list)/len(hour6_http_list)
+		dns_str = '+' * int(hour6_avg_dns_rtt/5)
+		http_str = '+' * int(hour6_avg_http_rtt/5)
+		print_str = '05:%-20s | %-50s | %s' % (dns_str, http_str, str(max(hour6_http_list)))
+		print(print_str)
+		Main_Body = Main_Body + print_str + '\n'
+	if hour7_dns_list and hour7_http_list:
+		hour7_avg_dns_rtt = sum(hour7_dns_list)/len(hour7_dns_list)
+		hour7_avg_http_rtt = sum(hour7_http_list)/len(hour7_http_list)
+		dns_str = '+' * int(hour7_avg_dns_rtt/5)
+		http_str = '+' * int(hour7_avg_http_rtt/5)
+		print_str = '06:%-20s | %-50s | %s' % (dns_str, http_str, str(max(hour7_http_list)))
+		print(print_str)
+		Main_Body = Main_Body + print_str + '\n'
+	if hour8_dns_list and hour8_http_list:
+		hour8_avg_dns_rtt = sum(hour8_dns_list)/len(hour8_dns_list)
+		hour8_avg_http_rtt = sum(hour8_http_list)/len(hour8_http_list)
+		dns_str = '+' * int(hour8_avg_dns_rtt/5)
+		http_str = '+' * int(hour8_avg_http_rtt/5)
+		print_str = '07:%-20s | %-50s | %s' % (dns_str, http_str, str(max(hour8_http_list)))
+		print(print_str)
+		Main_Body = Main_Body + print_str + '\n'
+	if hour9_dns_list and hour9_http_list:
+		hour9_avg_dns_rtt = sum(hour9_dns_list)/len(hour9_dns_list)
+		hour9_avg_http_rtt = sum(hour9_http_list)/len(hour9_http_list)
+		dns_str = '+' * int(hour9_avg_dns_rtt/5)
+		http_str = '+' * int(hour9_avg_http_rtt/5)
+		print_str = '08:%-20s | %-50s | %s' % (dns_str, http_str, str(max(hour9_http_list)))
+		print(print_str)
+		Main_Body = Main_Body + print_str + '\n'
+	if hour10_dns_list and hour10_http_list:
+		hour10_avg_dns_rtt = sum(hour10_dns_list)/len(hour10_dns_list)
+		hour10_avg_http_rtt = sum(hour10_http_list)/len(hour10_http_list)
+		dns_str = '+' * int(hour10_avg_dns_rtt/5)
+		http_str = '+' * int(hour10_avg_http_rtt/5)
+		print_str = '09:%-20s | %-50s | %s' % (dns_str, http_str, str(max(hour10_http_list)))
+		print(print_str)
+		Main_Body = Main_Body + print_str + '\n'
+	if hour11_dns_list and hour11_http_list:
+		hour11_avg_dns_rtt = sum(hour11_dns_list)/len(hour11_dns_list)
+		hour11_avg_http_rtt = sum(hour11_http_list)/len(hour11_http_list)
+		dns_str = '+' * int(hour11_avg_dns_rtt/5)
+		http_str = '+' * int(hour11_avg_http_rtt/5)
+		print_str = '10:%-20s | %-50s | %s' % (dns_str, http_str, str(max(hour11_http_list)))
+		print(print_str)
+		Main_Body = Main_Body + print_str + '\n'
+	if hour12_dns_list and hour12_http_list:
+		hour12_avg_dns_rtt = sum(hour12_dns_list)/len(hour12_dns_list)
+		hour12_avg_http_rtt = sum(hour12_http_list)/len(hour12_http_list)
+		dns_str = '+' * int(hour12_avg_dns_rtt/5)
+		http_str = '+' * int(hour12_avg_http_rtt/5)
+		print_str = '11:%-20s | %-50s | %s' % (dns_str, http_str, str(max(hour12_http_list)))
+		print(print_str)
+		Main_Body = Main_Body + print_str + '\n'
+	if hour13_dns_list and hour13_http_list:
+		hour13_avg_dns_rtt = sum(hour13_dns_list)/len(hour13_dns_list)
+		hour13_avg_http_rtt = sum(hour13_http_list)/len(hour13_http_list)
+		dns_str = '+' * int(hour13_avg_dns_rtt/5)
+		http_str = '+' * int(hour13_avg_http_rtt/5)
+		print_str = '12:%-20s | %-50s | %s' % (dns_str, http_str, str(max(hour13_http_list)))
+		print(print_str)
+		Main_Body = Main_Body + print_str + '\n'
+	if hour14_dns_list and hour14_http_list:
+		hour14_avg_dns_rtt = sum(hour14_dns_list)/len(hour14_dns_list)
+		hour14_avg_http_rtt = sum(hour14_http_list)/len(hour14_http_list)
+		dns_str = '+' * int(hour14_avg_dns_rtt/5)
+		http_str = '+' * int(hour14_avg_http_rtt/5)
+		print_str = '13:%-20s | %-50s | %s' % (dns_str, http_str, str(max(hour14_http_list)))
+		print(print_str)
+		Main_Body = Main_Body + print_str + '\n'
+	if hour15_dns_list and hour15_http_list:
+		hour15_avg_dns_rtt = sum(hour15_dns_list)/len(hour15_dns_list)
+		hour15_avg_http_rtt = sum(hour15_http_list)/len(hour15_http_list)
+		dns_str = '+' * int(hour15_avg_dns_rtt/5)
+		http_str = '+' * int(hour15_avg_http_rtt/5)
+		print_str = '14:%-20s | %-50s | %s' % (dns_str, http_str, str(max(hour15_http_list)))
+		print(print_str)
+		Main_Body = Main_Body + print_str + '\n'
+	if hour16_dns_list and hour16_http_list:
+		hour16_avg_dns_rtt = sum(hour16_dns_list)/len(hour16_dns_list)
+		hour16_avg_http_rtt = sum(hour16_http_list)/len(hour16_http_list)
+		dns_str = '+' * int(hour16_avg_dns_rtt/5)
+		http_str = '+' * int(hour16_avg_http_rtt/5)
+		print_str = '15:%-20s | %-50s | %s' % (dns_str, http_str, str(max(hour16_http_list)))
+		print(print_str)
+		Main_Body = Main_Body + print_str + '\n'
+	if hour17_dns_list and hour17_http_list:
+		hour17_avg_dns_rtt = sum(hour17_dns_list)/len(hour17_dns_list)
+		hour17_avg_http_rtt = sum(hour17_http_list)/len(hour17_http_list)
+		dns_str = '+' * int(hour17_avg_dns_rtt/5)
+		http_str = '+' * int(hour17_avg_http_rtt/5)
+		print_str = '16:%-20s | %-50s | %s' % (dns_str, http_str, str(max(hour17_http_list)))
+		print(print_str)
+		Main_Body = Main_Body + print_str + '\n'
+	if hour18_dns_list and hour18_http_list:
+		hour18_avg_dns_rtt = sum(hour18_dns_list)/len(hour18_dns_list)
+		hour18_avg_http_rtt = sum(hour18_http_list)/len(hour18_http_list)
+		dns_str = '+' * int(hour18_avg_dns_rtt/5)
+		http_str = '+' * int(hour18_avg_http_rtt/5)
+		print_str = '17:%-20s | %-50s | %s' % (dns_str, http_str, str(max(hour18_http_list)))
+		print(print_str)
+		Main_Body = Main_Body + print_str + '\n'
+	if hour19_dns_list and hour19_http_list:
+		hour19_avg_dns_rtt = sum(hour19_dns_list)/len(hour19_dns_list)
+		hour19_avg_http_rtt = sum(hour19_http_list)/len(hour19_http_list)
+		dns_str = '+' * int(hour19_avg_dns_rtt/5)
+		http_str = '+' * int(hour19_avg_http_rtt/5)
+		print_str = '18:%-20s | %-50s | %s' % (dns_str, http_str, str(max(hour19_http_list)))
+		print(print_str)
+		Main_Body = Main_Body + print_str + '\n'
+	if hour20_dns_list and hour20_http_list:
+		hour20_avg_dns_rtt = sum(hour20_dns_list)/len(hour20_dns_list)
+		hour20_avg_http_rtt = sum(hour20_http_list)/len(hour20_http_list)
+		dns_str = '+' * int(hour20_avg_dns_rtt/5)
+		http_str = '+' * int(hour20_avg_http_rtt/5)
+		print_str = '19:%-20s | %-50s | %s' % (dns_str, http_str, str(max(hour20_http_list)))
+		print(print_str)
+		Main_Body = Main_Body + print_str + '\n'
+	if hour21_dns_list and hour21_http_list:
+		hour21_avg_dns_rtt = sum(hour21_dns_list)/len(hour21_dns_list)
+		hour21_avg_http_rtt = sum(hour21_http_list)/len(hour21_http_list)
+		dns_str = '+' * int(hour21_avg_dns_rtt/5)
+		http_str = '+' * int(hour21_avg_http_rtt/5)
+		print_str = '20:%-20s | %-50s | %s' % (dns_str, http_str, str(max(hour21_http_list)))
+		print(print_str)
+		Main_Body = Main_Body + print_str + '\n'
+	if hour22_dns_list and hour22_http_list:
+		hour22_avg_dns_rtt = sum(hour22_dns_list)/len(hour22_dns_list)
+		hour22_avg_http_rtt = sum(hour22_http_list)/len(hour22_http_list)
+		dns_str = '+' * int(hour22_avg_dns_rtt/5)
+		http_str = '+' * int(hour22_avg_http_rtt/5)
+		print_str = '21:%-20s | %-50s | %s' % (dns_str, http_str, str(max(hour22_http_list)))
+		print(print_str)
+		Main_Body = Main_Body + print_str + '\n'
+	if hour23_dns_list and hour23_http_list:
+		hour23_avg_dns_rtt = sum(hour23_dns_list)/len(hour23_dns_list)
+		hour23_avg_http_rtt = sum(hour23_http_list)/len(hour23_http_list)
+		dns_str = '+' * int(hour23_avg_dns_rtt/5)
+		http_str = '+' * int(hour23_avg_http_rtt/5)
+		print_str = '22:%-20s | %-50s | %s' % (dns_str, http_str, str(max(hour23_http_list)))
+		print(print_str)
+		Main_Body = Main_Body + print_str + '\n'
+	if hour24_dns_list and hour24_http_list:
+		hour24_avg_dns_rtt = sum(hour24_dns_list)/len(hour24_dns_list)
+		hour24_avg_http_rtt = sum(hour24_http_list)/len(hour24_http_list)
+		dns_str = '+' * int(hour24_avg_dns_rtt/5)
+		http_str = '+' * int(hour24_avg_http_rtt/5)
+		print_str = '23:%-20s | %-50s | %s' % (dns_str, http_str, str(max(hour24_http_list)))
+		print(print_str)
+		Main_Body = Main_Body + print_str + '\n'
+	Shelve_DB.close()
+	subject = day + ' RTT Summary'
+	qyt_smtp_attachment('smtp.163.com',
+					  	'collinsctk',
+					  	'1a.cisco', 
+					  	'collinsctk@163.com',
+					  	'collinsctk@qytang.com;collinsctk@163.com',
+					  	subject,
+					  	Main_Body)
+if __name__ == '__main__':
+	import time
+	import re
+	format_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+	day_time_list = re.match('(\d\d\d\d)-(\d\d)-(\d{1,2})\s(\d{1,2}):(\d{1,2}):(\d{1,2})',format_time).groups()
+	DICT_Name = day_time_list[0] + '-' + day_time_list[1] + '-' + day_time_list[2]
+	show_rtt(DICT_Name)
