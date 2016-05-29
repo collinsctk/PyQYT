@@ -1,0 +1,57 @@
+#!/usr/bin/python3.4
+# -*- coding=utf-8 -*-
+#本脚由亁颐堂现任明教教主编写，用于乾颐盾Python课程！
+#教主QQ:605658506
+#亁颐堂官网www.qytang.com
+#乾颐盾是由亁颐堂现任明教教主开发的综合性安全课程
+#包括传统网络安全（防火墙，IPS...）与Python语言和黑客渗透课程！
+import requests
+from http.client import HTTPSConnection
+from base64 import b64encode
+import ssl
+from xml.etree.ElementTree import parse
+from xml.etree.ElementTree import XML
+from getpass import getpass
+import json
+
+def asa_route_add(ip,username,password,ifname,dst,gw,port=443):
+	context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)#ssl支持的协议版本
+	context.verify_mode = ssl.CERT_NONE#CERT_NONE, CERT_OPTIONAL or CERT_REQUIRED（并不检查证书有效性）
+	context.load_verify_locations('/usr/share/kde4/apps/kssl/ca-bundle.crt')#根证书文件
+	c = HTTPSConnection(ip, port=port, context=context)
+	user_pass_str = username + ':' + password
+	user_pass_str_encode = user_pass_str.encode()
+	userAndPass = b64encode(user_pass_str_encode).decode("ascii")
+	headers = {}
+	headers['Authorization'] = 'Basic %s' %  userAndPass
+	headers['Content-Type'] = 'application/json'
+	post_json = """{"tunneled": false,
+  					"kind": "object#IPv4Route",
+  					"distanceMetric": 1,
+  					"tracked": false,
+  					"interface": {
+    					"kind": "objectRef#Interface",
+    					"name": "%s"
+  						},
+  					"gateway": {
+    					"kind": "IPv4Address",
+    					"value": "%s"
+  						},
+  					"network": {
+    					"kind": "IPv4Network",
+    					"value": "%s"
+  						}
+					}""" % (ifname, gw, dst)
+	c.request('POST', '/api/routing/static', body=post_json, headers=headers)
+	res = c.getresponse()
+	print(res.read())
+
+if __name__ == "__main__":
+	ipaddr = input('ASA地址: ')
+	username = input('用户名: ')
+	password = getpass('密码: ')
+	ifname = input('出接口nameif: ')
+	dst = input('目的网络: ')
+	gw = input('网关IP: ')
+	asa_route_add(ipaddr,username,password,ifname,dst,gw)
+	#asa_route_add('202.100.1.10','apiuser','cisco','Outside','202.100.4.0/24', '202.100.10.8')
