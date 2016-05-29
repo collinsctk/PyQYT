@@ -1,0 +1,74 @@
+#!/usr/bin/python3.4
+# -*- coding=utf-8 -*-
+#本脚由亁颐堂现任明教教主编写，用于乾颐盾Python课程！
+#教主QQ:605658506
+#亁颐堂官网www.qytang.com
+#乾颐盾是由亁颐堂现任明教教主开发的综合性安全课程
+#包括传统网络安全（防火墙，IPS...）与Python语言和黑客渗透课程！
+from http.client import HTTPSConnection
+from base64 import b64encode
+import ssl
+from xml.etree.ElementTree import parse
+from xml.etree.ElementTree import XML
+from getpass import getpass
+def ise_m_userlastsession(ip,username,password,userid,port=443):
+
+	#This sets up the https connection
+	context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)#ssl支持的协议版本
+	context.verify_mode = ssl.CERT_NONE#CERT_NONE, CERT_OPTIONAL or CERT_REQUIRED（并不检查证书有效性）
+	context.load_verify_locations('/usr/share/kde4/apps/kssl/ca-bundle.crt')#根证书文件
+	c = HTTPSConnection(ip, port=port, context=context)
+	user_pass_str = username + ':' + password
+	user_pass_str_encode = user_pass_str.encode()
+	userAndPass = b64encode(user_pass_str_encode).decode("ascii")
+	headers = { 'Authorization' : 'Basic %s' %  userAndPass }
+	request_uri = '/admin/API/mnt/Session/UserName/' + userid
+	c.request('GET', request_uri, headers=headers)
+	res = c.getresponse()
+	data = res.read()
+	print(data)
+
+
+if __name__ == "__main__":
+	ipaddr = input('ISE地址: ')
+	username = input('用户名: ')
+	password = input('密码: ')
+	userid = getpass('查询用户名: ')
+	ise_m_userlastsession(ipaddr,username,password,userid)
+
+"""
+<sessionParameters>
+<passed xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xs:boolean">true</passed>
+<failed xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xs:boolean">false</failed>
+<user_name>dc-gehan</user_name>
+<nas_ip_address>137.78.5.254</nas_ip_address>
+<calling_station_id>123.118.207.87</calling_station_id>
+<network_device_name>ASA</network_device_name>
+<acs_server>QYTISE</acs_server>
+<authentication_method>PAP_ASCII</authentication_method>
+<authentication_protocol>PAP_ASCII</authentication_protocol>
+<auth_acs_timestamp>2016-05-29T14:41:26.934+08:00</auth_acs_timestamp>
+<execution_steps>
+11001,11017,15049,15008,15048,15048,15048,15048,15048,15004,15041,15006,15013,24430,24325,24313,24319,24323,24343,24402,22037,24423,15036,15048,15048,15048,15048,24432,24355,24416,24355,24420,15048,15004,15016,11002
+</execution_steps>
+<response>
+{State=ReauthSession:894e0539zM3nx36JtFEShzQs4EOQTE0zZtqKoGgTjlhOnmOrbXQ; Class=HighLevel-DC-Remote-Access; Class=CACS:894e0539zM3nx36JtFEShzQs4EOQTE0zZtqKoGgTjlhOnmOrbXQ:QYTISE/253795568/1283; LicenseTypes=1; }
+</response>
+<selected_azn_profiles>dc-sslvpn</selected_azn_profiles>
+<message_code>5200</message_code>
+<auth_acsview_timestamp>2016-05-29T14:41:26.935+08:00</auth_acsview_timestamp>
+<auth_id>1464420906000158</auth_id>
+<identity_store>QYTANG</identity_store>
+<location>All Locations#Beijing</location>
+<device_type>All Device Types#Firewall</device_type>
+<response_time>74</response_time>
+<other_attributes>
+:!:ConfigVersionId=60:!:DestinationPort=1645:!:Protocol=Radius:!:NAS-Port=344064:!:Tunnel-Client-Endpoint=(tag=0) 123.118.207.87:!:CVPN3000/ASA/PIX7x-Tunnel-Group-Name=DefaultWEBVPNGroup:!:OriginalUserName=dc-gehan:!:NetworkDeviceProfileName=Cisco:!:NetworkDeviceProfileId=8ade1f15-aef1-4a9a-8158-d02e835179db:!:IsThirdPartyDeviceFlow=false:!:SSID=137.78.1.1:!:CVPN3000/ASA/PIX7x-Client-Type=2:!:AcsSessionID=QYTISE/253795568/1283:!:SelectedAuthenticationIdentityStores=QYTANG:!:AuthorizationPolicyMatchedRule=ASA-SSL-DC-Student:!:CPMSessionID=894e0539zM3nx36JtFEShzQs4EOQTE0zZtqKoGgTjlhOnmOrbXQ:!:ISEPolicySetName=Default:!:AllowedProtocolMatchedRule=ASA:!:IdentitySelectionMatchedRule=Default:!:AD-User-Resolved-Identities=dc-gehan:!:AD-User-Candidate-Identities=dc-gehan@qytang.com:!:AD-User-Join-Point=QYTANG.COM:!:AD-User-Resolved-DNs=CN=,OU=CCIEDATACENTER,OU=DataCenter,OU=QYT,DC=qytang,DC=com:!:AD-User-DNS-Domain=qytang.com:!:AD-Groups-Names=qytang.com/QYT/DataCenter/CCIEDATACENTER/dclastweek:!:AD-Groups-Names=qytang.com/QYT/DataCenter/CCIEDATACENTER/DCIE:!:AD-Groups-Names=qytang.com/QYT/DataCenter/HighLevel-DC-Remote-Access-Student/HighLevel-dc-remote-access-student:!:AD-User-NetBios-Name=QYTANG:!:Location=Location#All Locations#Beijing:!:Device Type=Device Type#All Device Types#Firewall:!:Department=Department#ALL Department#Production-Network:!:ExternalGroups=S-1-5-21-361976156-2813222972-2995908079-1791:!:ExternalGroups=S-1-5-21-361976156-2813222972-2995908079-1642:!:ExternalGroups=S-1-5-21-361976156-2813222972-2995908079-1688:!:IdentityAccessRestricted=false:!:StepData="4= DEVICE.Location","5= DEVICE.Device Type","6= DEVICE.Department","7= Normalised Radius.RadiusFlowType","8= Radius.NAS-Port-Type","9=ASA","12=QYTANG","13=QYTANG","14=dc-gehan","15=qytang.com","16=qytang.com","18=dc-gehan@qytang.com","19=QYTANG","23= DEVICE.Department","24= DEVICE.Location","25= DEVICE.Device Type","26= Cisco-VPN3000.CVPN3000/ASA/PIX7x-Tunnel-Group-Name","27=QYTANG","28=qytang.com","29=QYTANG","30=qytang.com","31=QYTANG","32= QYTANG.ExternalGroups","33=ASA-SSL-DC-Student"=StepData:!:RADIUS Username=dc-gehan:!:Device IP Address=137.78.5.254:!:Called-Station-ID=137.78.1.1:!:CiscoAVPair=ip:source-ip=123.118.207.87
+</other_attributes>
+<acct_input_octets>0</acct_input_octets>
+<acct_output_octets>0</acct_output_octets>
+<acct_input_packets>0</acct_input_packets>
+<acct_output_packets>0</acct_output_packets>
+<endpoint_policy>Undetermined</endpoint_policy>
+</sessionParameters>
+"""
