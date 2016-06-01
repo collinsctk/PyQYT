@@ -1,0 +1,55 @@
+#!/usr/bin/python3.4
+# -*- coding=utf-8 -*-
+#本脚由亁颐堂现任明教教主编写，用于乾颐盾Python课程！
+#教主QQ:605658506
+#亁颐堂官网www.qytang.com
+#乾颐盾是由亁颐堂现任明教教主开发的综合性安全课程
+#包括传统网络安全（防火墙，IPS...）与Python语言和黑客渗透课程！
+import requests
+from http.client import HTTPSConnection
+from base64 import b64encode
+import ssl
+from xml.etree.ElementTree import parse
+from xml.etree.ElementTree import XML
+from getpass import getpass
+def ise_get_allgrp(ip,username,password,port=9060):
+	context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)#ssl支持的协议版本
+	context.verify_mode = ssl.CERT_NONE#CERT_NONE, CERT_OPTIONAL or CERT_REQUIRED（并不检查证书有效性）
+	context.load_verify_locations('/usr/share/kde4/apps/kssl/ca-bundle.crt')#根证书文件
+	c = HTTPSConnection(ip, port=port, context=context)
+	user_pass_str = username + ':' + password
+	user_pass_str_encode = user_pass_str.encode()
+	userAndPass = b64encode(user_pass_str_encode).decode("ascii")
+	headers = {}
+	headers['Authorization'] = 'Basic %s' %  userAndPass
+	headers['Accept'] = 'application/vnd.com.cisco.ise.identity.identitygroup.1.0+xml'
+	headers['Accept-Search-Result'] = 'application/vnd.com.cisco.ise.ers.searchresult.2.0+xml'
+	c.request('GET', '/ers/config/identitygroup', headers=headers)
+	res = c.getresponse()
+	data = res.read()
+	print(data)
+	root = XML(data.decode())
+	resources = root.getchildren()[0]
+	groups_list = []
+	print(resources)
+	for resource in resources.getchildren():
+		"""
+		[('id', '10ac3e70-6d90-11e5-978e-005056bf2f0a'), ('description', 'Default ALL_ACCOUNTS (default) User Group'), ('name', 'ALL_ACCOUNTS (default)')]
+		[('id', '10a42820-6d90-11e5-978e-005056bf2f0a'), ('description', 'Default Employee User Group'), ('name', 'Employee')]
+		[('id', '10df3550-6d90-11e5-978e-005056bf2f0a'), ('description', 'Default GROUP_ACCOUNTS (default) User Group'), ('name', 'GROUP_ACCOUNTS (default)')]
+		[('id', '0b3af6c0-6d90-11e5-978e-005056bf2f0a'), ('description', 'Identity group mirroring the guest type '), ('name', 'GuestType_Contractor (default)')]
+		[('id', '0af932d0-6d90-11e5-978e-005056bf2f0a'), ('description', 'Identity group mirroring the guest type '), ('name', 'GuestType_Daily (default)')]
+		[('id', '0b26f990-6d90-11e5-978e-005056bf2f0a'), ('description', 'Identity group mirroring the guest type '), ('name', 'GuestType_Weekly (default)')]
+		[('id', '10c8ee30-6d90-11e5-978e-005056bf2f0a'), ('description', 'Default OWN_ACCOUNTS (default) User Group'), ('name', 'OWN_ACCOUNTS (default)')]
+		"""
+		for x, y in resource.items():
+			if x == 'name':
+				groups_list.append(y)
+	return groups_list
+
+if __name__ == "__main__":
+	ipaddr = input('ISE地址: ')
+	username = input('用户名: ')
+	password = getpass('密码: ')
+	allgrps = ise_get_allgrp(ipaddr, username, password)
+	print(allgrps)
