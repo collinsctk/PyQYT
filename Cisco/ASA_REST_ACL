@@ -1,0 +1,91 @@
+#!/usr/bin/python3.4
+# -*- coding=utf-8 -*-
+#本脚由亁颐堂现任明教教主编写，用于乾颐盾Python课程！
+#教主QQ:605658506
+#亁颐堂官网www.qytang.com
+#乾颐盾是由亁颐堂现任明教教主开发的综合性安全课程
+#包括传统网络安全（防火墙，IPS...）与Python语言和黑客渗透课程！
+import requests
+from http.client import HTTPSConnection
+from base64 import b64encode
+import ssl
+from xml.etree.ElementTree import parse
+from xml.etree.ElementTree import XML
+from getpass import getpass
+import json
+
+def asa_acl(ip,username,password,action,pro,src,dst,dstp=0,port=443):
+	context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)#ssl支持的协议版本
+	context.verify_mode = ssl.CERT_NONE#CERT_NONE, CERT_OPTIONAL or CERT_REQUIRED（并不检查证书有效性）
+	context.load_verify_locations('/usr/share/kde4/apps/kssl/ca-bundle.crt')#根证书文件
+	c = HTTPSConnection(ip, port=port, context=context)
+	user_pass_str = username + ':' + password
+	user_pass_str_encode = user_pass_str.encode()
+	userAndPass = b64encode(user_pass_str_encode).decode("ascii")
+	headers = {}
+	headers['Authorization'] = 'Basic %s' %  userAndPass
+	headers['Content-Type'] = 'application/json'
+	if action == 1:
+		permit_action = "true"
+	elif action == 2:
+		permit_action = "false"
+	else:
+		print('action参数错误！')
+
+	if pro == "ip":
+		acl_pro = '\"AnyService\"'
+	elif pro == 'icmp':
+		acl_pro = '\"ICMPService\"'
+	elif pro == 'tcp':
+		acl_pro = '\"TcpUdpService\"'
+		tcp_udp = 1
+	elif pro == 'udp':
+		acl_pro = '\"TcpUdpService\"'
+		tcp_udp = 2
+	else:
+		acl_pro = '\"NetworkProtocol\"'
+	try:
+		if tcp_udp == 1:
+			dservice = ',\"value\": \"tcp/' + str(dstp) + '\"'
+		elif tcp_udp == 2:
+			dservice = ',\"value\": \"udp/' + str(dstp) + '\"'
+	except:
+		dservice = ''#ICMP与其他协议还存在问题！需要更加详细的文档
+
+	if src == 'any':
+		skind = '\"AnyIPAddress\"'
+		svalue = '\"any4\"'
+	else:
+		skind = '\"objectRef#NetworkObj\"'
+		svalue = '\"objectId\": \"' + src	+ '\"'
+
+	if dst == 'any':
+		dkind = '\"AnyIPAddress\"'
+		dvalue = '\"value\": \"any4\"'
+	else:
+		dkind = '\"objectRef#NetworkObj\"'
+		dvalue = '\"objectId\": \"' + dst	+ '\"'
+
+	post_json = """{
+	  				"sourceAddress": {
+    				"kind": %s,
+    				"value": %s
+  					},
+  					"destinationAddress": {
+    				"kind": %s,
+    				%s
+  					},
+  					"destinationService": {
+    				"kind": %s%s
+  					},
+  					"permit": %s,
+  					"active": true
+					}""" % (skind,svalue,dkind,dvalue,acl_pro,dservice,permit_action)
+
+	c.request('POST', '/api/access/in/Outside/rules', body=post_json, headers=headers)
+	res = c.getresponse()
+	print(res.read())
+
+if __name__ == "__main__":
+	#asa_acl('192.168.1.10','admin','cisco',1,'tcp','any','Inside-Network',23,port=443)
+	asa_acl('192.168.1.10','admin','cisco',1,'tcp','any','Inside-Server',80,port=443)
