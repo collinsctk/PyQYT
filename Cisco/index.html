@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Cisco API 网页</title>
+</head>
+<body>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<img src="Logo.jpg" width="165" height="165" />
+<form method="POST" action="cgi-bin/ciscocgi.py">
+	<p><b>请输入对象名字:</b></p>
+	<p><input type="text" name="objname"></input></p>
+	<!--参数名user, cgi脚本通过'cgi.escape(form['user'].value)'读取输入-->
+	<p><b>请输入对象地址:</b></p>
+	<p><input type="text" name="objip"></input></p>
+	<!--参数名age, cgi脚本通过'cgi.escape(form['age'].value)'读取输入-->
+	<p><b>请输入对象转换后地址 :</b></p>
+	<p><input type="text" name="natip"></input></p>
+	<p><b>请输入对象TCP端口号 :</b></p>
+	<p><input type="text" name="tcpport"></input></p>
+	<p><input type="submit"></input></p>
+</form>
+</body>
+</html>
