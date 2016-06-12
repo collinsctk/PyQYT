@@ -1,0 +1,92 @@
+#!/usr/bin/python3.4
+# -*- coding=utf-8 -*-
+#本脚由亁颐堂现任明教教主编写，用于乾颐盾Python课程！
+#教主QQ:605658506
+#亁颐堂官网www.qytang.com
+#乾颐盾是由亁颐堂现任明教教主开发的综合性安全课程
+#包括传统网络安全（防火墙，IPS...）与Python语言和黑客渗透课程！
+
+import logging
+logging.getLogger("scapy.runtime").setLevel(logging.ERROR)#清除报错
+from scapy.all import *
+import zlib
+import re
+
+pictures_directory = './pic_carver/pictures'
+pcap_file = 'qytang.pcap'
+
+def get_http_headers(http_payload):
+	#print(http_payload)
+	try:
+		headers_raw = http_payload[:http_payload.index(b"\r\n\r\n")+2]
+		headers = dict(re.findall(b"(?P<name>.*?): (?P<value>.*?)\r\n", headers_raw))
+
+	except Exception as e:
+		return None
+
+	if b"Content-Type" not in headers:
+		return None
+
+	return headers
+
+def extract_image(headers, http_payload):
+	image 		= None
+	image_type	= None
+
+	try:
+		if b"image" in headers[b"Content-Type"]:
+			image_type = headers[b"Content-Type"].split(b"/")[1]
+			image = http_payload[http_payload.index(b'\r\n\r\n')+4:]
+			try:
+				if b"Content-Encoding" in headers.keys():
+					if headers[b'Content-Encoding'] == b"gzip":
+						image = zlib.decompress(image, 16+zlib.MAX_WBITS)
+					elif headers[b'Content-Encoding'] == b'deflate':
+						image = zlib.decompress(image)
+			except Exception as e:
+				print(e)
+				pass
+	except Exception as e:
+		print(e)
+		return None,None
+
+	return image, image_type
+
+def http_assembler(pcap_file):
+	carved_images  = 0
+
+	a = rdpcap(pcap_file)
+
+	sessions = a.sessions()
+
+	for session in sessions:
+		http_payload = b""
+		for packet in sessions[session]:			
+			try:
+				if packet[TCP].dport == 80 or packet[TCP].sport == 80:
+					http_payload += packet.getlayer(Raw).fields['load']
+			except Exception as e:
+				pass
+
+			headers = get_http_headers(http_payload)
+
+			if headers is None:
+				continue
+
+			image, image_type = extract_image(headers, http_payload)
+
+			if image is not None and image_type is not None:
+				file_name = "%s-pic_carver_%d.%s" % (pcap_file,carved_images,image_type.decode())
+				fd = open("%s/%s" % (pictures_directory, file_name), "wb")
+
+				fd.write(image)
+				fd.close()
+
+				carved_images += 1
+
+	return carved_images
+
+if __name__ == "__main__":
+	carved_images = http_assembler(pcap_file)
+
+	print("Extracted: %d images" % carved_images)
