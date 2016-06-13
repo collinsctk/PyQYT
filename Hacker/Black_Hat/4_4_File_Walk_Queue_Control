@@ -1,0 +1,39 @@
+#!/usr/bin/python3.4
+# -*- coding=utf-8 -*-
+#本脚由亁颐堂现任明教教主编写，用于乾颐盾Python课程！
+#教主QQ:605658506
+#亁颐堂官网www.qytang.com
+#乾颐盾是由亁颐堂现任明教教主开发的综合性安全课程
+#包括传统网络安全（防火墙，IPS...）与Python语言和黑客渗透课程！
+
+import queue
+import threading
+import os
+
+threads = 10
+
+directory = '/root/PyQYT'
+filters = [".txt", '.jpeg', '.gif']
+
+os.chdir(directory)
+
+local_paths = queue.Queue()
+
+for r,d,f in os.walk("."):
+	#路径名，目录列表和文件列表
+	for files in f:
+		local_path = "%s/%s" % (r,files)
+		if local_path.startswith('.'):
+			local_path = local_path[1:]
+		if os.path.splitext(files)[1] not in filters:
+			local_paths.put(local_path)
+
+def print_local_paths():
+	while not local_paths.empty():
+		path = local_paths.get()
+		print(path)
+
+for i in range(threads):
+	print('Spawning Thread: %d' % i)
+	t = threading.Thread(target=print_local_paths)
+	t.start()
