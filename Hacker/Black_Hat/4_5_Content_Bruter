@@ -1,0 +1,88 @@
+#!/usr/bin/python3.4
+# -*- coding=utf-8 -*-
+#本脚由亁颐堂现任明教教主编写，用于乾颐盾Python课程！
+#教主QQ:605658506
+#亁颐堂官网www.qytang.com
+#乾颐盾是由亁颐堂现任明教教主开发的综合性安全课程
+#包括传统网络安全（防火墙，IPS...）与Python语言和黑客渗透课程！
+
+import queue
+import threading
+import os
+import urllib.parse
+from http.client import HTTPConnection
+
+threads = 50
+
+target_url 			= 'www.qytang.com'
+wordlist_file 		= 'all.txt'
+resume 				= None
+user_agent			= "Mozilla/5.0 (X11; Linux x86_64; rv:19.0) Gecko/20100101 Firefox/19.0"
+User_Agent			= 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.80 Safari/537.36 Core/1.47.277.400 QQBrowser/9.4.7658.400'
+
+def build_wordlist(wordlist_file):
+	fd = open(wordlist_file, 'rb')
+	raw_words = fd.readlines()
+	fd.close()
+
+	found_resume = False
+	words = queue.Queue()
+
+	for word in raw_words:
+
+		word = word.rstrip()
+
+		if resume is not None:
+
+			if found_resume:
+				words.put(word)
+			else:
+				if word == resume:
+					found_resume = True
+					print("Resuming wordlist from: %s" % resume)
+		else:
+			words.put(word)
+	return words
+
+def dir_bruter(word_queue, extensions=None):
+	can_access = []
+	while not word_queue.empty():
+		attempt = word_queue.get().decode()
+
+		attempt_list = []
+
+		if "." not in attempt:
+			attempt_list.append("/%s/" % attempt)
+		else:
+			attempt_list.append("/%s" % attempt)
+
+		if extensions:
+			for extension in extensions:
+				attempt_list.append("/%s%s" % (attempt, extension))
+		print(attempt_list)
+		for brute in attempt_list:
+			url = '%s%s' % (target_url, urllib.parse.quote(brute))
+			try:
+				headers = {}
+				headers["User-Agent"] = User_Agent
+				con = HTTPConnection(target_url,port=80)
+				con.request("GET", urllib.parse.quote(brute), headers=headers)
+				resu = con.getresponse()
+				if len(resu.read()):
+					if resu.status == 200:
+						print("!!![%d] => %s" % (resu.status, url))
+						can_access.append(url)
+					else:
+						print("[%d] => %s" % (resu.status, url))
+			except Exception as e:
+				print(e)
+				pass
+	print(can_access)
+
+if __name__ == "__main__":
+	word_queue = build_wordlist(wordlist_file)
+	extensions = [".php", ".bak", ".orig", ".inc"]
+
+	for i in range(threads):
+		t = threading.Thread(target=dir_bruter, args=(word_queue,extensions,))
+		t.start()
