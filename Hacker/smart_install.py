@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 import struct
 import socket
+import sys
 
 def get_local_ip_addr():
     myname = socket.getfqdn(socket.gethostname())
@@ -59,15 +60,15 @@ def conn_with_client(data, ip, mode=0):  # Set connection with remote client
 
     except KeyboardInterrupt:
         print('你输入了Ctrl + C, 退出.')
-        exit()
+        sys.exit()
 
     except socket.gaierror:
         print('主机无法解析, 退出.')
-        exit()
+        sys.exit()
 
     except socket.error:
         print("无法连接到 %s, 退出." % ip)
-        exit()
+        sys.exit()
 
 def get_config(ip):
     print('注意此次操将获取配置到TFTP服务器，配置文件将会被保存为 "deviceip.conf"！')
@@ -121,7 +122,6 @@ def test_device(device_ip): # Testing for smart install
     conn_with_client(transmit_data, device_ip, mode=1)
 
 if __name__ == '__main__':
-    import sys
     from optparse import OptionParser
 
     usage = "使用方法: python smart_install.py -t -i ip"
@@ -155,3 +155,6 @@ if __name__ == '__main__':
 
     else:
         print('格式错误！！！')
+
+
+
